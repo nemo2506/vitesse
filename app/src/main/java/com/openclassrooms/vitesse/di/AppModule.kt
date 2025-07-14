@@ -1,9 +1,11 @@
 package com.openclassrooms.vitesse.di
 
 import android.content.Context
+import android.util.Log
 import com.openclassrooms.vitesse.data.dao.CandidateDao
 import com.openclassrooms.vitesse.data.database.AppDatabase
 import com.openclassrooms.vitesse.data.repository.CandidateRepository
+import com.openclassrooms.vitesse.domain.usecase.GetAllCandidateUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,6 +29,7 @@ class AppModule {
         @ApplicationContext context: Context,
         coroutineScope: CoroutineScope
     ): AppDatabase {
+        Log.d("MARC", "provideAppDatabase: $AppDatabase")
         return try {
             AppDatabase.getDatabase(context, coroutineScope)
         } catch (e: Exception) {
@@ -54,5 +57,12 @@ class AppModule {
             throw RuntimeException("Failed to provide CandidateRepository", e)
         }
     }
-    
+
+    @Provides
+    @Singleton
+    fun provideGetAllCandidateUseCase(
+        candidateRepository: CandidateRepository
+    ): GetAllCandidateUseCase {
+        return GetAllCandidateUseCase(candidateRepository)
+    }
 }

@@ -3,7 +3,7 @@ package com.openclassrooms.vitesse.domain.model
 import com.openclassrooms.vitesse.data.entity.CandidateDto
 
 data class Candidate(
-    val id: Long = 0,
+    val id: Long? = null,
     var firstName: String,
     var lastName: String,
     var phone: String,
@@ -14,13 +14,13 @@ data class Candidate(
     companion object {
         fun fromDto(dto: CandidateDto): Candidate {
             return Candidate(
-                id = dto.id,
-                firstName = dto.firstName,
-                lastName = dto.lastName,
-                phone = dto.phone,
-                email = dto.email,
-                isFavorite = dto.isFavorite,
-                photoUri = dto.photoUri
+                    id = dto.id,
+                    firstName = dto.firstName,
+                    lastName = dto.lastName,
+                    phone = dto.phone,
+                    email = dto.email,
+                    isFavorite = dto.isFavorite,
+                    photoUri = dto.photoUri
             )
         }
     }
