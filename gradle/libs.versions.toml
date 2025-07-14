@@ -1,26 +1,68 @@
 [versions]
-agp = "8.8.0"
-kotlin = "1.9.24"
-coreKtx = "1.16.0"
+kotlin = "1.9.23"
+agp = "8.6.1"
+hilt = "2.51.1"
+compileSdk = "35"
+minSdk = "24"
+targetSdk = "35"
 junit = "4.13.2"
-junitVersion = "1.2.1"
-espressoCore = "3.6.1"
+androidx-junit = "1.2.1"
+espresso = "3.6.1"
+core-ktx = "1.16.0"
 appcompat = "1.7.1"
 material = "1.12.0"
-activity = "1.10.1"
 constraintlayout = "2.2.1"
+activity-ktx = "1.10.1"
+fragment-ktx = "1.8.8"
+desugar = "2.1.5"
+ksp = "1.9.23-1.0.20"
+room = "2.6.1"
+#Déclaration de la version de Turbine
+turbine = "1.1.0"
+arch-core = "2.2.0"
+#Déclaration de TEST
+mockito-kotlin = "5.4.0"
+kotlinx-coroutines-test = "1.8.0"
+junit-jupiter = "5.10.0"
+kotlin-test = "1.8.22"
+
 
 [libraries]
-androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
-androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+#Ajout de Hilt
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt"}
+hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt"}
+core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
+appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+material = { module = "com.google.android.material:material", version.ref = "material" }
+constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
+activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activity-ktx" }
+fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragment-ktx" }
+desugar = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar" }
+junit = { module = "junit:junit", version.ref = "junit" }
+androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-junit" }
+espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
+#Ajout des dépendances Room
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+#Ajout de la dépendance Turbine
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+arch-core-common = { module = "androidx.arch.core:core-common", version.ref = "arch-core" }
+arch-core-runtime = { module = "androidx.arch.core:core-runtime", version.ref = "arch-core" }
+arch-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "arch-core" }
+mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-kotlin" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines-test" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version = "kotlin-test" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+#Ajout des plugins Room et KSP
+room = { id = "androidx.room", version.ref = "room" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+#Ajout de hilt
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+android-junit5 = { id = "de.mannodermaus.android-junit5", version = "1.9.3.0" }
