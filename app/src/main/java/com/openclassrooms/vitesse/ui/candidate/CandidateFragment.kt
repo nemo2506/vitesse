@@ -2,7 +2,6 @@ package com.openclassrooms.vitesse.ui.candidate
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,8 +9,10 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.databinding.FragmentCandidateBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class CandidateFragment : Fragment() {
 
     private var _binding: FragmentCandidateBinding? = null
@@ -58,7 +59,6 @@ class CandidateFragment : Fragment() {
     private fun observeCandidate() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { flowState ->
-                Log.d("MARC", "observeCandidates: $flowState")
 //                candidateAdapter.submitList(flowState.candidates)
 //                if (flowState.isCandidateReady == false)
 //                    Toast.makeText(requireContext(), R.string.exercice_not_ready, Toast.LENGTH_SHORT).show()

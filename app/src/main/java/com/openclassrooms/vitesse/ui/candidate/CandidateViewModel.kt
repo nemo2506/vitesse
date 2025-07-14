@@ -1,6 +1,5 @@
 package com.openclassrooms.vitesse.ui.candidate
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,7 +27,6 @@ class CandidateViewModel @Inject constructor(
 
     private fun observeCandidate() {
         viewModelScope.launch {
-            Log.d("MARC", "observeCandidate: STARTED")
             getAllCandidateUseCase.execute()
                 .catch {
                     _uiState.update { it.copy(isCandidateReady = false) }

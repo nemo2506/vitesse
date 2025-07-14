@@ -1,7 +1,6 @@
 package com.openclassrooms.vitesse.di
 
 import android.content.Context
-import android.util.Log
 import com.openclassrooms.vitesse.data.dao.CandidateDao
 import com.openclassrooms.vitesse.data.database.AppDatabase
 import com.openclassrooms.vitesse.data.repository.CandidateRepository
@@ -29,7 +28,6 @@ class AppModule {
         @ApplicationContext context: Context,
         coroutineScope: CoroutineScope
     ): AppDatabase {
-        Log.d("MARC", "provideAppDatabase: $AppDatabase")
         return try {
             AppDatabase.getDatabase(context, coroutineScope)
         } catch (e: Exception) {
