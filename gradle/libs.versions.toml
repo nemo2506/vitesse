@@ -25,7 +25,10 @@ mockito-kotlin = "5.4.0"
 kotlinx-coroutines-test = "1.8.0"
 junit-jupiter = "5.10.0"
 kotlin-test = "1.8.22"
+<<<<<<< HEAD
 
+=======
+>>>>>>> accueil
 
 [libraries]
 #Ajout de Hilt
@@ -54,8 +57,11 @@ mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines-test" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version = "kotlin-test" }
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> accueil
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
@@ -66,3 +72,7 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 #Ajout de hilt
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 android-junit5 = { id = "de.mannodermaus.android-junit5", version = "1.9.3.0" }
+<<<<<<< HEAD
+=======
+
+>>>>>>> accueil

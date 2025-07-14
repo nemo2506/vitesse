@@ -8,18 +8,15 @@ plugins {
 
 android {
     namespace = "com.openclassrooms.vitesse"
-    compileSdk = 35
-
+    compileSdk = libs.versions.compileSdk.get().toInt()
     defaultConfig {
         applicationId = "com.openclassrooms.vitesse"
-        minSdk = 24
-        targetSdk = 35
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -39,7 +36,10 @@ android {
     buildFeatures {
         viewBinding = true
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> accueil
     //Configuration du plugin gradle de room
     room {
         schemaDirectory("$projectDir/schemas")
@@ -49,6 +49,10 @@ android {
 dependencies {
     implementation(libs.appcompat)
     implementation(libs.hilt.android)
+<<<<<<< HEAD
+=======
+    implementation(libs.espresso)
+>>>>>>> accueil
     ksp(libs.room.compiler)
 
     implementation(libs.core.ktx)
@@ -85,4 +89,8 @@ dependencies {
     testImplementation(libs.junit.jupiter)
     testImplementation(libs.turbine)
     testImplementation(libs.kotlin.test)
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> accueil
