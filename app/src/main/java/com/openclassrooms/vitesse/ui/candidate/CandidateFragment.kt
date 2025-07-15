@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.databinding.FragmentCandidateBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,7 +21,7 @@ class CandidateFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: CandidateViewModel by viewModels()
-//    private lateinit var candidateAdapter: CandidateAdapter
+    private lateinit var candidateAdapter: CandidateAdapter
 
     /**
      * Inflates the fragment layout.
@@ -46,11 +48,11 @@ class CandidateFragment : Fragment() {
     /**
      * Initializes the RecyclerView and its adapter.
      */
-//    private fun setupRecyclerView() {
-//        candidateAdapter = CandidateAdapter(this)
-//        binding.candidateRecyclerview.layoutManager = LinearLayoutManager(context)
-//        binding.candidateRecyclerview.adapter = candidateAdapter
-//    }
+    private fun setupRecyclerView() {
+        candidateAdapter = CandidateAdapter(this)
+        binding.candidateRecyclerview.layoutManager = LinearLayoutManager(context)
+        binding.candidateRecyclerview.adapter = candidateAdapter
+    }
 
     /**
      * Observes the candidate UI state from the [CandidateViewModel]
@@ -59,13 +61,13 @@ class CandidateFragment : Fragment() {
     private fun observeCandidate() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { flowState ->
-//                candidateAdapter.submitList(flowState.candidates)
-//                if (flowState.isCandidateReady == false)
-//                    Toast.makeText(requireContext(), R.string.exercice_not_ready, Toast.LENGTH_SHORT).show()
+                candidateAdapter.submitList(flowState.candidate)
+                if (flowState.isCandidateReady == false)
+                    Toast.makeText(requireContext(), R.string.candidate_not_ready, Toast.LENGTH_SHORT).show()
 //                if (flowState.isCandidateDeleted == false)
-//                    Toast.makeText(requireContext(), R.string.exercice_not_deleted, Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(requireContext(), R.string.candidate_not_deleted, Toast.LENGTH_SHORT).show()
 //                if (flowState.isCandidateAdded == false)
-//                    Toast.makeText(requireContext(), R.string.exercice_not_added, Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(requireContext(), R.string.candidate_not_added, Toast.LENGTH_SHORT).show()
 
             }
         }

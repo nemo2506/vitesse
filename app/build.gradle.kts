@@ -9,6 +9,7 @@ plugins {
 android {
     namespace = "com.openclassrooms.vitesse"
     compileSdk = libs.versions.compileSdk.get().toInt()
+
     defaultConfig {
         applicationId = "com.openclassrooms.vitesse"
         minSdk = libs.versions.minSdk.get().toInt()
@@ -17,6 +18,7 @@ android {
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -26,21 +28,20 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     kotlinOptions {
         jvmTarget = "11"
     }
+
     buildFeatures {
         viewBinding = true
     }
-<<<<<<< HEAD
 
-=======
->>>>>>> accueil
-    //Configuration du plugin gradle de room
     room {
         schemaDirectory("$projectDir/schemas")
     }
@@ -49,14 +50,11 @@ android {
 dependencies {
     implementation(libs.appcompat)
     implementation(libs.hilt.android)
-<<<<<<< HEAD
-=======
     implementation(libs.espresso)
->>>>>>> accueil
+
     ksp(libs.room.compiler)
 
     implementation(libs.core.ktx)
-    implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.constraintlayout)
     implementation(libs.activity.ktx)
@@ -68,15 +66,12 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.espresso)
 
-    //ajout des dépendances room
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
 
-    //ajout de la dépendance Turbine
     androidTestImplementation(libs.turbine)
 
-    //ajout de hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
@@ -89,8 +84,4 @@ dependencies {
     testImplementation(libs.junit.jupiter)
     testImplementation(libs.turbine)
     testImplementation(libs.kotlin.test)
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> accueil

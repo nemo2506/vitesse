@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Vitesse</string>
+    <string name="candidate_not_ready">Aucun candidat</string>
+    <string name="candidate_not_added">Pas d\'ajout de candidat</string>
+    <string name="candidate_not_deleted">Pas de suppression de candidat</string>
+    <string name="sleep_not_ready">No sleep</string>
+</resources>

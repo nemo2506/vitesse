@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">vitesse</string>
+    <string name="app_name">Vitesse</string>
+    <string name="candidate_not_ready">No candidate</string>
+    <string name="candidate_not_added">No adding candidate</string>
+    <string name="candidate_not_deleted">No deleting candidate</string>
+    <string name="sleep_not_ready">No sleep</string>
 </resources>
