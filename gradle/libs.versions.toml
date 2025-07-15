@@ -23,6 +23,7 @@ mockito-kotlin = "5.4.0"
 kotlinx-coroutines-test = "1.8.0"
 junit-jupiter = "5.10.0"
 kotlin-test = "1.8.22"
+glide = "4.15.1"
 
 [libraries]
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
@@ -48,6 +49,7 @@ mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines-test" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version = "kotlin-test" }
+glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

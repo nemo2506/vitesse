@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.hilt.android)
     implementation(libs.espresso)
+    implementation(libs.glide)
 
     ksp(libs.room.compiler)
 
