@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.tabs.TabLayout
 import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.databinding.FragmentCandidateBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,16 +41,35 @@ class CandidateFragment : Fragment() {
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        setupRecyclerView()
-//        setupFab()
+        setupRecyclerView()
+        setupTab()
         observeCandidate()
+    }
+
+    private fun setupTab() {
+        val tabLayout = view?.findViewById<TabLayout>(R.id.tab_layout)
+        tabLayout?.addTab(tabLayout.newTab().setText("TOUS"))
+        tabLayout?.addTab(tabLayout.newTab().setText("FAVORITES"))
+        tabLayout?.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                when (tab.position) {
+                    0 -> observeCandidate()
+    //                        1 -> observeFavoritesCandidate()
+                    1 -> observeCandidate()
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
+
     }
 
     /**
      * Initializes the RecyclerView and its adapter.
      */
     private fun setupRecyclerView() {
-        candidateAdapter = CandidateAdapter(this)
+        candidateAdapter = CandidateAdapter()
         binding.candidateRecyclerview.layoutManager = LinearLayoutManager(context)
         binding.candidateRecyclerview.adapter = candidateAdapter
     }
@@ -63,7 +83,11 @@ class CandidateFragment : Fragment() {
             viewModel.uiState.collect { flowState ->
                 candidateAdapter.submitList(flowState.candidate)
                 if (flowState.isCandidateReady == false)
-                    Toast.makeText(requireContext(), R.string.candidate_not_ready, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        R.string.candidate_not_ready,
+                        Toast.LENGTH_SHORT
+                    ).show()
 //                if (flowState.isCandidateDeleted == false)
 //                    Toast.makeText(requireContext(), R.string.candidate_not_deleted, Toast.LENGTH_SHORT).show()
 //                if (flowState.isCandidateAdded == false)
