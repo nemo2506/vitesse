@@ -4,4 +4,7 @@
     <string name="candidate_not_added">Pas d\'ajout de candidat</string>
     <string name="candidate_not_deleted">Pas de suppression de candidat</string>
     <string name="sleep_not_ready">No sleep</string>
+    <string name="candidate_favorites">Favoris</string>
+    <string name="candidate_all">Tous</string>
+    <string name="candidate_face">Portrait Candidat</string>
 </resources>

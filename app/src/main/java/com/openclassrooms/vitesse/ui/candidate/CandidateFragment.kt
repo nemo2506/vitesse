@@ -48,14 +48,13 @@ class CandidateFragment : Fragment() {
 
     private fun setupTab() {
         val tabLayout = view?.findViewById<TabLayout>(R.id.tab_layout)
-        tabLayout?.addTab(tabLayout.newTab().setText("TOUS"))
-        tabLayout?.addTab(tabLayout.newTab().setText("FAVORITES"))
+        tabLayout?.addTab(tabLayout.newTab().setText(R.string.candidate_all))
+        tabLayout?.addTab(tabLayout.newTab().setText(R.string.candidate_favorites))
         tabLayout?.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 when (tab.position) {
-                    0 -> observeCandidate()
-    //                        1 -> observeFavoritesCandidate()
-                    1 -> observeCandidate()
+//                    0 -> observeCandidate()
+//                    1 -> observeFavoritesCandidate()
                 }
             }
 

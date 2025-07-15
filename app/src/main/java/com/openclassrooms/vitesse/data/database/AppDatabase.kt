@@ -58,7 +58,7 @@ abstract class AppDatabase : RoomDatabase() {
                     phone = "0601020304",
                     email = "emma.durand@example.com",
                     isFavorite = false,
-                    photoUri = ""
+                    photoUri = "https://xsgames.co/randomusers/assets/avatars/female/3.jpg"
                 )
             )
 
@@ -69,7 +69,7 @@ abstract class AppDatabase : RoomDatabase() {
                     phone = "0611223344",
                     email = "lucas.martin@example.com",
                     isFavorite = false,
-                    photoUri = ""
+                    photoUri = "https://xsgames.co/randomusers/assets/avatars/male/3.jpg"
                 )
             )
 
@@ -80,7 +80,7 @@ abstract class AppDatabase : RoomDatabase() {
                     phone = "0622334455",
                     email = "chloe.bernard@example.com",
                     isFavorite = false,
-                    photoUri = ""
+                    photoUri = "https://xsgames.co/randomusers/assets/avatars/female/4.jpg"
                 )
             )
 
@@ -91,7 +91,7 @@ abstract class AppDatabase : RoomDatabase() {
                     phone = "0633445566",
                     email = "nathan.robert@example.com",
                     isFavorite = false,
-                    photoUri = ""
+                    photoUri = "https://xsgames.co/randomusers/assets/avatars/male/4.jpg"
                 )
             )
 
@@ -102,7 +102,7 @@ abstract class AppDatabase : RoomDatabase() {
                     phone = "0644556677",
                     email = "lea.petit@example.com",
                     isFavorite = false,
-                    photoUri = ""
+                    photoUri = "https://xsgames.co/randomusers/assets/avatars/female/5.jpg"
                 )
             )
 
@@ -113,7 +113,7 @@ abstract class AppDatabase : RoomDatabase() {
                     phone = "0655667788",
                     email = "hugo.richard@example.com",
                     isFavorite = false,
-                    photoUri = ""
+                    photoUri = "https://xsgames.co/randomusers/assets/avatars/male/5.jpg"
                 )
             )
 
@@ -124,7 +124,7 @@ abstract class AppDatabase : RoomDatabase() {
                     phone = "0666778899",
                     email = "camille.garcia@example.com",
                     isFavorite = false,
-                    photoUri = ""
+                    photoUri = "https://xsgames.co/randomusers/assets/avatars/female/6.jpg"
                 )
             )
 
