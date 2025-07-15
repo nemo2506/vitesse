@@ -1,6 +1,5 @@
 package com.openclassrooms.vitesse.ui.candidate
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +16,7 @@ class CandidateAdapter() :
     ListAdapter<Candidate, CandidateAdapter.CandidateViewHolder>(
         DIFF_CALLBACK
     ) {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CandidateViewHolder {
         val itemView: View =
             LayoutInflater.from(parent.context).inflate(R.layout.item_candidate, parent, false)
@@ -25,12 +25,11 @@ class CandidateAdapter() :
 
     override fun onBindViewHolder(holder: CandidateViewHolder, position: Int) {
         val candidate = getItem(position)
-        Log.d("CandidateAdapter", "photoUri: ${candidate.photoUri}")
 
         Glide.with(holder.itemView.context)
             .load(candidate.photoUri)
             .into(holder.tvFace)
-        holder.tvFirstName.text = String.format("%s", candidate.firstName.toString())
+        holder.tvFirstName.text = String.format("%s", candidate.firstName)
         holder.tvLastName.text = String.format("%s", candidate.lastName)
         holder.tvNote.text = String.format("%s", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley")
     }

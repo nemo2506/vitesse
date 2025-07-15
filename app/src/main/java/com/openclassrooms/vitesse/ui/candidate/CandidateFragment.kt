@@ -2,6 +2,7 @@ package com.openclassrooms.vitesse.ui.candidate
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -20,9 +21,9 @@ class CandidateFragment : Fragment() {
 
     private var _binding: FragmentCandidateBinding? = null
     private val binding get() = _binding!!
-
     private val viewModel: CandidateViewModel by viewModels()
     private lateinit var candidateAdapter: CandidateAdapter
+    private var selectedTabIndex = 0
 
     /**
      * Inflates the fragment layout.
@@ -43,25 +44,6 @@ class CandidateFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
         setupTab()
-        observeCandidate()
-    }
-
-    private fun setupTab() {
-        val tabLayout = view?.findViewById<TabLayout>(R.id.tab_layout)
-        tabLayout?.addTab(tabLayout.newTab().setText(R.string.candidate_all))
-        tabLayout?.addTab(tabLayout.newTab().setText(R.string.candidate_favorites))
-        tabLayout?.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                when (tab.position) {
-//                    0 -> observeCandidate()
-//                    1 -> observeFavoritesCandidate()
-                }
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab) {}
-            override fun onTabReselected(tab: TabLayout.Tab) {}
-        })
-
     }
 
     /**
@@ -73,25 +55,36 @@ class CandidateFragment : Fragment() {
         binding.candidateRecyclerview.adapter = candidateAdapter
     }
 
-    /**
-     * Observes the candidate UI state from the [CandidateViewModel]
-     * and updates the list when changes occur.
-     */
-    private fun observeCandidate() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.uiState.collect { flowState ->
-                candidateAdapter.submitList(flowState.candidate)
-                if (flowState.isCandidateReady == false)
-                    Toast.makeText(
-                        requireContext(),
-                        R.string.candidate_not_ready,
-                        Toast.LENGTH_SHORT
-                    ).show()
-//                if (flowState.isCandidateDeleted == false)
-//                    Toast.makeText(requireContext(), R.string.candidate_not_deleted, Toast.LENGTH_SHORT).show()
-//                if (flowState.isCandidateAdded == false)
-//                    Toast.makeText(requireContext(), R.string.candidate_not_added, Toast.LENGTH_SHORT).show()
+    private fun setupTab() {
 
+        val tabLayout = view?.findViewById<TabLayout>(R.id.tab_layout)
+        tabLayout?.addTab(tabLayout.newTab().setText(R.string.candidate_all))
+        tabLayout?.addTab(tabLayout.newTab().setText(R.string.candidate_favorites))
+
+        tabLayout?.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                selectedTabIndex = tab.position
+                updateAdapter(viewModel.uiState.value, selectedTabIndex)
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.uiState.collect {
+                updateAdapter(it, selectedTabIndex)
+            }
+        }
+        tabLayout?.getTabAt(0)?.select()
+    }
+
+    private fun updateAdapter(state: UiState, selectedTabIndex: Int) {
+        state.let {
+            when (selectedTabIndex) {
+                0 -> candidateAdapter.submitList(it.candidate)
+                1 -> candidateAdapter.submitList(it.favorite)
             }
         }
     }

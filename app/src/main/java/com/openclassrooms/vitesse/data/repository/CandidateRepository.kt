@@ -19,6 +19,15 @@ class CandidateRepository(
         emit(emptyList())
     }
 
+    // Get favorite Candidate
+    fun getFavoriteCandidate(): Flow<List<Candidate>> = flow {
+        candidateDao.getFavoriteCandidate()
+            .map { dtoList -> dtoList.map { Candidate.fromDto(it) } }
+            .collect { emit(it) }
+    }.catch { e ->
+        emit(emptyList())
+    }
+
     // Add or Modify a new candidate
     fun updateCandidate(candidate: Candidate): Flow<Result<Unit>> = flow {
         candidateDao.updateCandidate(candidate.toDto())

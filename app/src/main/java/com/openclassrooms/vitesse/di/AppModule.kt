@@ -5,6 +5,7 @@ import com.openclassrooms.vitesse.data.dao.CandidateDao
 import com.openclassrooms.vitesse.data.database.AppDatabase
 import com.openclassrooms.vitesse.data.repository.CandidateRepository
 import com.openclassrooms.vitesse.domain.usecase.GetAllCandidateUseCase
+import com.openclassrooms.vitesse.domain.usecase.GetFavoriteCandidateUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -62,5 +63,13 @@ class AppModule {
         candidateRepository: CandidateRepository
     ): GetAllCandidateUseCase {
         return GetAllCandidateUseCase(candidateRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetFavoriteCandidateUseCase(
+        candidateRepository: CandidateRepository
+    ): GetFavoriteCandidateUseCase {
+        return GetFavoriteCandidateUseCase(candidateRepository)
     }
 }
