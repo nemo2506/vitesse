@@ -1,6 +1,5 @@
 package com.openclassrooms.vitesse.ui.candidate
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.domain.model.Candidate
 
@@ -24,23 +24,19 @@ class CandidateAdapter() :
 
     override fun onBindViewHolder(holder: CandidateViewHolder, position: Int) {
         val candidate = getItem(position)
-//        holder.tvFace.text = "Duration: ${candidate.duration}"
+        Glide.with(holder.itemView.context)
+            .load(candidate.photoUri)
+            .into(holder.tvFace)
         holder.tvFirstName.text = String.format("%s", candidate.firstName.toString())
         holder.tvLastName.text = String.format("%s", candidate.lastName)
+        holder.tvNote.text = String.format("%s", "TEST TEST TEST TEST TEST TEST TEST TEST TEST")
     }
 
     inner class CandidateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var tvFace: TextView
-        var tvFirstName: TextView
-        var tvLastName: TextView
-        var tvNote: TextView
-
-        init {
-            tvFace = itemView.findViewById(R.id.tv_face)
-            tvFirstName = itemView.findViewById(R.id.tv_firstname)
-            tvLastName = itemView.findViewById(R.id.tv_lastname)
-            tvNote = itemView.findViewById(R.id.tv_note)
-        }
+        var tvFace: ImageView = itemView.findViewById(R.id.tv_face)
+        var tvFirstName: TextView = itemView.findViewById(R.id.tv_firstname)
+        var tvLastName: TextView = itemView.findViewById(R.id.tv_lastname)
+        var tvNote: TextView = itemView.findViewById(R.id.tv_note)
     }
 
     companion object {
@@ -49,6 +45,7 @@ class CandidateAdapter() :
                 override fun areItemsTheSame(oldItem: Candidate, newItem: Candidate): Boolean {
                     return oldItem === newItem
                 }
+
                 override fun areContentsTheSame(oldItem: Candidate, newItem: Candidate): Boolean {
                     return oldItem == newItem
                 }
