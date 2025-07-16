@@ -5,7 +5,6 @@ import com.openclassrooms.vitesse.domain.model.Candidate
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-
 class GetAllCandidateUseCase @Inject constructor(
     private val candidateRepository: CandidateRepository
 ) {

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.databinding.FragmentCandidateBinding
+import com.openclassrooms.vitesse.domain.model.Candidate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -64,8 +65,7 @@ class CandidateFragment : Fragment() {
         tabLayout?.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
 
             override fun onTabSelected(tab: TabLayout.Tab) {
-                selectedTabIndex = tab.position
-                updateAdapter(viewModel.uiState.value, selectedTabIndex)
+                viewModel.getTab(tab.position)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {}
@@ -73,18 +73,24 @@ class CandidateFragment : Fragment() {
         })
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.uiState.collect {
-                updateAdapter(it, selectedTabIndex)
+            viewModel.uiState.collect { flowState ->
+                updateAdapter(flowState)
             }
         }
         tabLayout?.getTabAt(0)?.select()
     }
 
-    private fun updateAdapter(state: UiState, selectedTabIndex: Int) {
-        state.let {
-            when (selectedTabIndex) {
-                0 -> candidateAdapter.submitList(it.candidate)
-                1 -> candidateAdapter.submitList(it.favorite)
+    private fun updateAdapter( state: UiState ) {
+        when (state.tabNum) {
+            0 -> {
+                if (state.isCandidateReady == false)
+                    Toast.makeText(requireContext(), R.string.candidate_not_ready, Toast.LENGTH_SHORT).show()
+                candidateAdapter.submitList(state.candidate)
+            }
+            1 -> {
+                if (state.isFavoriteReady == false)
+                    Toast.makeText(requireContext(), R.string.favorite_not_ready, Toast.LENGTH_SHORT).show()
+                candidateAdapter.submitList(state.favorite)
             }
         }
     }

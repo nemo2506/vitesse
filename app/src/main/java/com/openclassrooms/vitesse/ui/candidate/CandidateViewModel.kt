@@ -1,5 +1,6 @@
 package com.openclassrooms.vitesse.ui.candidate
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,40 +26,45 @@ class CandidateViewModel @Inject constructor(
 
     init {
         observeCandidate()
-        observeFavorite()
     }
 
     private fun observeCandidate() {
         viewModelScope.launch {
-            getAllCandidateUseCase.execute()
-                .catch {
-                    _uiState.update { it.copy(isCandidateReady = false) }
-                }
-                .collect { updated ->
-                    if (updated.isEmpty()) {
-                        _uiState.update { it.copy(isCandidateReady = false) }
-                    } else {
-                        _uiState.update { it.copy(candidate = updated) }
+            launch {
+                getAllCandidateUseCase.execute()
+                    .catch {
+                        _uiState.update { it.copy(isCandidateReady = false, candidate = null) }
                     }
-                }
+                    .collect { updated ->
+                        if (updated.isEmpty()) {
+                            _uiState.update { it.copy(isCandidateReady = false, candidate = null) }
+                        } else {
+                            _uiState.update { it.copy(candidate = updated, isCandidateReady = true) }
+                        }
+                    }
+            }
+
+            launch {
+                getFavoriteCandidateUseCase.execute()
+                    .catch {
+                        _uiState.update { it.copy(isFavoriteReady = false, favorite = null) }
+                    }
+                    .collect { updated ->
+                        Log.d("MARC", "observeCandidate / FAVORITE: " + updated.count())
+                        if (updated.isEmpty()) {
+                            _uiState.update { it.copy(isFavoriteReady = false, favorite = null) }
+                        } else {
+                            _uiState.update { it.copy(favorite = updated, isFavoriteReady = true) }
+                        }
+                    }
+            }
         }
     }
 
-    private fun observeFavorite() {
-        viewModelScope.launch {
-            getFavoriteCandidateUseCase.execute()
-                .catch {
-                    _uiState.update { it.copy(isFavoriteReady = false) }
-                }
-                .collect { updated ->
-                    if (updated.isEmpty()) {
-                        _uiState.update { it.copy(isFavoriteReady = false) }
-                    } else {
-                        _uiState.update { it.copy(favorite = updated) }
-                    }
-                }
-        }
+    fun getTab(position: Int) {
+        _uiState.update { it.copy(tabNum = position) }
     }
+
 }
 
 /**
@@ -70,5 +76,6 @@ data class UiState(
     var candidate: List<Candidate>? = null,
     var favorite: List<Candidate>? = null,
     var isCandidateReady: Boolean? = null,
-    var isFavoriteReady: Boolean? = null
+    var isFavoriteReady: Boolean? = null,
+    var tabNum: Int = 0
 )

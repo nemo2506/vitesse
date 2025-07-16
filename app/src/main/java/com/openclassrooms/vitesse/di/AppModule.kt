@@ -57,19 +57,19 @@ class AppModule {
         }
     }
 
-    @Provides
-    @Singleton
-    fun provideGetAllCandidateUseCase(
-        candidateRepository: CandidateRepository
-    ): GetAllCandidateUseCase {
-        return GetAllCandidateUseCase(candidateRepository)
-    }
-
-    @Provides
-    @Singleton
-    fun provideGetFavoriteCandidateUseCase(
-        candidateRepository: CandidateRepository
-    ): GetFavoriteCandidateUseCase {
-        return GetFavoriteCandidateUseCase(candidateRepository)
-    }
+//    @Provides
+//    @Singleton
+//    fun provideGetAllCandidateUseCase(
+//        candidateRepository: CandidateRepository
+//    ): GetAllCandidateUseCase {
+//        return GetAllCandidateUseCase(candidateRepository)
+//    }
+//
+//    @Provides
+//    @Singleton
+//    fun provideGetFavoriteCandidateUseCase(
+//        candidateRepository: CandidateRepository
+//    ): GetFavoriteCandidateUseCase {
+//        return GetFavoriteCandidateUseCase(candidateRepository)
+//    }
 }
