@@ -24,7 +24,6 @@ class CandidateFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: CandidateViewModel by viewModels()
     private lateinit var candidateAdapter: CandidateAdapter
-    private var selectedTabIndex = 0
 
     /**
      * Inflates the fragment layout.
