@@ -1,4 +1,7 @@
 package com.openclassrooms.vitesse.ui.detail
 
-class DetailViewModel {
+import androidx.lifecycle.ViewModel
+
+class DetailViewModel : ViewModel() {
+    // TODO: Implement the ViewModel
 }

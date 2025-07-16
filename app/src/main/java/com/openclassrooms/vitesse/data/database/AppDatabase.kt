@@ -4,19 +4,26 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.openclassrooms.vitesse.data.converter.Converters
 import com.openclassrooms.vitesse.data.dao.CandidateDao
+import com.openclassrooms.vitesse.data.dao.DetailDao
 import com.openclassrooms.vitesse.data.entity.CandidateDto
+import com.openclassrooms.vitesse.data.entity.DetailDto
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 
 @Database(
-    entities = [CandidateDto::class],
+    entities = [CandidateDto::class, DetailDto::class],
     version = 1,
     exportSchema = true
 )
+@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun candidateDao(): CandidateDao
+    abstract fun detailDao(): DetailDao
 
     private class AppDatabaseCallback(
         private val scope: CoroutineScope
@@ -25,7 +32,7 @@ abstract class AppDatabase : RoomDatabase() {
             super.onCreate(db)
             INSTANCE?.let { database ->
                 scope.launch {
-                    populateDatabase(database.candidateDao())
+                    populateDatabase(database.candidateDao(), database.detailDao())
                 }
             }
         }
@@ -49,7 +56,7 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
-        suspend fun populateDatabase(candidateDao: CandidateDao) {
+        suspend fun populateDatabase(candidateDao: CandidateDao, detailDao: DetailDao) {
 
             candidateDao.updateCandidate(
                 CandidateDto(
@@ -125,6 +132,55 @@ abstract class AppDatabase : RoomDatabase() {
                     email = "camille.garcia@example.com",
                     isFavorite = false,
                     photoUri = "https://xsgames.co/randomusers/assets/avatars/female/6.jpg"
+                )
+            )
+
+            detailDao.updateDetail(
+                DetailDto(
+                    date = LocalDateTime.of(2001, 7, 15, 8, 30),
+                    salaryClaim = 19000,
+                    note = "A confondu l'entretien avec un one-man-show. Pas sûr du poste, mais on a bien ri.",
+                    candidateId = 1
+                )
+            )
+            detailDao.updateDetail(
+                DetailDto(
+                    date = LocalDateTime.of(2003, 5, 15, 15, 15),
+                    salaryClaim = 19000,
+                    note = "Sait tout faire, sauf rester modeste. On embauche peut-être un super-héros.",
+                    candidateId = 2
+                )
+            )
+            detailDao.updateDetail(
+                DetailDto(
+                    date = LocalDateTime.of(2005, 3, 15, 9, 30),
+                    salaryClaim = 19000,
+                    note = "Est arrivé avec un CV, un café... et sa mère. Esprit d’équipe très… familial.",
+                    candidateId = 3
+                )
+            )
+            detailDao.updateDetail(
+                DetailDto(
+                    date = LocalDateTime.of(2001, 1, 3, 8, 30),
+                    salaryClaim = 19000,
+                    note = "A demandé s’il y avait une prime de sieste. On admire l’honnêteté, mais bon…",
+                    candidateId = 4
+                )
+            )
+            detailDao.updateDetail(
+                DetailDto(
+                    date = LocalDateTime.of(2002, 6, 15, 8, 30),
+                    salaryClaim = 19000,
+                    note = "Parle 5 langues, sauf celle du silence. Un vrai podcast ambulant.",
+                    candidateId = 5
+                )
+            )
+            detailDao.updateDetail(
+                DetailDto(
+                    date = LocalDateTime.now(),
+                    salaryClaim = 19000,
+                    note = "Répondait à nos questions avant qu’on les pose. Très proactif, ou un peu médium.",
+                    candidateId = 6
                 )
             )
 

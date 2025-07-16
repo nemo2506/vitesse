@@ -52,6 +52,9 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.espresso)
     implementation(libs.glide)
+    implementation(libs.androidx.legacy.support.v4)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
     ksp(libs.room.compiler)
 

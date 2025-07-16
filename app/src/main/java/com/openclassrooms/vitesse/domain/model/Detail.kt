@@ -1,11 +1,11 @@
 package com.openclassrooms.vitesse.domain.model
 
 import com.openclassrooms.vitesse.data.entity.DetailDto
-import java.util.Date
+import java.time.LocalDateTime
 
 data class Detail(
     val id: Long? = null,
-    var date: Date,
+    var date: LocalDateTime,
     var salaryClaim: Long,
     var note: String,
     var candidateId: Long

@@ -2,8 +2,10 @@ package com.openclassrooms.vitesse.di
 
 import android.content.Context
 import com.openclassrooms.vitesse.data.dao.CandidateDao
+import com.openclassrooms.vitesse.data.dao.DetailDao
 import com.openclassrooms.vitesse.data.database.AppDatabase
 import com.openclassrooms.vitesse.data.repository.CandidateRepository
+import com.openclassrooms.vitesse.data.repository.DetailRepository
 import com.openclassrooms.vitesse.domain.usecase.GetAllCandidateUseCase
 import com.openclassrooms.vitesse.domain.usecase.GetFavoriteCandidateUseCase
 import dagger.Module
@@ -46,6 +48,15 @@ class AppModule {
     }
 
     @Provides
+    fun provideDetailDao(appDatabase: AppDatabase): DetailDao {
+        return try {
+            appDatabase.detailDao()
+        } catch (e: Exception) {
+            throw RuntimeException("Failed to provide DetailDao", e)
+        }
+    }
+
+    @Provides
     @Singleton
     fun provideCandidateRepository(
         candidateDao: CandidateDao
@@ -57,19 +68,16 @@ class AppModule {
         }
     }
 
-//    @Provides
-//    @Singleton
-//    fun provideGetAllCandidateUseCase(
-//        candidateRepository: CandidateRepository
-//    ): GetAllCandidateUseCase {
-//        return GetAllCandidateUseCase(candidateRepository)
-//    }
-//
-//    @Provides
-//    @Singleton
-//    fun provideGetFavoriteCandidateUseCase(
-//        candidateRepository: CandidateRepository
-//    ): GetFavoriteCandidateUseCase {
-//        return GetFavoriteCandidateUseCase(candidateRepository)
-//    }
+    @Provides
+    @Singleton
+    fun provideDetailRepository(
+        detailDao: DetailDao
+    ): DetailRepository {
+        return try {
+            DetailRepository(detailDao)
+        } catch (e: Exception) {
+            throw RuntimeException("Failed to provide DetailRepository", e)
+        }
+    }
+
 }

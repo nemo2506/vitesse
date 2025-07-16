@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "6ea8ce3d4a3839144534552e0c3c07b0",
+    "identityHash": "aeebcdf3a4303ccf1e2f841fe3c75fb4",
     "entities": [
       {
         "tableName": "candidate",
@@ -59,12 +59,68 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "detail",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `date` INTEGER NOT NULL, `salaryClaim` INTEGER NOT NULL, `note` TEXT NOT NULL, `candidateId` INTEGER NOT NULL, FOREIGN KEY(`candidateId`) REFERENCES `candidate`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "salaryClaim",
+            "columnName": "salaryClaim",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "note",
+            "columnName": "note",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "candidateId",
+            "columnName": "candidateId",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": [
+          {
+            "table": "candidate",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "candidateId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6ea8ce3d4a3839144534552e0c3c07b0')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'aeebcdf3a4303ccf1e2f841fe3c75fb4')"
     ]
   }
 }
