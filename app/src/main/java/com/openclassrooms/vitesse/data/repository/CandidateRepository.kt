@@ -1,29 +1,18 @@
 package com.openclassrooms.vitesse.data.repository
 
-import android.util.Log
+import androidx.sqlite.db.SupportSQLiteQuery
 import com.openclassrooms.vitesse.data.dao.CandidateDao
+import com.openclassrooms.vitesse.data.entity.CandidateWithDetailDto
 import com.openclassrooms.vitesse.domain.model.Candidate
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 
 class CandidateRepository(
     private val candidateDao: CandidateDao
 ) {
-    fun getCandidate(fav: Int): Flow<List<Candidate>> =
-        candidateDao.getCandidate(fav)
-            .map { list ->
-                list.map { dto ->
-                    Candidate.fromDto(
-                        dto.candidate.apply {
-                            Log.d("MARC", "getCandidate/dto $dto")
-                            note = dto.details.firstOrNull()?.note
-                        }
-                    )
-                }
-            }
-            .catch { emit(emptyList()) }
+    fun getCandidate(query: SupportSQLiteQuery): Flow<List<CandidateWithDetailDto>> =
+        candidateDao.getCandidate(query)
 
     // Add or Modify a new candidate
     fun updateCandidate(candidate: Candidate): Flow<Result<Unit>> = flow {

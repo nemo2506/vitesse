@@ -2,8 +2,10 @@ package com.openclassrooms.vitesse.data.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.RawQuery
 import androidx.room.Transaction
 import androidx.room.Upsert
+import androidx.sqlite.db.SupportSQLiteQuery
 import com.openclassrooms.vitesse.data.entity.CandidateDto
 import com.openclassrooms.vitesse.data.entity.CandidateWithDetailDto
 import kotlinx.coroutines.flow.Flow
@@ -11,8 +13,8 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CandidateDao {
     @Transaction
-    @Query("SELECT * FROM candidate WHERE isFavorite = :fav ORDER BY lastName ASC")
-    fun getCandidate(fav: Int): Flow<List<CandidateWithDetailDto>>
+    @RawQuery(observedEntities = [CandidateWithDetailDto::class])
+    fun getCandidate(query: SupportSQLiteQuery): Flow<List<CandidateWithDetailDto>>
 
     @Upsert
     suspend fun updateCandidate(candidate: CandidateDto): Long
