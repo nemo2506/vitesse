@@ -2,6 +2,7 @@ package com.openclassrooms.vitesse.ui.candidate
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
+import android.text.Selection
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -16,6 +17,7 @@ import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.databinding.FragmentCandidateBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class CandidateFragment : Fragment() {
@@ -24,6 +26,7 @@ class CandidateFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: CandidateViewModel by viewModels()
     private lateinit var candidateAdapter: CandidateAdapter
+    private var choiceUser: Int = 0
 
     /**
      * Inflates the fragment layout.
@@ -45,7 +48,9 @@ class CandidateFragment : Fragment() {
         setupRecyclerView()
         setupTab()
         observerCandidate()
-//        searchChanged()
+        choiceUser = viewModel.tabStarted
+        viewModel.getSearch(choiceUser,  "")
+        userCall()
     }
 
     /**
@@ -65,9 +70,9 @@ class CandidateFragment : Fragment() {
 
         tabLayout?.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                viewModel.getTab(tab.position)
+                choiceUser = tab.position
+                userCall()
             }
-
             override fun onTabUnselected(tab: TabLayout.Tab) {}
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
@@ -78,16 +83,15 @@ class CandidateFragment : Fragment() {
     private fun observerCandidate() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { flowState ->
-                Log.d("MARC", "observerCandidate: $flowState")
                 candidateAdapter.submitList(flowState.candidate)
             }
         }
     }
 
-//    private fun searchChanged() {
-//        viewModel.searchInsert(binding.tvSearchEdit.text.toString())
-//        binding.tvSearchEdit.doOnTextChanged { text, _, _, _ ->
-//            viewModel.searchInsert(text.toString())
-//        }
-//    }
+    private fun userCall() {
+        viewModel.getSearch(choiceUser, binding.tvSearchEdit.text.toString())
+        binding.tvSearchEdit.doOnTextChanged { text, _, _, _ ->
+            viewModel.getSearch(choiceUser, text.toString())
+        }
+    }
 }

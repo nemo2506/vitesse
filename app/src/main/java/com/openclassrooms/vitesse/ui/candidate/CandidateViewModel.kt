@@ -24,14 +24,14 @@ class CandidateViewModel @Inject constructor(
     val tabStarted: Int = 0
 
     init {
-        observeCandidate(tabStarted)
+        observeCandidate(tabStarted, searchTerm = "")
     }
 
-    private fun observeCandidate(fav: Int) {
-        val key = _uiState.value.searchKey?.trim()?.lowercase().orEmpty()
+    private fun observeCandidate(fav: Int, searchTerm: String) {
+        Log.d("MARC", "observeCandidate: fav/$fav search/$searchTerm")
         viewModelScope.launch {
             launch {
-                getCandidateUseCase.execute(fav)
+                getCandidateUseCase.execute(fav, searchTerm)
                     .catch {
                         _uiState.update { it.copy(isCandidateReady = false, candidate = null) }
                     }
@@ -47,13 +47,8 @@ class CandidateViewModel @Inject constructor(
         }
     }
 
-    fun getTab(position: Int) {
-        observeCandidate(position)
-    }
-
-    fun searchInsert(key: String?) {
-        val cleanKey = key?.trim()?.lowercase()
-        _uiState.update { it.copy(searchKey = cleanKey) }
+    fun getSearch(tab: Int, searchTerm: String) {
+        observeCandidate(tab, searchTerm )
     }
 }
 

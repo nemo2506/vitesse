@@ -12,8 +12,8 @@ import javax.inject.Inject
 class GetCandidateUseCase @Inject constructor(
     private val candidateRepository: CandidateRepository
 ) {
-    fun execute(fav: Int): Flow<List<Candidate>> {
-        val (sql, argsList) = searchQueryAdd("emma", fav, "SELECT * FROM candidate")
+    fun execute(fav: Int, searchTerm: String): Flow<List<Candidate>> {
+        val (sql, argsList) = searchQueryAdd(searchTerm, fav)
         val query = SimpleSQLiteQuery(sql, argsList.toTypedArray())
         val candidateFlow = candidateRepository.getCandidate(query)
 
@@ -28,12 +28,20 @@ class GetCandidateUseCase @Inject constructor(
             .catch { emit(emptyList()) }
     }
 
-    private fun searchQueryAdd(searchTerm: String, fav: Int, sql: String): Pair<String, MutableList<String>> {
-        if (searchTerm.isBlank() && fav == 0) return Pair(sql, mutableListOf())
-
+    private fun searchQueryAdd(
+        searchTerm: String,
+        fav: Int,
+        sql: String = "SELECT * FROM candidate"
+    ): Pair<String, MutableList<String>> {
         val argsList = mutableListOf<String>()
         var newSql = sql
         val whereClauses = mutableListOf<String>()
+
+        if (searchTerm.isBlank() && fav == 0) {
+            newSql = "$newSql ORDER BY lastName ASC"
+            return Pair(newSql, mutableListOf())
+        }
+
 
         if (fav == 1) {
             whereClauses.add("isFavorite = ?")
@@ -46,8 +54,8 @@ class GetCandidateUseCase @Inject constructor(
         }
 
         newSql += " WHERE " + whereClauses.joinToString(" AND ")
-        Log.d("MARC", "searchQueryAdd/NEWCLAUSE: $newSql")
+        val finalSql = "$newSql ORDER BY lastName ASC"
 
-        return Pair(newSql, argsList)
+        return Pair(finalSql, argsList)
     }
 }
