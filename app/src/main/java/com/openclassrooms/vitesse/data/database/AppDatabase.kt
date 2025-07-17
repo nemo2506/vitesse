@@ -134,6 +134,39 @@ abstract class AppDatabase : RoomDatabase() {
                     photoUri = "https://xsgames.co/randomusers/assets/avatars/female/6.jpg"
                 )
             )
+            candidateDao.updateCandidate(
+                CandidateDto(
+                    firstName = "Joe",
+                    lastName = "Dalton",
+                    phone = "9999999999",
+                    email = "joe.dalton@example.com",
+                    isFavorite = false,
+                    photoUri = "https://xsgames.co/randomusers/assets/avatars/male/6.jpg"
+                )
+            )
+
+            candidateDao.updateCandidate(
+                CandidateDto(
+                    firstName = "Julien",
+                    lastName = "Moreau",
+                    phone = "0655123498",
+                    email = "julien.moreau@example.com",
+                    isFavorite = true,
+                    photoUri = "https://xsgames.co/randomusers/assets/avatars/male/8.jpg"
+                )
+            )
+
+            candidateDao.updateCandidate(
+                CandidateDto(
+                    firstName = "Sophie",
+                    lastName = "Dubois",
+                    phone = "0644332211",
+                    email = "sophie.dubois@example.com",
+                    isFavorite = false,
+                    photoUri = "https://xsgames.co/randomusers/assets/avatars/female/9.jpg"
+                )
+            )
+
 
             detailDao.updateDetail(
                 DetailDto(
@@ -181,6 +214,41 @@ abstract class AppDatabase : RoomDatabase() {
                     salaryClaim = 8000,
                     note = "Répondait à nos questions avant qu’on les pose. Très proactif, ou un peu médium.",
                     candidateId = 6
+                )
+            )
+            detailDao.updateDetail(
+                DetailDto(
+                    date = LocalDateTime.of(2025, 7, 15, 10, 0),
+                    salaryClaim = 8000,
+                    note = "Répondait à nos questions avant qu’on les pose. Très proactif, ou un peu médium.",
+                    candidateId = 7
+                )
+            )
+
+            detailDao.updateDetail(
+                DetailDto(
+                    date = LocalDateTime.of(2025, 7, 15, 11, 30),
+                    salaryClaim = 12000,
+                    note = "Maîtrise parfaite des frameworks. A mentionné « Clean Architecture » 12 fois.",
+                    candidateId = 8
+                )
+            )
+
+            detailDao.updateDetail(
+                DetailDto(
+                    date = LocalDateTime.of(2025, 7, 15, 14, 0),
+                    salaryClaim = 10000,
+                    note = "Est venu avec un PowerPoint intitulé ‘Pourquoi moi ?’. Convaincant.",
+                    candidateId = 9
+                )
+            )
+
+            detailDao.updateDetail(
+                DetailDto(
+                    date = LocalDateTime.of(2025, 7, 15, 15, 45),
+                    salaryClaim = 9500,
+                    note = "A demandé s’il y avait un code vestimentaire pour le télétravail.",
+                    candidateId = 10
                 )
             )
 
