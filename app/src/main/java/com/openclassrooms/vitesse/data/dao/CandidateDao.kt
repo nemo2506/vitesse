@@ -11,8 +11,8 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CandidateDao {
     @Transaction
-    @Query("SELECT * FROM candidate WHERE isFavorite = :digit ORDER BY lastName ASC")
-    fun getCandidate(digit: Int): Flow<List<CandidateWithDetailDto>>
+    @Query("SELECT * FROM candidate WHERE isFavorite = :fav ORDER BY lastName ASC")
+    fun getCandidate(fav: Int): Flow<List<CandidateWithDetailDto>>
 
     @Upsert
     suspend fun updateCandidate(candidate: CandidateDto): Long

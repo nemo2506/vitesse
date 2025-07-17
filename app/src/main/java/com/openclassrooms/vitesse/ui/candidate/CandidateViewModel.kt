@@ -27,13 +27,13 @@ class CandidateViewModel @Inject constructor(
         observeCandidate(tabStarted)
     }
 
-    private fun observeCandidate(favorite: Int) {
+    private fun observeCandidate(fav: Int) {
         val key = _uiState.value.searchKey?.trim()?.lowercase().orEmpty()
-        Log.d("MARC", "observeCandidate/favorite: $favorite")
+        Log.d("MARC", "observeCandidate/favorite: $fav")
 
         viewModelScope.launch {
             launch {
-                getCandidateUseCase.execute(favorite)
+                getCandidateUseCase.execute(fav)
                     .catch {
                         _uiState.update { it.copy(isCandidateReady = false, candidate = null) }
                     }
@@ -66,9 +66,7 @@ class CandidateViewModel @Inject constructor(
  */
 data class UiState(
     var candidate: List<Candidate>? = null,
-    var favorite: List<Candidate>? = null,
     var isCandidateReady: Boolean? = null,
     var isFavoriteReady: Boolean? = null,
-    var tabNum: Int = 0,
     var searchKey: String? = null
 )

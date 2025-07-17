@@ -1,5 +1,6 @@
 package com.openclassrooms.vitesse.data.repository
 
+import android.util.Log
 import com.openclassrooms.vitesse.data.dao.CandidateDao
 import com.openclassrooms.vitesse.domain.model.Candidate
 import kotlinx.coroutines.flow.Flow
@@ -13,9 +14,11 @@ class CandidateRepository(
     fun getCandidate(fav: Int): Flow<List<Candidate>> =
         candidateDao.getCandidate(fav)
             .map { list ->
+                Log.d("MARC", "getCandidate/list $list")
                 list.map { dto ->
                     Candidate.fromDto(
                         dto.candidate.apply {
+                            Log.d("MARC", "getCandidate/dto $dto")
                             note = dto.details.firstOrNull()?.note
                         }
                     )

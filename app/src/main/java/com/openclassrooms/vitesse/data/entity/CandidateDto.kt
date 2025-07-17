@@ -1,9 +1,7 @@
 package com.openclassrooms.vitesse.data.entity
 
-import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.Relation
 import androidx.room.Ignore
 
 @Entity(tableName = "candidate")
@@ -18,10 +16,6 @@ data class CandidateDto(
     var photoUri: String,
 ) {
     @Ignore
-    var note: String? = null // ✅ Outside constructor to avoid Room constructor conflict
+    var note: String? = null
 }
-data class CandidateWithDetailDto(
-    @Embedded val candidate: CandidateDto,
-    @Relation( parentColumn = "id", entityColumn = "candidateId" )
-    val details: List<DetailDto> = emptyList()
-)
+

@@ -5,12 +5,15 @@ import androidx.room.PrimaryKey
 import java.time.LocalDateTime
 import androidx.room.ForeignKey
 
-@Entity(tableName = "detail",
-    foreignKeys = [ ForeignKey(
+@Entity(
+    tableName = "detail",
+    foreignKeys = [ForeignKey(
         entity = CandidateDto::class,
         parentColumns = ["id"],
-        childColumns = ["candidateId"]
-    )])
+        childColumns = ["candidateId"],
+        onDelete = ForeignKey.CASCADE
+    )]
+)
 data class DetailDto(
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0,

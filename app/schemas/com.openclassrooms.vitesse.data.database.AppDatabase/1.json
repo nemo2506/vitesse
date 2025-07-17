@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "aeebcdf3a4303ccf1e2f841fe3c75fb4",
+    "identityHash": "f98f7b63051bbc3611798cc4615b59df",
     "entities": [
       {
         "tableName": "candidate",
@@ -62,7 +62,7 @@
       },
       {
         "tableName": "detail",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `date` INTEGER NOT NULL, `salaryClaim` INTEGER NOT NULL, `note` TEXT NOT NULL, `candidateId` INTEGER NOT NULL, FOREIGN KEY(`candidateId`) REFERENCES `candidate`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `date` INTEGER NOT NULL, `salaryClaim` INTEGER NOT NULL, `note` TEXT NOT NULL, `candidateId` INTEGER NOT NULL, FOREIGN KEY(`candidateId`) REFERENCES `candidate`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -105,7 +105,7 @@
         "foreignKeys": [
           {
             "table": "candidate",
-            "onDelete": "NO ACTION",
+            "onDelete": "CASCADE",
             "onUpdate": "NO ACTION",
             "columns": [
               "candidateId"
@@ -120,7 +120,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'aeebcdf3a4303ccf1e2f841fe3c75fb4')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f98f7b63051bbc3611798cc4615b59df')"
     ]
   }
 }
