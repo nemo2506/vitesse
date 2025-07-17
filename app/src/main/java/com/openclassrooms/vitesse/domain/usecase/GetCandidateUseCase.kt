@@ -12,36 +12,42 @@ import javax.inject.Inject
 class GetCandidateUseCase @Inject constructor(
     private val candidateRepository: CandidateRepository
 ) {
-    fun execute(favorite: Int): Flow<List<Candidate>> {
-        val searchTerm = "emma"
-        val sql = "SELECT * FROM candidate WHERE firstName LIKE ?"
-        val args = arrayOf("%$searchTerm%")
-        val query = SimpleSQLiteQuery(sql, args)
-        val candidate = candidateRepository.getCandidate(query)
-        return candidate
+    fun execute(fav: Int): Flow<List<Candidate>> {
+        val (sql, argsList) = searchQueryAdd("emma", fav, "SELECT * FROM candidate")
+        val query = SimpleSQLiteQuery(sql, argsList.toTypedArray())
+        val candidateFlow = candidateRepository.getCandidate(query)
+
+        return candidateFlow
             .map { list ->
                 list.map { dto ->
-                    Candidate.fromDto(
-                        dto.candidate.apply {
-                            val test = dto.candidate
-                            note = dto.details.firstOrNull()?.note
-                        }
-                    )
+                    Candidate.fromDto(dto.candidate.apply {
+                        note = dto.details.firstOrNull()?.note
+                    })
                 }
             }
             .catch { emit(emptyList()) }
     }
 
+    private fun searchQueryAdd(searchTerm: String, fav: Int, sql: String): Pair<String, MutableList<String>> {
+        if (searchTerm.isBlank() && fav == 0) return Pair(sql, mutableListOf())
 
-//    fun execute(searchKey: String = ""): Flow<List<Candidate>> {
-//        return candidateRepository.getAllCandidate()
-//            .map { list -> list.filter { matchesSearchKey(it, searchKey) } }
-//    }
-//    private fun matchesSearchKey(candidate: Candidate, key: String): Boolean {
-//        if (key.isBlank()) return true
-//        return candidate.firstName.contains(key, ignoreCase = true) ||
-//                candidate.lastName.contains(key, ignoreCase = true) ||
-//                candidate.email.contains(key, ignoreCase = true) ||
-//                candidate.note?.contains(key, ignoreCase = true) == true
-//    }
+        val argsList = mutableListOf<String>()
+        var newSql = sql
+        val whereClauses = mutableListOf<String>()
+
+        if (fav == 1) {
+            whereClauses.add("isFavorite = ?")
+            argsList.add("1")
+        }
+        if (searchTerm.isNotBlank()) {
+            whereClauses.add("(firstName LIKE ? OR lastName LIKE ?)")
+            argsList.add("%$searchTerm%")
+            argsList.add("%$searchTerm%")
+        }
+
+        newSql += " WHERE " + whereClauses.joinToString(" AND ")
+        Log.d("MARC", "searchQueryAdd/NEWCLAUSE: $newSql")
+
+        return Pair(newSql, argsList)
+    }
 }
