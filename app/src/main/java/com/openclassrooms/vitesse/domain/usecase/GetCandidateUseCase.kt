@@ -31,7 +31,11 @@ class GetCandidateUseCase @Inject constructor(
     private fun searchQueryAdd(
         searchTerm: String,
         fav: Int,
-        sql: String = "SELECT * FROM candidate"
+        sql: String = """
+        SELECT candidate.*
+        FROM candidate
+        LEFT JOIN detail ON candidate.id = detail.candidateId
+    """.trimIndent()
     ): Pair<String, MutableList<String>> {
         val argsList = mutableListOf<String>()
         var newSql = sql
@@ -42,18 +46,20 @@ class GetCandidateUseCase @Inject constructor(
             return Pair(newSql, mutableListOf())
         }
 
-
         if (fav == 1) {
             whereClauses.add("isFavorite = ?")
             argsList.add("1")
         }
         if (searchTerm.isNotBlank()) {
-            whereClauses.add("(firstName LIKE ? OR lastName LIKE ?)")
+            whereClauses.add("(firstName LIKE ? OR lastName LIKE ? OR detail.note LIKE ?)")
+            argsList.add("%$searchTerm%")
             argsList.add("%$searchTerm%")
             argsList.add("%$searchTerm%")
         }
 
-        newSql += " WHERE " + whereClauses.joinToString(" AND ")
+        if (whereClauses.isNotEmpty()) {
+            newSql += " WHERE " + whereClauses.joinToString(" AND ")
+        }
         val finalSql = "$newSql ORDER BY lastName ASC"
 
         return Pair(finalSql, argsList)
