@@ -1,5 +1,6 @@
 package com.openclassrooms.vitesse.domain.usecase
 
+import android.util.Log
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.openclassrooms.vitesse.data.repository.CandidateRepository
 import com.openclassrooms.vitesse.domain.model.Candidate
@@ -12,15 +13,17 @@ class GetCandidateUseCase @Inject constructor(
     private val candidateRepository: CandidateRepository
 ) {
     fun execute(favorite: Int): Flow<List<Candidate>> {
-        val searchTerm = "Emma"
-        val sql = "SELECT * FROM candidate ORDER BY name ASC LIKE ?"
+        val searchTerm = "emma"
+        val sql = "SELECT * FROM candidate WHERE firstName LIKE ?"
         val args = arrayOf("%$searchTerm%")
         val query = SimpleSQLiteQuery(sql, args)
-        return candidateRepository.getCandidate(query)
+        val candidate = candidateRepository.getCandidate(query)
+        return candidate
             .map { list ->
                 list.map { dto ->
                     Candidate.fromDto(
                         dto.candidate.apply {
+                            val test = dto.candidate
                             note = dto.details.firstOrNull()?.note
                         }
                     )
