@@ -2,18 +2,17 @@ package com.openclassrooms.vitesse.data.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Upsert
 import com.openclassrooms.vitesse.data.entity.CandidateDto
+import com.openclassrooms.vitesse.data.entity.CandidateWithDetailDto
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CandidateDao {
-
-    @Query("SELECT * FROM candidate ORDER BY lastname ASC")
-    fun getAllCandidate(): Flow<List<CandidateDto>>
-
-    @Query("SELECT * FROM candidate WHERE isFavorite = 1 ORDER BY lastname ASC")
-    fun getFavoriteCandidate(): Flow<List<CandidateDto>>
+    @Transaction
+    @Query("SELECT * FROM candidate WHERE isFavorite = :digit ORDER BY lastName ASC")
+    fun getCandidate(digit: Int): Flow<List<CandidateWithDetailDto>>
 
     @Upsert
     suspend fun updateCandidate(candidate: CandidateDto): Long

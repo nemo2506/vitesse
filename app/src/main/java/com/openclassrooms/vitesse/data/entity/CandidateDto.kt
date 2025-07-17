@@ -1,30 +1,27 @@
 package com.openclassrooms.vitesse.data.entity
 
-import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.Relation
+import androidx.room.Ignore
 
 @Entity(tableName = "candidate")
 data class CandidateDto(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
     var id: Long = 0,
-
-    @ColumnInfo(name = "firstName")
     var firstName: String,
-
-    @ColumnInfo(name = "lastName")
     var lastName: String,
-
-    @ColumnInfo(name = "phone")
     var phone: String,
-
-    @ColumnInfo(name = "email")
     var email: String,
-
-    @ColumnInfo(name = "isFavorite")
     var isFavorite: Boolean,
-
-    @ColumnInfo(name = "photoUri")
     var photoUri: String,
+) {
+    @Ignore
+    var note: String? = null // ✅ Outside constructor to avoid Room constructor conflict
+}
+data class CandidateWithDetailDto(
+    @Embedded val candidate: CandidateDto,
+    @Relation( parentColumn = "id", entityColumn = "candidateId" )
+    val details: List<DetailDto> = emptyList()
 )

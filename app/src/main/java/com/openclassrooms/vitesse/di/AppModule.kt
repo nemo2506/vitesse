@@ -6,8 +6,6 @@ import com.openclassrooms.vitesse.data.dao.DetailDao
 import com.openclassrooms.vitesse.data.database.AppDatabase
 import com.openclassrooms.vitesse.data.repository.CandidateRepository
 import com.openclassrooms.vitesse.data.repository.DetailRepository
-import com.openclassrooms.vitesse.domain.usecase.GetAllCandidateUseCase
-import com.openclassrooms.vitesse.domain.usecase.GetFavoriteCandidateUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -79,5 +77,4 @@ class AppModule {
             throw RuntimeException("Failed to provide DetailRepository", e)
         }
     }
-
 }

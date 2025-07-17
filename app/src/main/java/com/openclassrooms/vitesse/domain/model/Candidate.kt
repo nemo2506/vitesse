@@ -14,13 +14,13 @@ data class Candidate(
     companion object {
         fun fromDto(dto: CandidateDto): Candidate {
             return Candidate(
-                    id = dto.id,
-                    firstName = dto.firstName,
-                    lastName = dto.lastName,
-                    phone = dto.phone,
-                    email = dto.email,
-                    isFavorite = dto.isFavorite,
-                    photoUri = dto.photoUri
+                id = dto.id,
+                firstName = dto.firstName,
+                lastName = dto.lastName,
+                phone = dto.phone,
+                email = dto.email,
+                isFavorite = dto.isFavorite,
+                photoUri = dto.photoUri
             )
         }
     }

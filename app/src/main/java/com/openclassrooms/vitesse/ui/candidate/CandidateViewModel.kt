@@ -9,52 +9,40 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
 import com.openclassrooms.vitesse.domain.model.Candidate
-import com.openclassrooms.vitesse.domain.usecase.GetAllCandidateUseCase
-import com.openclassrooms.vitesse.domain.usecase.GetFavoriteCandidateUseCase
+import com.openclassrooms.vitesse.domain.usecase.GetCandidateUseCase
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class CandidateViewModel @Inject constructor(
-    private val getAllCandidateUseCase: GetAllCandidateUseCase,
-    private val getFavoriteCandidateUseCase: GetFavoriteCandidateUseCase,
-) : ViewModel(){
+    private val getCandidateUseCase: GetCandidateUseCase,
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
+    val tabStarted: Int = 0
 
     init {
-        observeCandidate()
+        observeCandidate(tabStarted)
     }
 
-    private fun observeCandidate() {
+    private fun observeCandidate(favorite: Int) {
+        val key = _uiState.value.searchKey?.trim()?.lowercase().orEmpty()
+        Log.d("MARC", "observeCandidate/favorite: $favorite")
+
         viewModelScope.launch {
             launch {
-                getAllCandidateUseCase.execute()
+                getCandidateUseCase.execute(favorite)
                     .catch {
                         _uiState.update { it.copy(isCandidateReady = false, candidate = null) }
                     }
                     .collect { updated ->
-                        if (updated.isEmpty()) {
-                            _uiState.update { it.copy(isCandidateReady = false, candidate = null) }
-                        } else {
-                            _uiState.update { it.copy(candidate = updated, isCandidateReady = true) }
-                        }
-                    }
-            }
-
-            launch {
-                getFavoriteCandidateUseCase.execute()
-                    .catch {
-                        _uiState.update { it.copy(isFavoriteReady = false, favorite = null) }
-                    }
-                    .collect { updated ->
-                        Log.d("MARC", "observeCandidate / FAVORITE: " + updated.count())
-                        if (updated.isEmpty()) {
-                            _uiState.update { it.copy(isFavoriteReady = false, favorite = null) }
-                        } else {
-                            _uiState.update { it.copy(favorite = updated, isFavoriteReady = true) }
+                        _uiState.update {
+                            it.copy(
+                                candidate = updated,
+                                isCandidateReady = updated.isNotEmpty()
+                            )
                         }
                     }
             }
@@ -62,9 +50,13 @@ class CandidateViewModel @Inject constructor(
     }
 
     fun getTab(position: Int) {
-        _uiState.update { it.copy(tabNum = position) }
+        observeCandidate(position)
     }
 
+    fun searchInsert(key: String?) {
+        val cleanKey = key?.trim()?.lowercase()
+        _uiState.update { it.copy(searchKey = cleanKey) }
+    }
 }
 
 /**
@@ -77,5 +69,6 @@ data class UiState(
     var favorite: List<Candidate>? = null,
     var isCandidateReady: Boolean? = null,
     var isFavoriteReady: Boolean? = null,
-    var tabNum: Int = 0
+    var tabNum: Int = 0,
+    var searchKey: String? = null
 )

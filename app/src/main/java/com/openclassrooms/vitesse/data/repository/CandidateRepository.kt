@@ -10,23 +10,18 @@ import kotlinx.coroutines.flow.map
 class CandidateRepository(
     private val candidateDao: CandidateDao
 ) {
-    // Get all Candidate
-    fun getAllCandidate(): Flow<List<Candidate>> = flow {
-        candidateDao.getAllCandidate()
-            .map { dtoList -> dtoList.map { Candidate.fromDto(it) } }
-            .collect { emit(it) }
-    }.catch { e ->
-        emit(emptyList())
-    }
-
-    // Get favorite Candidate
-    fun getFavoriteCandidate(): Flow<List<Candidate>> = flow {
-        candidateDao.getFavoriteCandidate()
-            .map { dtoList -> dtoList.map { Candidate.fromDto(it) } }
-            .collect { emit(it) }
-    }.catch { e ->
-        emit(emptyList())
-    }
+    fun getCandidate(fav: Int): Flow<List<Candidate>> =
+        candidateDao.getCandidate(fav)
+            .map { list ->
+                list.map { dto ->
+                    Candidate.fromDto(
+                        dto.candidate.apply {
+                            note = dto.details.firstOrNull()?.note
+                        }
+                    )
+                }
+            }
+            .catch { emit(emptyList()) }
 
     // Add or Modify a new candidate
     fun updateCandidate(candidate: Candidate): Flow<Result<Unit>> = flow {
