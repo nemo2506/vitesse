@@ -31,7 +31,7 @@ class CandidateAdapter() :
             .into(holder.tvFace)
         holder.tvFirstName.text = String.format("%s", candidate.firstName)
         holder.tvLastName.text = String.format("%s", candidate.lastName)
-        holder.tvNote.text = String.format("%s", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley")
+        holder.tvNote.text = String.format("%s", candidate.note)
     }
 
     inner class CandidateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
