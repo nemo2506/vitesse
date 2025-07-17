@@ -8,13 +8,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.databinding.FragmentCandidateBinding
+import com.openclassrooms.vitesse.ui.upsert.UpsertFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
@@ -27,6 +30,7 @@ class CandidateFragment : Fragment() {
     private val viewModel: CandidateViewModel by viewModels()
     private lateinit var candidateAdapter: CandidateAdapter
     private var choiceUser: Int = 0
+    private lateinit var fabAdd: View
 
     /**
      * Inflates the fragment layout.
@@ -45,12 +49,14 @@ class CandidateFragment : Fragment() {
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        fabAdd = view.findViewById<FloatingActionButton>(R.id.fab_add)
         setupRecyclerView()
         setupTab()
         observerCandidate()
         choiceUser = viewModel.tabStarted
-        viewModel.getSearch(choiceUser,  "")
+        viewModel.getSearch(choiceUser, "")
         userCall()
+        upsertCandidate()
     }
 
     /**
@@ -73,6 +79,7 @@ class CandidateFragment : Fragment() {
                 choiceUser = tab.position
                 userCall()
             }
+
             override fun onTabUnselected(tab: TabLayout.Tab) {}
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
@@ -92,6 +99,15 @@ class CandidateFragment : Fragment() {
         viewModel.getSearch(choiceUser, binding.tvSearchEdit.text.toString())
         binding.tvSearchEdit.doOnTextChanged { text, _, _, _ ->
             viewModel.getSearch(choiceUser, text.toString())
+        }
+    }
+
+    private val upsertCandidate = {
+        fabAdd.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, UpsertFragment())
+                .addToBackStack(null)
+                .commit()
         }
     }
 }
