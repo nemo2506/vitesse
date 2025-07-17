@@ -10,7 +10,7 @@ data class Candidate(
     var email: String,
     var isFavorite: Boolean = false,
     var photoUri: String = "",
-    var note: String? = null // ✅ Add this line
+    var note: String? = null
 ) {
     companion object {
         fun fromDto(dto: CandidateDto): Candidate {
@@ -22,7 +22,7 @@ data class Candidate(
                 email = dto.email,
                 isFavorite = dto.isFavorite,
                 photoUri = dto.photoUri,
-                note = dto.note // ✅ Include note
+                note = dto.note
             )
         }
     }

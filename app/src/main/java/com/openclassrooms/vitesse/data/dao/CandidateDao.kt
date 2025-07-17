@@ -8,12 +8,13 @@ import androidx.room.Upsert
 import androidx.sqlite.db.SupportSQLiteQuery
 import com.openclassrooms.vitesse.data.entity.CandidateDto
 import com.openclassrooms.vitesse.data.entity.CandidateWithDetailDto
+import com.openclassrooms.vitesse.data.entity.DetailDto
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CandidateDao {
     @Transaction
-    @RawQuery(observedEntities = [CandidateWithDetailDto::class])
+    @RawQuery(observedEntities = [CandidateWithDetailDto::class, DetailDto::class])
     fun getCandidate(query: SupportSQLiteQuery): Flow<List<CandidateWithDetailDto>>
 
     @Upsert
