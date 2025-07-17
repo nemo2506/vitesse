@@ -14,7 +14,6 @@ class CandidateRepository(
     fun getCandidate(fav: Int): Flow<List<Candidate>> =
         candidateDao.getCandidate(fav)
             .map { list ->
-                Log.d("MARC", "getCandidate/list $list")
                 list.map { dto ->
                     Candidate.fromDto(
                         dto.candidate.apply {

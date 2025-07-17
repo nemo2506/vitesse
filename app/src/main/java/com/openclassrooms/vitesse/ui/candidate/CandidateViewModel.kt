@@ -29,8 +29,6 @@ class CandidateViewModel @Inject constructor(
 
     private fun observeCandidate(fav: Int) {
         val key = _uiState.value.searchKey?.trim()?.lowercase().orEmpty()
-        Log.d("MARC", "observeCandidate/favorite: $fav")
-
         viewModelScope.launch {
             launch {
                 getCandidateUseCase.execute(fav)
