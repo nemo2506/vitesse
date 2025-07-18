@@ -1,6 +1,5 @@
 package com.openclassrooms.vitesse.ui.candidate
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -8,9 +7,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
-import com.openclassrooms.vitesse.domain.model.Candidate
+import com.openclassrooms.vitesse.data.entity.CandidateSummary
 import com.openclassrooms.vitesse.domain.usecase.GetCandidateUseCase
-import com.openclassrooms.vitesse.ui.ConstantsApp
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -32,7 +30,7 @@ class CandidateViewModel @Inject constructor(
             launch {
                 getCandidateUseCase.execute(fav, searchTerm)
                     .catch {
-                        _uiState.update { it.copy(isCandidateReady = false, candidate = null) }
+                        _uiState.update { it.copy(isCandidateReady = false, candidate = emptyList()) }
                     }
                     .collect { updated ->
                         _uiState.update {
@@ -57,7 +55,7 @@ class CandidateViewModel @Inject constructor(
  * @param candidate List of candidate to display.
  */
 data class UiState(
-    var candidate: List<Candidate>? = null,
+    var candidate: List<CandidateSummary> = emptyList(),
     var isCandidateReady: Boolean? = null,
     var isFavoriteReady: Boolean? = null,
     var searchKey: String? = null

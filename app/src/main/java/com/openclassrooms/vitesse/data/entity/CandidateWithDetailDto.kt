@@ -15,17 +15,18 @@ data class CandidateSummary(
     val firstName: String,
     val lastName: String,
     val isFavorite: Boolean,
+    val photoUri: String,
     val note: String
 )
 
-// Fonction d’extension pour créer un résumé à partir d’une instance
 fun CandidateWithDetailDto.toSummary(): CandidateSummary {
-    val noteValue = details.firstOrNull()?.note ?: 0f
+    val noteValue = details.firstOrNull()?.note ?: ""
     return CandidateSummary(
         id = candidate.id,
         firstName = candidate.firstName,
         lastName = candidate.lastName,
         isFavorite = candidate.isFavorite,
-        note = noteValue.toString()
+        photoUri = candidate.photoUri,
+        note = noteValue
     )
 }

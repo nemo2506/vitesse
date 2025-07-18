@@ -77,7 +77,8 @@ class CandidateActivity : AppCompatActivity() {
     private fun observeCandidates() {
         lifecycleScope.launch {
             viewModel.uiState.collect { flowState ->
-                candidateAdapter.submitList(flowState.candidate)
+                val candidate = flowState.candidate
+                candidateAdapter.submitList(candidate)
             }
         }
     }

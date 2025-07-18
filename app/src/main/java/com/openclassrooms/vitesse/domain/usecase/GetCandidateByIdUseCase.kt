@@ -28,10 +28,7 @@ class GetCandidateByIdUseCase @Inject constructor(
     private fun searchQuery(
         id: Long,
         sql: String = """
-        SELECT candidate.*,
-        detail.note as note,
-        detail.date as date,
-        detail.salaryClaim as salaryClaim
+        SELECT candidate.*
         FROM candidate
         LEFT JOIN detail ON candidate.id = detail.candidateId
     """.trimIndent()

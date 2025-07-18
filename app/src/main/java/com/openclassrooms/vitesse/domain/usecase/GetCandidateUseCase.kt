@@ -1,8 +1,10 @@
 package com.openclassrooms.vitesse.domain.usecase
 
+import android.util.Log
 import androidx.sqlite.db.SimpleSQLiteQuery
+import com.openclassrooms.vitesse.data.entity.CandidateSummary
+import com.openclassrooms.vitesse.data.entity.toSummary
 import com.openclassrooms.vitesse.data.repository.CandidateRepository
-import com.openclassrooms.vitesse.domain.model.Candidate
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -11,34 +13,30 @@ import javax.inject.Inject
 class GetCandidateUseCase @Inject constructor(
     private val candidateRepository: CandidateRepository
 ) {
-    fun execute(fav: Int, searchTerm: String): Flow<List<Candidate>> {
+    fun execute(fav: Int, searchTerm: String): Flow<List<CandidateSummary>> {
         val query = searchQueryAdd(searchTerm, fav)
-        val candidateFlow = candidateRepository.getCandidate(query)
-
-        return candidateFlow
-            .map { list ->
-                list.map { dto ->
-                    Candidate.fromDto(dto.candidate.apply {
-                        note = dto.details.firstOrNull()?.note
-                    })
+        return candidateRepository.getCandidate(query)
+            .map { listDto ->
+                listDto.map { dto ->
+                    dto.toSummary()
                 }
             }
-            .catch { emit(emptyList()) }
+            .catch { e ->
+                Log.d("ERROR", "executeError: $e")
+                emit(emptyList())
+            }
     }
 
     private fun searchQueryAdd(
         searchTerm: String,
         fav: Int,
         sql: String = """
-        SELECT candidate.*,
-        detail.note as note,
-        detail.date as date,
-        detail.salaryClaim as salaryClaim
+        SELECT candidate.*
         FROM candidate
         LEFT JOIN detail ON candidate.id = detail.candidateId
     """.trimIndent()
     ): SimpleSQLiteQuery {
-        val argsList = mutableListOf<String>()
+        val argsList = mutableListOf<Any>()
         var newSql = sql
         val whereClauses = mutableListOf<String>()
 
@@ -49,20 +47,19 @@ class GetCandidateUseCase @Inject constructor(
 
         if (fav == 1) {
             whereClauses.add("isFavorite = ?")
-            argsList.add("1")
+            argsList.add(1)
         }
 
         if (searchTerm.isNotBlank()) {
-            whereClauses.add("(firstName LIKE ? OR lastName LIKE ? OR detail.note LIKE ?)")
-            argsList.add("%$searchTerm%")
-            argsList.add("%$searchTerm%")
-            argsList.add("%$searchTerm%")
+            whereClauses.add("(firstName LIKE ? COLLATE NOCASE OR lastName LIKE ? COLLATE NOCASE OR detail.note LIKE ? COLLATE NOCASE)")
+            repeat(3) { argsList.add("%$searchTerm%") }
         }
 
         if (whereClauses.isNotEmpty()) {
             newSql += " WHERE " + whereClauses.joinToString(" AND ")
         }
         val finalSql = "$newSql ORDER BY lastName ASC"
+        Log.d("MARC", "searchQueryAdd: $finalSql")
 
         return SimpleSQLiteQuery(finalSql, argsList.toTypedArray())
     }

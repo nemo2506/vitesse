@@ -10,12 +10,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.openclassrooms.vitesse.R
+import com.openclassrooms.vitesse.data.entity.CandidateSummary
 import com.openclassrooms.vitesse.domain.model.Candidate
 
 class CandidateAdapter(
-    private val toDetail: (Candidate) -> Unit
+    private val toDetail: (CandidateSummary) -> Unit
 ) :
-    ListAdapter<Candidate, CandidateAdapter.CandidateViewHolder>(
+    ListAdapter<CandidateSummary, CandidateAdapter.CandidateViewHolder>(
         DIFF_CALLBACK
     ) {
 
@@ -40,20 +41,28 @@ class CandidateAdapter(
     }
 
     inner class CandidateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var tvFace: ImageView = itemView.findViewById(R.id.tv_face)
-        var tvFirstName: TextView = itemView.findViewById(R.id.tv_firstname)
-        var tvLastName: TextView = itemView.findViewById(R.id.tv_lastname)
-        var tvNote: TextView = itemView.findViewById(R.id.tv_note)
+        val tvFace: ImageView = itemView.findViewById(R.id.tv_face)
+        val tvFirstName: TextView = itemView.findViewById(R.id.tv_firstname)
+        val tvLastName: TextView = itemView.findViewById(R.id.tv_lastname)
+        val tvNote: TextView = itemView.findViewById(R.id.tv_note)
     }
 
     companion object {
-        private val DIFF_CALLBACK: DiffUtil.ItemCallback<Candidate> =
-            object : DiffUtil.ItemCallback<Candidate>() {
-                override fun areItemsTheSame(oldItem: Candidate, newItem: Candidate): Boolean {
-                    return oldItem === newItem
+        private val DIFF_CALLBACK: DiffUtil.ItemCallback<CandidateSummary> =
+            object : DiffUtil.ItemCallback<CandidateSummary>() {
+                override fun areItemsTheSame(
+                    oldItem: CandidateSummary,
+                    newItem: CandidateSummary
+                ): Boolean {
+                    // Comparez les IDs uniques des candidats
+                    return oldItem.id == newItem.id
                 }
 
-                override fun areContentsTheSame(oldItem: Candidate, newItem: Candidate): Boolean {
+                override fun areContentsTheSame(
+                    oldItem: CandidateSummary,
+                    newItem: CandidateSummary
+                ): Boolean {
+                    // Comparez les contenus complets (data class a un equals correctement défini)
                     return oldItem == newItem
                 }
             }
