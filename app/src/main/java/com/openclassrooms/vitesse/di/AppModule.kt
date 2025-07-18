@@ -6,6 +6,7 @@ import com.openclassrooms.vitesse.data.dao.DetailDao
 import com.openclassrooms.vitesse.data.database.AppDatabase
 import com.openclassrooms.vitesse.data.repository.CandidateRepository
 import com.openclassrooms.vitesse.data.repository.DetailRepository
+import com.openclassrooms.vitesse.domain.model.Candidate
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -66,15 +67,16 @@ class AppModule {
         }
     }
 
-//    @Provides
-//    @Singleton
-//    fun provideDetailRepository(
-//        detailDao: DetailDao
-//    ): DetailRepository {
-//        return try {
-//            DetailRepository(detailDao)
-//        } catch (e: Exception) {
-//            throw RuntimeException("Failed to provide DetailRepository", e)
-//        }
-//    }
+    @Provides
+    @Singleton
+    fun provideDetailRepository(
+        detailDao: DetailDao,
+        candidateDao: CandidateDao
+    ): DetailRepository {
+        return try {
+            DetailRepository(detailDao, candidateDao)
+        } catch (e: Exception) {
+            throw RuntimeException("Failed to provide DetailRepository", e)
+        }
+    }
 }
