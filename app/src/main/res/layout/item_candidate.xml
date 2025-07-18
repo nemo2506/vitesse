@@ -58,5 +58,4 @@
         app:layout_constraintStart_toEndOf="@id/tv_face"
         app:layout_constraintTop_toBottomOf="@id/tv_firstname"
         tools:text="Supporting line text lorem ipsum dolor sit amet, consectetur Supporting line text lorem ipsum dolor sit amet, consectetur."/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

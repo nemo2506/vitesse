@@ -12,27 +12,27 @@
         android:id="@+id/tv_search"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:startIconDrawable="@android:drawable/ic_menu_search"
-        app:endIconMode="clear_text"
-        app:boxBackgroundMode="outline"
-        app:boxCornerRadiusTopStart="24dp"
-        app:boxCornerRadiusTopEnd="24dp"
-        app:boxCornerRadiusBottomStart="24dp"
-        app:boxCornerRadiusBottomEnd="24dp"
-        app:boxBackgroundColor="#F2EFFF"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp">
+        app:boxBackgroundColor="#F2EFFF"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusBottomEnd="24dp"
+        app:boxCornerRadiusBottomStart="24dp"
+        app:boxCornerRadiusTopEnd="24dp"
+        app:boxCornerRadiusTopStart="24dp"
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:startIconDrawable="@android:drawable/ic_menu_search">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tv_search_edit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Rechercher un candidat"
-            android:background="@android:color/transparent" />
+            android:background="@android:color/transparent"
+            android:hint="Rechercher un candidat" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Tab layout -->
@@ -40,13 +40,13 @@
         android:id="@+id/tab_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_search"
         app:tabIndicatorColor="#FFF"
         app:tabSelectedTextColor="#FFF"
-        app:tabTextColor="@android:color/darker_gray"
-        app:layout_constraintTop_toBottomOf="@id/tv_search"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp" />
+        app:tabTextColor="@android:color/darker_gray" />
 
     <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
@@ -55,10 +55,10 @@
         android:layout_height="0dp"
         android:clipToPadding="false"
         android:padding="8dp"
-        app:layout_constraintTop_toBottomOf="@id/tab_layout"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tab_layout"
         tools:listitem="@layout/item_candidate" />
 
     <!-- Floating Action Button -->

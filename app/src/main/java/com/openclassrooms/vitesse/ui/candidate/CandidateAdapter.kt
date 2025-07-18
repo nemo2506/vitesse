@@ -1,10 +1,13 @@
 package com.openclassrooms.vitesse.ui.candidate
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +15,9 @@ import com.bumptech.glide.Glide
 import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.domain.model.Candidate
 
-class CandidateAdapter() :
+class CandidateAdapter(
+    private val toDetail: (Candidate) -> Unit
+) :
     ListAdapter<Candidate, CandidateAdapter.CandidateViewHolder>(
         DIFF_CALLBACK
     ) {
@@ -32,6 +37,9 @@ class CandidateAdapter() :
         holder.tvFirstName.text = String.format("%s", candidate.firstName)
         holder.tvLastName.text = String.format("%s", candidate.lastName)
         holder.tvNote.text = String.format("%s", candidate.note)
+        holder.itemView.setOnClickListener {
+            toDetail(candidate)
+        }
     }
 
     inner class CandidateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

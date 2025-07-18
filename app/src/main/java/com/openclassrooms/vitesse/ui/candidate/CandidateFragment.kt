@@ -1,26 +1,27 @@
 package com.openclassrooms.vitesse.ui.candidate
 
+import android.content.Intent
 import androidx.fragment.app.viewModels
 import android.os.Bundle
-import android.text.Selection
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.databinding.FragmentCandidateBinding
+import com.openclassrooms.vitesse.ui.ConstantsApp
+import com.openclassrooms.vitesse.ui.detail.DetailFragment
 import com.openclassrooms.vitesse.ui.upsert.UpsertFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class CandidateFragment : Fragment() {
@@ -63,7 +64,15 @@ class CandidateFragment : Fragment() {
      * Initializes the RecyclerView and its adapter.
      */
     private fun setupRecyclerView() {
-        candidateAdapter = CandidateAdapter()
+        candidateAdapter = CandidateAdapter { candidate ->
+            val candidateId = candidate.id
+            Log.d("MARC", "setupRecyclerView: $candidateId")
+            if (candidateId != null) {
+                toDetail(candidateId)
+            }
+
+        }
+
         binding.candidateRecyclerview.layoutManager = LinearLayoutManager(context)
         binding.candidateRecyclerview.adapter = candidateAdapter
     }
@@ -109,5 +118,17 @@ class CandidateFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
         }
+    }
+
+    /**
+     * Navigates to [DetailFragment] and passes the logged-in user's ID via Intent.
+     *
+     * @param currentId The EditText containing the user identifier.
+     */
+    private fun toDetail(currentId: Long) {
+        val intent = Intent(requireContext(), DetailFragment::class.java).apply {
+            putExtra(ConstantsApp.CANDIDATE_ID, currentId)
+        }
+        startActivity(intent)
     }
 }

@@ -1,5 +1,6 @@
 package com.openclassrooms.vitesse.ui.candidate
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -9,6 +10,7 @@ import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
 import com.openclassrooms.vitesse.domain.model.Candidate
 import com.openclassrooms.vitesse.domain.usecase.GetCandidateUseCase
+import com.openclassrooms.vitesse.ui.ConstantsApp
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -16,8 +18,17 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class CandidateViewModel @Inject constructor(
     private val getCandidateUseCase: GetCandidateUseCase,
+    appState: SavedStateHandle
 ) : ViewModel() {
-
+    /**
+     * Retrieves the current ID stored in the application state.
+     *
+     * The ID is fetched using the key defined in [ConstantsApp.CANDIDATE_ID] and is
+     * cast to a [String]. The `toString()` call ensures the result is a non-nullable string.
+     *
+     * @see ConstantsApp.CANDIDATE_ID for the key used to retrieve the value.
+     */
+    val candidateId: String = appState.get<String>(ConstantsApp.CANDIDATE_ID).toString()
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
     val tabStarted: Int = 0

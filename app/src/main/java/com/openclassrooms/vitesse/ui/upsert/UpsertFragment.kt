@@ -18,23 +18,9 @@ import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.databinding.FragmentUpsertBinding
-import com.openclassrooms.vitesse.domain.model.Candidate
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.appcompat.widget.Toolbar
-import androidx.navigation.fragment.findNavController
 
-
-/**
- * Interface used to allow deletion of an [Candidate] from the UI.
- */
-interface DeleteCandidateInterface {
-    /**
-     * Callback to request deletion of an candidate.
-     *
-     * @param candidate The candidate to delete.
-     */
-    fun deleteCandidate(candidate: Candidate?)
-}
 
 @AndroidEntryPoint
 class UpsertFragment : Fragment() {
@@ -47,22 +33,6 @@ class UpsertFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setMenu(view)
         setComMenu()
-        themeControl()
-    }
-
-    private fun themeControl() {
-        val nightModeFlags = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        when (nightModeFlags) {
-            Configuration.UI_MODE_NIGHT_YES -> {
-                Toast.makeText(requireContext(), "UI_MODE_NIGHT_YES", Toast.LENGTH_SHORT).show()
-            }
-            Configuration.UI_MODE_NIGHT_NO -> {
-                Toast.makeText(requireContext(), "UI_MODE_NIGHT_NO", Toast.LENGTH_SHORT).show()
-            }
-            Configuration.UI_MODE_NIGHT_UNDEFINED -> {
-                Toast.makeText(requireContext(), "UI_MODE_NIGHT_UNDEFINED", Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 
     private fun setComMenu() {

@@ -4,7 +4,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-
     <application
         android:name=".VitesseApplication"
         android:allowBackup="true"
@@ -16,6 +15,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Vitesse"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.candidate.CandidateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.upsert.UpsertActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.detail.DetailActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">
