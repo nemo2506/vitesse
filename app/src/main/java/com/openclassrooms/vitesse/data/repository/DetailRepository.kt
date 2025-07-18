@@ -2,6 +2,7 @@ package com.openclassrooms.vitesse.data.repository
 
 import androidx.sqlite.db.SupportSQLiteQuery
 import com.openclassrooms.vitesse.data.dao.CandidateDao
+import com.openclassrooms.vitesse.data.dao.DetailDao
 import com.openclassrooms.vitesse.data.entity.CandidateWithDetailDto
 import com.openclassrooms.vitesse.domain.model.Candidate
 import kotlinx.coroutines.flow.Flow
@@ -9,6 +10,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 
 class DetailRepository(
+    private val detailDao: DetailDao,
     private val candidateDao: CandidateDao
 ) {
     // Get all Candidate
