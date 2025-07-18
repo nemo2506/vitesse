@@ -12,8 +12,7 @@ class GetCandidateUseCase @Inject constructor(
     private val candidateRepository: CandidateRepository
 ) {
     fun execute(fav: Int, searchTerm: String): Flow<List<Candidate>> {
-        val (sql, argsList) = searchQueryAdd(searchTerm, fav)
-        val query = SimpleSQLiteQuery(sql, argsList.toTypedArray())
+        val query = searchQueryAdd(searchTerm, fav)
         val candidateFlow = candidateRepository.getCandidate(query)
 
         return candidateFlow
@@ -35,20 +34,21 @@ class GetCandidateUseCase @Inject constructor(
         FROM candidate
         LEFT JOIN detail ON candidate.id = detail.candidateId
     """.trimIndent()
-    ): Pair<String, MutableList<String>> {
+    ): SimpleSQLiteQuery {
         val argsList = mutableListOf<String>()
         var newSql = sql
         val whereClauses = mutableListOf<String>()
 
         if (searchTerm.isBlank() && fav == 0) {
             newSql = "$newSql ORDER BY lastName ASC"
-            return Pair(newSql, mutableListOf())
+            return SimpleSQLiteQuery(newSql, argsList.toTypedArray())
         }
 
         if (fav == 1) {
             whereClauses.add("isFavorite = ?")
             argsList.add("1")
         }
+
         if (searchTerm.isNotBlank()) {
             whereClauses.add("(firstName LIKE ? OR lastName LIKE ? OR detail.note LIKE ?)")
             argsList.add("%$searchTerm%")
@@ -61,6 +61,6 @@ class GetCandidateUseCase @Inject constructor(
         }
         val finalSql = "$newSql ORDER BY lastName ASC"
 
-        return Pair(finalSql, argsList)
+        return SimpleSQLiteQuery(finalSql, argsList.toTypedArray())
     }
 }

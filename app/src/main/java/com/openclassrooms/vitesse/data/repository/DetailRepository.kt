@@ -1,38 +1,34 @@
 package com.openclassrooms.vitesse.data.repository
 
-import com.openclassrooms.vitesse.data.dao.DetailDao
-import com.openclassrooms.vitesse.domain.model.Detail
+import androidx.sqlite.db.SupportSQLiteQuery
+import com.openclassrooms.vitesse.data.dao.CandidateDao
+import com.openclassrooms.vitesse.data.entity.CandidateWithDetailDto
+import com.openclassrooms.vitesse.domain.model.Candidate
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 
 class DetailRepository(
-    private val detailDao: DetailDao
+    private val candidateDao: CandidateDao
 ) {
-    // Get all Detail
-    fun getDetailById(id: Long): Flow<Detail?> = flow {
-        detailDao.getDetailById(id)
-            .map { dto -> dto?.let { Detail.fromDto(it) } }
-            .catch {
-                emit(null)
-            }
-    }
+    // Get all Candidate
+    fun getCandidateById(query: SupportSQLiteQuery): Flow<CandidateWithDetailDto> =
+        candidateDao.getCandidateById(query)
 
-    // Add or Modify a new detail
-    fun updateDetail(detail: Detail): Flow<Result<Unit>> = flow {
-        detailDao.updateDetail(detail.toDto())
+    // Add or Modify a new candidate
+    fun updateCandidate(candidate: Candidate): Flow<Result<Unit>> = flow {
+        candidateDao.updateCandidate(candidate.toDto())
         emit(Result.success(Unit))
     }.catch { e ->
-        emit(Result.failure(ExerciseRepositoryException("Failed to add/modify detail", e)))
+        emit(Result.failure(CandidateRepositoryException("Failed to add/modify candidate", e)))
     }
 
-    // Del a detail
-    fun deleteDetail(detail: Detail): Flow<Result<Unit>> = flow {
-        val id = detail.id ?: throw MissingExerciseIdException()
-        detailDao.deleteDetail(id)
+    // Del a candidate
+    fun deleteCandidate(candidate: Candidate): Flow<Result<Unit>> = flow {
+        val id = candidate.id ?: throw MissingCandidateIdException()
+        candidateDao.deleteCandidate(id)
         emit(Result.success(Unit))
     }.catch { e ->
-        emit(Result.failure(ExerciseRepositoryException("Failed to del exercise", e)))
+        emit(Result.failure(CandidateRepositoryException("Failed to del exercise", e)))
     }
 }

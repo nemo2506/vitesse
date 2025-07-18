@@ -17,6 +17,10 @@ interface CandidateDao {
     @RawQuery(observedEntities = [CandidateWithDetailDto::class, DetailDto::class])
     fun getCandidate(query: SupportSQLiteQuery): Flow<List<CandidateWithDetailDto>>
 
+    @Transaction
+    @RawQuery(observedEntities = [CandidateWithDetailDto::class, DetailDto::class])
+    fun getCandidateById(query: SupportSQLiteQuery): Flow<CandidateWithDetailDto>
+
     @Upsert
     suspend fun updateCandidate(candidate: CandidateDto): Long
 

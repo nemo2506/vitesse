@@ -1,6 +1,7 @@
 package com.openclassrooms.vitesse.ui.detail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -27,6 +28,8 @@ class DetailActivity : AppCompatActivity() {
         setupToolbar()
         setupMenu()
         setupComMenu()
+        val candidateId = viewModel.candidateId
+        Log.d("MARC", "onCreate/candidateId $candidateId")
     }
 
     private fun setupToolbar() {
