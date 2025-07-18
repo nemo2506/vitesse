@@ -14,4 +14,7 @@
     <string name="appel">APPEL</string>
     <string name="sms">SMS</string>
     <string name="email">EMAIL</string>
+    <string name="favorite">FAVORITE</string>
+    <string name="edit">EDIT</string>
+    <string name="delete">DELETE</string>
 </resources>
