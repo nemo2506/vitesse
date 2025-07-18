@@ -11,19 +11,18 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import com.openclassrooms.vitesse.R
-import com.openclassrooms.vitesse.databinding.FragmentDetailBinding
-import com.openclassrooms.vitesse.ui.detail.DetailViewModel
+import com.openclassrooms.vitesse.databinding.ActivityDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class DetailActivity : AppCompatActivity() {
 
-    private lateinit var binding: FragmentDetailBinding
+    private lateinit var binding: ActivityDetailBinding
     private val viewModel: DetailViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = FragmentDetailBinding.inflate(layoutInflater)
+        binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupToolbar()
         setupMenu()
