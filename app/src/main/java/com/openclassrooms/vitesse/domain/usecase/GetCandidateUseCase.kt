@@ -59,7 +59,6 @@ class GetCandidateUseCase @Inject constructor(
             newSql += " WHERE " + whereClauses.joinToString(" AND ")
         }
         val finalSql = "$newSql ORDER BY lastName ASC"
-        Log.d("MARC", "searchQueryAdd: $finalSql")
 
         return SimpleSQLiteQuery(finalSql, argsList.toTypedArray())
     }
