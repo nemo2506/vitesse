@@ -1,6 +1,5 @@
 package com.openclassrooms.vitesse.domain.usecase
 
-import android.util.Log
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.openclassrooms.vitesse.data.repository.CandidateRepository
 import com.openclassrooms.vitesse.domain.model.Candidate
