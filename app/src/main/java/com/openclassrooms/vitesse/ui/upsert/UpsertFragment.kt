@@ -1,5 +1,6 @@
 package com.openclassrooms.vitesse.ui.upsert
 
+import android.content.res.Configuration
 import androidx.fragment.app.viewModels
 import android.os.Bundle
 import android.util.Log
@@ -20,6 +21,7 @@ import com.openclassrooms.vitesse.databinding.FragmentUpsertBinding
 import com.openclassrooms.vitesse.domain.model.Candidate
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.appcompat.widget.Toolbar
+import androidx.navigation.fragment.findNavController
 
 
 /**
@@ -43,12 +45,52 @@ class UpsertFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setMenu(view)
+        setComMenu()
+        themeControl()
+    }
+
+    private fun themeControl() {
+        val nightModeFlags = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        when (nightModeFlags) {
+            Configuration.UI_MODE_NIGHT_YES -> {
+                Toast.makeText(requireContext(), "UI_MODE_NIGHT_YES", Toast.LENGTH_SHORT).show()
+            }
+            Configuration.UI_MODE_NIGHT_NO -> {
+                Toast.makeText(requireContext(), "UI_MODE_NIGHT_NO", Toast.LENGTH_SHORT).show()
+            }
+            Configuration.UI_MODE_NIGHT_UNDEFINED -> {
+                Toast.makeText(requireContext(), "UI_MODE_NIGHT_UNDEFINED", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun setComMenu() {
+        val btnCall = binding.btnCall
+        val btnSms = binding.btnSms
+        val btnEmail = binding.btnEmail
+        btnCall.setOnClickListener {
+            Toast.makeText(requireContext(), "CAll", Toast.LENGTH_SHORT).show()
+        }
+        btnSms.setOnClickListener {
+            Toast.makeText(requireContext(), "SMS", Toast.LENGTH_SHORT).show()
+        }
+        btnEmail.setOnClickListener {
+            Toast.makeText(requireContext(), "EMAIL", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun setMenu(view: View) {
 
         val toolbar = view.findViewById<Toolbar>(R.id.toolbar)
         (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
+        (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
 
         val menuHost: MenuHost = requireActivity()
-
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.toolbar_menu, menu)

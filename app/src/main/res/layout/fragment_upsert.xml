@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:name="androidx.navigation.fragment.NavHostFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -9,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        tools:context=".ui.upsert.UpsertFragment">
+        tools:context=".ui.upsert.UpsertFragment"
+        app:defaultNavHost="true" >
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -22,6 +24,7 @@
             app:navigationIcon="@drawable/ic_arrow_back"
             app:titleCentered="true"
             app:titleTextAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+            app:title=""
             tools:title="John DOE" />
 
         <!-- Image de profil -->
