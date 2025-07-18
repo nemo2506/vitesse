@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.activity.ktx)
     implementation(libs.fragment.ktx)
+    implementation(libs.androidx.fragment.ktx)
 
     coreLibraryDesugaring(libs.desugar)
 
