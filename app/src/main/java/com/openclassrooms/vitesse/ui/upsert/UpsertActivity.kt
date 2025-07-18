@@ -11,18 +11,18 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import com.openclassrooms.vitesse.R
-import com.openclassrooms.vitesse.databinding.FragmentUpsertBinding
+import com.openclassrooms.vitesse.databinding.ActivityUpsertBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class UpsertActivity : AppCompatActivity() {
 
-    private lateinit var binding: FragmentUpsertBinding
+    private lateinit var binding: ActivityUpsertBinding
     private val viewModel: UpsertViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = FragmentUpsertBinding.inflate(layoutInflater)
+        binding = ActivityUpsertBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupToolbar()
         setupMenu()
