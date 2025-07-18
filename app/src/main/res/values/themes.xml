@@ -14,5 +14,6 @@
         <!-- Par exemple : -->
         <item name="android:statusBarColor">@color/colorPrimaryVariant</item>
         <item name="android:navigationBarColor">@color/colorPrimary</item>
+        <item name="colorControlNormal">@color/colorPrimary</item>
     </style>
 </resources>

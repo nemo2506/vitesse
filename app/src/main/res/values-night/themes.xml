@@ -1,4 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
     <style name="Base.Theme.Vitesse" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Couleurs principales -->
         <item name="colorPrimary">@color/colorPrimaryNight</item>
@@ -14,5 +15,6 @@
         <!-- Par exemple : -->
         <item name="android:statusBarColor">@color/colorPrimaryVariantNight</item>
         <item name="android:navigationBarColor">@color/colorPrimaryNight</item>
+        <item name="colorControlNormal">@color/colorPrimaryNight</item>
     </style>
 </resources>
