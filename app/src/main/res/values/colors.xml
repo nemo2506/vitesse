@@ -6,4 +6,10 @@
     <color name="colorSecondary">#E8B952</color>
     <color name="colorSecondaryVariant">#E8B952</color>
     <color name="colorOnSecondary">#FFFFFF</color>
+    <color name="colorPrimaryNight">#DF9780</color>
+    <color name="colorPrimaryVariantNight">#749FB8</color>
+    <color name="colorOnPrimaryNight">#000000</color>
+    <color name="colorSecondaryNight">#E8B952</color>
+    <color name="colorSecondaryVariantNight">#E8B952</color>
+    <color name="colorOnSecondaryNight">#000000</color>
 </resources>

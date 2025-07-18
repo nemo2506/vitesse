@@ -1,5 +1,5 @@
 <resources>
-    <style name="Theme.YourApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.Vitesse" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Couleurs principales -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
