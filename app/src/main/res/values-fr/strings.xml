@@ -17,4 +17,5 @@
     <string name="favorite">FAVORIS</string>
     <string name="edit">MODIFIER</string>
     <string name="delete">SUPPRIMER</string>
+    <string name="add">AJOUTER</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.openclassrooms.vitesse.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -7,7 +8,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.databinding.ActivityMainBinding
-import com.openclassrooms.vitesse.ui.candidate.CandidateFragment
+import com.openclassrooms.vitesse.ui.candidate.CandidateActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -25,9 +26,10 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
         if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, CandidateFragment()).commit()
+            startActivity(Intent(this, CandidateActivity::class.java))
+            finish()
         }
     }
 }
