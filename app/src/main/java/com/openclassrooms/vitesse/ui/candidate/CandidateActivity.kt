@@ -96,9 +96,9 @@ class CandidateActivity : AppCompatActivity() {
         }
     }
 
-    private fun toDetail(currentId: Long) {
+    private fun toDetail(candidateId: Long) {
         val intent = Intent(this, DetailActivity::class.java).apply {
-            putExtra(ConstantsApp.CANDIDATE_ID, currentId)
+            putExtra(ConstantsApp.CANDIDATE_ID, candidateId)
         }
         startActivity(intent)
     }
