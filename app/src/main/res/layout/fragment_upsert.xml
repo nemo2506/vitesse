@@ -11,7 +11,6 @@
         android:padding="16dp"
         tools:context=".ui.upsert.UpsertFragment">
 
-        <!-- Image de profil -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="0dp"
@@ -25,6 +24,7 @@
             app:titleTextAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
             tools:title="John DOE" />
 
+        <!-- Image de profil -->
         <ImageView
             android:id="@+id/tv_face"
             android:layout_width="0dp"
@@ -39,20 +39,20 @@
             app:layout_constraintTop_toBottomOf="@id/toolbar"
             tools:src="@drawable/ic_avatar" />
 
-        <!-- Appel -->
+        <!-- Call -->
         <ImageButton
             android:id="@+id/btn_call"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginTop="12dp"
             android:layout_marginRight="24dp"
+            android:src="@drawable/ic_call"
             android:background="@drawable/bg_circle"
             android:clickable="true"
             android:contentDescription="@string/appel"
             app:layout_constraintEnd_toStartOf="@id/btn_sms"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintTop_toBottomOf="@id/tv_face"
-            app:srcCompat="@drawable/ic_sms"
             tools:src="@drawable/ic_call" />
 
         <TextView
@@ -63,6 +63,7 @@
             app:layout_constraintEnd_toEndOf="@id/btn_call"
             app:layout_constraintStart_toStartOf="@id/btn_call"
             app:layout_constraintTop_toBottomOf="@id/btn_call"
+            android:text="@string/appel"
             tools:text="@string/appel" />
 
         <!-- SMS -->
@@ -87,6 +88,7 @@
             app:layout_constraintEnd_toEndOf="@id/btn_sms"
             app:layout_constraintStart_toStartOf="@id/btn_sms"
             app:layout_constraintTop_toBottomOf="@id/btn_sms"
+            android:text="@string/sms"
             tools:text="@string/sms" />
 
         <!-- Email -->
@@ -112,6 +114,7 @@
             app:layout_constraintEnd_toEndOf="@id/btn_email"
             app:layout_constraintStart_toStartOf="@id/btn_email"
             app:layout_constraintTop_toBottomOf="@id/btn_email"
+            android:text="@string/email"
             tools:text="@string/email" />
 
         <!-- À PROPOS -->
