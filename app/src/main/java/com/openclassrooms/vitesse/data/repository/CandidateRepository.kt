@@ -19,15 +19,15 @@ class CandidateRepository(
         candidateDao.updateCandidate(candidate.toDto())
         emit(Result.success(Unit))
     }.catch { e ->
-        emit(Result.failure(ExerciseRepositoryException("Failed to add/modify candidate", e)))
+        emit(Result.failure(CandidateRepositoryException("Failed to add/modify candidate", e)))
     }
 
     // Del a candidate
     fun deleteCandidate(candidate: Candidate): Flow<Result<Unit>> = flow {
-        val id = candidate.id ?: throw MissingExerciseIdException()
+        val id = candidate.id ?: throw MissingCandidateIdException()
         candidateDao.deleteCandidate(id)
         emit(Result.success(Unit))
     }.catch { e ->
-        emit(Result.failure(ExerciseRepositoryException("Failed to del exercise", e)))
+        emit(Result.failure(CandidateRepositoryException("Failed to del exercise", e)))
     }
 }
