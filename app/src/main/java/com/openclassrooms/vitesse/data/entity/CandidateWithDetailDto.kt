@@ -2,6 +2,7 @@ package com.openclassrooms.vitesse.data.entity
 
 import androidx.room.Relation
 import androidx.room.Embedded
+import java.time.LocalDateTime
 
 data class CandidateWithDetailDto(
     @Embedded val candidate: CandidateDto,
@@ -18,6 +19,22 @@ data class CandidateSummary(
     val photoUri: String,
     val note: String
 )
+// Classe conteneur résumé
+data class CandidateTotal(
+    // candidate
+    val id: Long,
+    val firstName: String,
+    val lastName: String,
+    val email: String,
+    val phone: String,
+    val photoUri: String,
+    val isFavorite: Boolean,
+    // detail
+    val detailId: Long,
+    val date: LocalDateTime,
+    val salaryClaim: Long,
+    val note: String
+)
 
 fun CandidateWithDetailDto.toSummary(): CandidateSummary {
     val noteValue = details.firstOrNull()?.note ?: ""
@@ -27,6 +44,26 @@ fun CandidateWithDetailDto.toSummary(): CandidateSummary {
         lastName = candidate.lastName,
         isFavorite = candidate.isFavorite,
         photoUri = candidate.photoUri,
+        note = noteValue
+    )
+}
+
+fun CandidateWithDetailDto.toDetail(): CandidateTotal {
+    val detailIdValue = details.firstOrNull()?.candidateId ?: 0
+    val dateValue = details.firstOrNull()?.date ?: LocalDateTime.of(1970, 1, 1, 0, 0)
+    val salaryClaimValue = details.firstOrNull()?.salaryClaim ?: 0
+    val noteValue = details.firstOrNull()?.note ?: ""
+    return CandidateTotal(
+        id = candidate.id,
+        firstName = candidate.firstName,
+        lastName = candidate.lastName,
+        email = candidate.email,
+        phone = candidate.phone,
+        isFavorite = candidate.isFavorite,
+        photoUri = candidate.photoUri,
+        detailId = detailIdValue,
+        date = dateValue,
+        salaryClaim = salaryClaimValue,
         note = noteValue
     )
 }
