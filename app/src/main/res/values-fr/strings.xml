@@ -8,4 +8,7 @@
     <string name="candidate_favorites">Favoris</string>
     <string name="candidate_all">Tous</string>
     <string name="candidate_face">Portrait Candidat</string>
+    <string name="about">Á propos</string>
+    <string name="salary_claim">Prétentions Salariales</string>
+    <string name="notes">Notes</string>
 </resources>
