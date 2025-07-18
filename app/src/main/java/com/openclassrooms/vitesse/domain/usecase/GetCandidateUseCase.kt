@@ -30,7 +30,10 @@ class GetCandidateUseCase @Inject constructor(
         searchTerm: String,
         fav: Int,
         sql: String = """
-        SELECT candidate.*
+        SELECT candidate.*,
+        detail.note as note,
+        detail.date as date,
+        detail.salaryClaim as salaryClaim
         FROM candidate
         LEFT JOIN detail ON candidate.id = detail.candidateId
     """.trimIndent()

@@ -4,7 +4,6 @@ import android.content.Context
 import com.openclassrooms.vitesse.data.dao.CandidateDao
 import com.openclassrooms.vitesse.data.dao.DetailDao
 import com.openclassrooms.vitesse.data.database.AppDatabase
-import com.openclassrooms.vitesse.data.entity.CandidateWithDetailDto
 import com.openclassrooms.vitesse.data.repository.CandidateRepository
 import com.openclassrooms.vitesse.data.repository.DetailRepository
 import dagger.Module
@@ -67,15 +66,15 @@ class AppModule {
         }
     }
 
-    @Provides
-    @Singleton
-    fun provideDetailRepository(
-        detailDao: DetailDao
-    ): DetailRepository {
-        return try {
-            DetailRepository(detailDao)
-        } catch (e: Exception) {
-            throw RuntimeException("Failed to provide DetailRepository", e)
-        }
-    }
+//    @Provides
+//    @Singleton
+//    fun provideDetailRepository(
+//        detailDao: DetailDao
+//    ): DetailRepository {
+//        return try {
+//            DetailRepository(detailDao)
+//        } catch (e: Exception) {
+//            throw RuntimeException("Failed to provide DetailRepository", e)
+//        }
+//    }
 }
