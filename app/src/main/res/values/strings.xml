@@ -9,6 +9,9 @@
     <string name="candidate_all">ALL</string>
     <string name="candidate_face">Candidate face</string>
     <string name="about">About</string>
-    <string name="salary_claim">Salary Claim</string>
+    <string name="salary_claim">Salary claim</string>
     <string name="notes">Notes</string>
+    <string name="appel">APPEL</string>
+    <string name="sms">SMS</string>
+    <string name="email">EMAIL</string>
 </resources>
