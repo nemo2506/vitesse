@@ -11,9 +11,9 @@
     <string name="about">About</string>
     <string name="salary_claim">Salary claim</string>
     <string name="notes">Notes</string>
-    <string name="appel">APPEL</string>
+    <string name="appel">Appel</string>
     <string name="sms">SMS</string>
-    <string name="email">EMAIL</string>
+    <string name="email">E-mail</string>
     <string name="favorite">FAVORITE</string>
     <string name="edit">EDIT</string>
     <string name="delete">DELETE</string>
