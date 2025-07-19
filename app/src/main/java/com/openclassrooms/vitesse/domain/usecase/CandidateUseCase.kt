@@ -31,6 +31,10 @@ class CandidateUseCase @Inject constructor(
             }
     }
 
+    fun upsertCandidate(candidate: Candidate): Flow<Result<Unit>> {
+        return candidateRepository.upsertCandidate(candidate)
+    }
+
     private fun searchCandidateAddQuery(
         searchTerm: String,
         fav: Int,
@@ -67,7 +71,4 @@ class CandidateUseCase @Inject constructor(
         return SimpleSQLiteQuery(finalSql, argsList.toTypedArray())
     }
 
-    fun upsertCandidate(candidate: Candidate): Flow<Result<Unit>> {
-        return candidateRepository.upsertCandidate(candidate)
-    }
 }

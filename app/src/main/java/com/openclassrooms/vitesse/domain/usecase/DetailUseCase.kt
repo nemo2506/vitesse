@@ -5,6 +5,7 @@ import androidx.sqlite.db.SimpleSQLiteQuery
 import com.openclassrooms.vitesse.data.entity.toDetail
 import com.openclassrooms.vitesse.data.repository.CandidateRepository
 import com.openclassrooms.vitesse.data.repository.DetailRepository
+import com.openclassrooms.vitesse.domain.model.Candidate
 import com.openclassrooms.vitesse.domain.model.CandidateDetail
 import com.openclassrooms.vitesse.domain.model.CandidateTotal
 import kotlinx.coroutines.flow.Flow
@@ -36,6 +37,10 @@ class DetailUseCase @Inject constructor(
             }
     }
 
+    fun deleteCandidate(candidateId: Long, detailId: Long): Flow<Result<Unit>> {
+        return detailRepository.deleteCandidate(candidateId, detailId)
+    }
+
     private fun convertToDetailScreen(candidateTotal: CandidateTotal): CandidateDetail{
         return CandidateDetail(
             candidateId= candidateTotal.id,
@@ -65,7 +70,6 @@ class DetailUseCase @Inject constructor(
         val argsList = listOf(id)
         return SimpleSQLiteQuery(newSql, argsList.toTypedArray())
     }
-
 
     fun updateFavoriteCandidate(id: Long, fav: Boolean): Flow<Result<Unit>> {
         return detailRepository.updateFavoriteCandidate(id, !fav) // INVERSE LA VALEUR FAV POUR LA MODIFIER
