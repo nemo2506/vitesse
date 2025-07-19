@@ -51,36 +51,26 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setUpUI(candidate: CandidateTotal) {
-//        val id = candidate.id
-        val firstName = candidate.firstName
-        val lastName = candidate.lastName
-        val title = "$firstName $lastName"
+        val title = "%s %s".format(candidate.firstName, candidate.lastName)
         binding.toolbar.title = title
+        setFab(candidate, title)
+        setFace(candidate.photoUri, binding.tvFace)
+        binding.tvBirth.text = viewModel.setBirth(candidate.date)
+        binding.tvSalary.text = viewModel.setSalary(candidate.salaryClaim)
+        binding.tvSalaryGbp.text = viewModel.setSalaryGbp(candidate.salaryClaim)
+        binding.tvNotes.text = candidate.note
+    }
 
-        // Modifier un autre texte, par exemple la date de naissance
-        val tvBirth = findViewById<TextView>(R.id.tv_birth)
-        val tvSalary = findViewById<TextView>(R.id.tv_salary)
-        val tvSalaryGbp = findViewById<TextView>(R.id.tv_salary_gbp)
-        val tvNotes = findViewById<TextView>(R.id.tv_notes)
-
-        val btnCall = findViewById<ImageButton>(R.id.btn_call)
-        val btnSms = findViewById<ImageButton>(R.id.btn_sms)
-        val btnEmail = findViewById<ImageButton>(R.id.btn_email)
-        btnCall.setOnClickListener {
+    private fun setFab(candidate: CandidateTotal, title: String) {
+        binding.btnCall.setOnClickListener {
             setCall(candidate.phone)
         }
-        btnSms.setOnClickListener {
+        binding.btnSms.setOnClickListener {
             setSms(candidate.phone, title)
         }
-        btnEmail.setOnClickListener {
+        binding.btnEmail.setOnClickListener {
             setEmail(candidate.email, title)
         }
-        setFace(candidate.photoUri, findViewById<ImageView>(R.id.tv_face))
-        tvBirth.text = viewModel.setBirth(candidate.date)
-        tvSalary.text = viewModel.setSalary(candidate.salaryClaim)
-        tvSalaryGbp.text = viewModel.setSalaryGbp(candidate.salaryClaim)
-        tvNotes.text = candidate.note
-
     }
 
     private fun setFace(imageUrl: String, ivFace: ImageView) {
@@ -146,7 +136,7 @@ class DetailActivity : AppCompatActivity() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.fab_favorite -> {
-                        Toast.makeText(this@DetailActivity, "Favori", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@DetailActivity, viewModel.candidateId.toString(), Toast.LENGTH_SHORT).show()
                         true
                     }
 
