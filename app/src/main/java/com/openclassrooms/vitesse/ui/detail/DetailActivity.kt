@@ -1,9 +1,13 @@
 package com.openclassrooms.vitesse.ui.detail
 
+import android.content.Intent
+import android.icu.text.CaseMap.Title
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -47,10 +51,11 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setUpUI(candidate: CandidateTotal) {
-        val id = candidate.id
+//        val id = candidate.id
         val firstName = candidate.firstName
         val lastName = candidate.lastName
-        binding.toolbar.title = "$firstName $lastName"
+        val title = "$firstName $lastName"
+        binding.toolbar.title = title
 
         // Modifier un autre texte, par exemple la date de naissance
         val tvBirth = findViewById<TextView>(R.id.tv_birth)
@@ -61,9 +66,15 @@ class DetailActivity : AppCompatActivity() {
         val btnCall = findViewById<ImageButton>(R.id.btn_call)
         val btnSms = findViewById<ImageButton>(R.id.btn_sms)
         val btnEmail = findViewById<ImageButton>(R.id.btn_email)
-//        btnCall.setOnClickListener(setCall(phone))
-//        btnSms.setOnClickListener(setSms(phone))
-//        btnEmail.setOnClickListener(setEmail(email))
+        btnCall.setOnClickListener {
+            setCall(candidate.phone)
+        }
+        btnSms.setOnClickListener {
+            setSms(candidate.phone, title)
+        }
+        btnEmail.setOnClickListener {
+            setEmail(candidate.email, title)
+        }
         setFace(candidate.photoUri, findViewById<ImageView>(R.id.tv_face))
         tvBirth.text = viewModel.setBirth(candidate.date)
         tvSalary.text = viewModel.setSalary(candidate.salaryClaim)
@@ -80,17 +91,41 @@ class DetailActivity : AppCompatActivity() {
             .into(ivFace)
     }
 
-    //    private fun setSms(phone: String): View.OnClickListener? {
-//        Log.d("MARC", "setSms: INIT")
-//    }
-//
-//    private fun setCall(phone: String): View.OnClickListener? {
-//        Log.d("MARC", "setCall: INIT")
-//    }
-//
-//    private fun setEmail(email: String): View.OnClickListener? {
-//
-//    }
+    private fun setSms(phone: String, title: String) {
+        val message = "Bonjour , $title"
+        val intent = Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse("smsto:$phone")
+            putExtra("sms_body", message)
+        }
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivity(intent)
+        }
+    }
+
+    private fun setCall(phone: String) {
+        val intent = Intent(Intent.ACTION_DIAL).apply {
+            data = Uri.parse("tel:$phone")
+        }
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivity(intent)
+        }
+    }
+
+
+    private fun setEmail(address: String, title: String) {
+        val subject = "Sujet de l’email"
+        val body = "Bonjour $title,\nVoici un message pré-rempli."
+
+        val intent = Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse("mailto:$address")
+            putExtra(Intent.EXTRA_SUBJECT, subject)
+            putExtra(Intent.EXTRA_TEXT, body)
+        }
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivity(intent)
+        }
+    }
+
     private fun setupToolbar() {
         val toolbar = binding.toolbar
         setSupportActionBar(toolbar)

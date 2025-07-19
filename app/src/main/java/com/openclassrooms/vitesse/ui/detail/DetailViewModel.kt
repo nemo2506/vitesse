@@ -61,7 +61,6 @@ class DetailViewModel @Inject constructor(
 
     fun setSalary(salary: Long) = getCandidateByIdUseCase.getSalary(salary)
     fun setBirth(birthDate: LocalDateTime) = getCandidateByIdUseCase.getBirth(birthDate)
-    fun setTitle(firstName: String, lastName: String) = getCandidateByIdUseCase.getTitle(firstName, lastName)
     fun setSalaryGbp(salary: Long) = getCandidateByIdUseCase.getSalaryGbp(salary)
 }
 
