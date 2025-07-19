@@ -17,11 +17,12 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 import javax.inject.Inject
 
-class GetCandidateByIdUseCase @Inject constructor(
+class DetailUseCase @Inject constructor(
     private val detailRepository: DetailRepository
 ) {
-    fun execute(id: Long): Flow<Result<CandidateTotal>> {
-        val query = searchQuery(id)
+
+    fun getCandidateById(id: Long): Flow<Result<CandidateTotal>> {
+        val query = searchCandidateQuery(id)
         return detailRepository.getCandidateById(query)
             .map { dto ->
                 Result.success(dto.toDetail())
@@ -32,7 +33,7 @@ class GetCandidateByIdUseCase @Inject constructor(
             }
     }
 
-    private fun searchQuery(
+    private fun searchCandidateQuery(
         id: Long,
         sql: String = """
         SELECT *
@@ -43,6 +44,11 @@ class GetCandidateByIdUseCase @Inject constructor(
         val newSql = "$sql WHERE candidate.id = ?"
         val argsList = listOf(id)
         return SimpleSQLiteQuery(newSql, argsList.toTypedArray())
+    }
+
+
+    fun updateFavoriteCandidate(id: Long, fav: Boolean): Flow<Result<Unit>> {
+        return detailRepository.updateFavoriteCandidate(id, !fav) // INVERSE LA VALEUR FAV POUR LA MODIFIER
     }
 
     fun getSalary(salaryClaim: Long): CharSequence {
@@ -74,7 +80,4 @@ class GetCandidateByIdUseCase @Inject constructor(
         return Period.between(birthLocalDate, today).years
     }
 
-    fun getTitle(firstName: String, lastName: String): CharSequence {
-        return "$firstName $lastName"
-    }
 }

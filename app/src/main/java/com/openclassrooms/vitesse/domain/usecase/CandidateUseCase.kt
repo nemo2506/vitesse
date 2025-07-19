@@ -2,19 +2,33 @@ package com.openclassrooms.vitesse.domain.usecase
 
 import android.util.Log
 import androidx.sqlite.db.SimpleSQLiteQuery
-import com.openclassrooms.vitesse.data.entity.CandidateSummary
-import com.openclassrooms.vitesse.data.entity.toSummary
-import com.openclassrooms.vitesse.data.repository.CandidateRepository
+import com.openclassrooms.vitesse.data.entity.CandidateTotal
+import com.openclassrooms.vitesse.data.entity.toDetail
+import com.openclassrooms.vitesse.data.repository.DetailRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.Period
+import java.time.format.DateTimeFormatter
+import java.util.Locale
+import com.openclassrooms.vitesse.data.entity.CandidateSummary
+import com.openclassrooms.vitesse.data.entity.toSummary
+import com.openclassrooms.vitesse.data.repository.CandidateRepository
+import com.openclassrooms.vitesse.domain.model.Candidate
 import javax.inject.Inject
 
-class GetCandidateUseCase @Inject constructor(
+
+class CandidateUseCase @Inject constructor(
+    private val detailRepository: DetailRepository,
     private val candidateRepository: CandidateRepository
 ) {
-    fun execute(fav: Int, searchTerm: String): Flow<List<CandidateSummary>> {
-        val query = searchQueryAdd(searchTerm, fav)
+
+    fun getCandidate(fav: Int, searchTerm: String): Flow<List<CandidateSummary>> {
+        val query = searchCandidateAddQuery(searchTerm, fav)
         return candidateRepository.getCandidate(query)
             .map { listDto ->
                 listDto.map { dto ->
@@ -27,7 +41,7 @@ class GetCandidateUseCase @Inject constructor(
             }
     }
 
-    private fun searchQueryAdd(
+    private fun searchCandidateAddQuery(
         searchTerm: String,
         fav: Int,
         sql: String = """
@@ -61,5 +75,9 @@ class GetCandidateUseCase @Inject constructor(
         val finalSql = "$newSql ORDER BY lastName ASC"
 
         return SimpleSQLiteQuery(finalSql, argsList.toTypedArray())
+    }
+
+    fun upsertCandidate(candidate: Candidate): Flow<Result<Unit>> {
+        return candidateRepository.upsertCandidate(candidate)
     }
 }

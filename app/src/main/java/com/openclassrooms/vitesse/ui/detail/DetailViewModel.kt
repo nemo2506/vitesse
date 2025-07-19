@@ -7,9 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.openclassrooms.vitesse.data.entity.CandidateTotal
 import com.openclassrooms.vitesse.domain.model.Candidate
-import com.openclassrooms.vitesse.domain.usecase.GetCandidateByIdUseCase
-import com.openclassrooms.vitesse.domain.usecase.UpdateFavoriteUseCase
-import com.openclassrooms.vitesse.domain.usecase.UpsertCandidateUseCase
+import com.openclassrooms.vitesse.domain.usecase.CandidateUseCase
+import com.openclassrooms.vitesse.domain.usecase.DetailUseCase
 import com.openclassrooms.vitesse.ui.ConstantsApp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -23,9 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val getCandidateByIdUseCase: GetCandidateByIdUseCase,
-    private val upsertCandidateUseCase: UpsertCandidateUseCase,
-    private val updateFavoriteUseCase: UpdateFavoriteUseCase,
+    private val detailUseCase: DetailUseCase,
     appState: SavedStateHandle
 ) : ViewModel() {
 
@@ -41,7 +38,7 @@ class DetailViewModel @Inject constructor(
 
     private fun observeCandidateTotal(id: Long) {
         viewModelScope.launch {
-            getCandidateByIdUseCase.execute(id)
+            detailUseCase.getCandidateById(id)
                 .collect { result ->
                     result.fold(
                         onSuccess = { candidate ->
@@ -67,7 +64,7 @@ class DetailViewModel @Inject constructor(
     
     fun updateFavorite( id: Long, fav: Boolean ){
         viewModelScope.launch {
-            updateFavoriteUseCase.execute(id, fav).collect { result ->
+            detailUseCase.updateFavoriteCandidate(id, fav).collect { result ->
                     result.fold(
                         onSuccess = {
                             _uiState.update {
@@ -87,9 +84,9 @@ class DetailViewModel @Inject constructor(
             }
         }
     }
-    fun setSalary(salary: Long) = getCandidateByIdUseCase.getSalary(salary)
-    fun setBirth(birthDate: LocalDateTime) = getCandidateByIdUseCase.getBirth(birthDate)
-    fun setSalaryGbp(salary: Long) = getCandidateByIdUseCase.getSalaryGbp(salary)
+    fun setSalary(salary: Long) = detailUseCase.getSalary(salary)
+    fun setBirth(birthDate: LocalDateTime) = detailUseCase.getBirth(birthDate)
+    fun setSalaryGbp(salary: Long) = detailUseCase.getSalaryGbp(salary)
 }
 
 /**

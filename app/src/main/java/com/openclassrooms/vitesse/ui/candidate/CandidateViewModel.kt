@@ -8,14 +8,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
 import com.openclassrooms.vitesse.data.entity.CandidateSummary
-import com.openclassrooms.vitesse.domain.usecase.GetCandidateUseCase
+import com.openclassrooms.vitesse.domain.usecase.CandidateUseCase
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class CandidateViewModel @Inject constructor(
-    private val getCandidateUseCase: GetCandidateUseCase
+    private val candidateUseCase: CandidateUseCase
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
@@ -28,7 +28,7 @@ class CandidateViewModel @Inject constructor(
     private fun observeCandidate(fav: Int, searchTerm: String) {
         viewModelScope.launch {
             launch {
-                getCandidateUseCase.execute(fav, searchTerm)
+                candidateUseCase.getCandidate(fav, searchTerm)
                     .catch {
                         _uiState.update { it.copy(isCandidateReady = false, candidate = emptyList()) }
                     }
