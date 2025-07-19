@@ -62,7 +62,6 @@ class GetCandidateByIdUseCase @Inject constructor(
     }
 
     fun getBirth(dateTime: LocalDateTime): CharSequence {
-        Log.d("MARC", "getBirth: $dateTime")
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         val age = calculateAge(dateTime)
         val date = dateTime.format(formatter)

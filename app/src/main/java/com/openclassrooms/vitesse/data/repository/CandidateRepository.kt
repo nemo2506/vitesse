@@ -1,15 +1,12 @@
 package com.openclassrooms.vitesse.data.repository
 
-import android.util.Log
 import androidx.sqlite.db.SupportSQLiteQuery
 import com.openclassrooms.vitesse.data.dao.CandidateDao
-import com.openclassrooms.vitesse.data.entity.CandidateSummary
 import com.openclassrooms.vitesse.data.entity.CandidateWithDetailDto
 import com.openclassrooms.vitesse.domain.model.Candidate
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 
 class CandidateRepository(
     private val candidateDao: CandidateDao
@@ -19,11 +16,11 @@ class CandidateRepository(
     }
 
     // Add or Modify a new candidate
-    fun updateCandidate(candidate: Candidate): Flow<Result<Unit>> = flow {
-        candidateDao.updateCandidate(candidate.toDto())
+    fun upsertCandidate(candidate: Candidate): Flow<Result<Unit>> = flow {
+        candidateDao.upsertCandidate(candidate.toDto())
         emit(Result.success(Unit))
     }.catch { e ->
-        emit(Result.failure(CandidateRepositoryException("Failed to add/modify candidate", e)))
+        emit(Result.failure(CandidateRepositoryException("Failed to update exercise", e)))
     }
 
     // Del a candidate

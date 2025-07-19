@@ -1,13 +1,18 @@
 package com.openclassrooms.vitesse.ui.detail
 
 import android.util.Log
+import androidx.core.app.NotificationCompat.MessagingStyle.Message
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.openclassrooms.vitesse.data.entity.CandidateTotal
+import com.openclassrooms.vitesse.domain.model.Candidate
 import com.openclassrooms.vitesse.domain.usecase.GetCandidateByIdUseCase
+import com.openclassrooms.vitesse.domain.usecase.UpdateFavoriteUseCase
+import com.openclassrooms.vitesse.domain.usecase.UpsertCandidateUseCase
 import com.openclassrooms.vitesse.ui.ConstantsApp
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,6 +24,8 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     private val getCandidateByIdUseCase: GetCandidateByIdUseCase,
+    private val upsertCandidateUseCase: UpsertCandidateUseCase,
+    private val updateFavoriteUseCase: UpdateFavoriteUseCase,
     appState: SavedStateHandle
 ) : ViewModel() {
 
@@ -33,7 +40,6 @@ class DetailViewModel @Inject constructor(
     }
 
     private fun observeCandidateTotal(id: Long) {
-        Log.d("MARC", "observeCandidateTotal: $id")
         viewModelScope.launch {
             getCandidateByIdUseCase.execute(id)
                 .collect { result ->
@@ -58,7 +64,29 @@ class DetailViewModel @Inject constructor(
                 }
         }
     }
-
+    
+    fun updateFavorite( id: Long, fav: Boolean ){
+        viewModelScope.launch {
+            updateFavoriteUseCase.execute(id, fav).collect { result ->
+                    result.fold(
+                        onSuccess = {
+                            _uiState.update {
+                                it.copy(
+                                    isFavoriteUpdated = true
+                                )
+                            }
+                        },
+                        onFailure = { error ->
+                            _uiState.update {
+                                it.copy(
+                                    isFavoriteUpdated = false
+                                )
+                            }
+                        }
+                    )
+            }
+        }
+    }
     fun setSalary(salary: Long) = getCandidateByIdUseCase.getSalary(salary)
     fun setBirth(birthDate: LocalDateTime) = getCandidateByIdUseCase.getBirth(birthDate)
     fun setSalaryGbp(salary: Long) = getCandidateByIdUseCase.getSalaryGbp(salary)
@@ -72,5 +100,8 @@ class DetailViewModel @Inject constructor(
 data class UiState(
     var candidate: CandidateTotal? = null,
     var isCandidateReady: Boolean? = null,
-    var isFavoriteReady: Boolean? = null
+    var isFavoriteReady: Boolean? = null,
+    var isFavoriteUpdated: Boolean? = null,
+    var isUpdated: Boolean? = null,
+    var message: String? = null
 )

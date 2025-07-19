@@ -1,5 +1,6 @@
 package com.openclassrooms.vitesse.data.repository
 
+import android.util.Log
 import androidx.sqlite.db.SupportSQLiteQuery
 import com.openclassrooms.vitesse.data.dao.CandidateDao
 import com.openclassrooms.vitesse.data.dao.DetailDao
@@ -17,20 +18,21 @@ class DetailRepository(
     fun getCandidateById(query: SupportSQLiteQuery): Flow<CandidateWithDetailDto> =
         candidateDao.getCandidateById(query)
 
-    // Add or Modify a new candidate
-    fun updateCandidate(candidate: Candidate): Flow<Result<Unit>> = flow {
-        candidateDao.updateCandidate(candidate.toDto())
-        emit(Result.success(Unit))
-    }.catch { e ->
-        emit(Result.failure(CandidateRepositoryException("Failed to add/modify candidate", e)))
-    }
-
     // Del a candidate
-    fun deleteCandidate(candidate: Candidate): Flow<Result<Unit>> = flow {
+    fun deleteDetail(candidate: Candidate): Flow<Result<Unit>> = flow {
         val id = candidate.id ?: throw MissingCandidateIdException()
         candidateDao.deleteCandidate(id)
         emit(Result.success(Unit))
     }.catch { e ->
         emit(Result.failure(CandidateRepositoryException("Failed to del exercise", e)))
+    }
+
+    // Add or Modify a new candidate
+    fun updateFavoriteCandidate(id: Long, fav: Boolean): Flow<Result<Unit>> = flow {
+        candidateDao.updateCandidateFavorite(id, fav)
+        emit(Result.success(Unit))
+    }.catch { e ->
+        Log.d("MARC", "updateFavoriteCandidate: $e")
+        emit(Result.failure(CandidateRepositoryException("Failed to update exercise", e)))
     }
 }

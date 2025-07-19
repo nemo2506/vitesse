@@ -4,6 +4,7 @@ import android.content.Intent
 import android.icu.text.CaseMap.Title
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -20,7 +21,6 @@ import com.bumptech.glide.Glide
 import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.data.entity.CandidateTotal
 import com.openclassrooms.vitesse.databinding.ActivityDetailBinding
-import com.openclassrooms.vitesse.domain.model.Candidate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -29,13 +29,14 @@ class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
     private val viewModel: DetailViewModel by viewModels()
+    private lateinit var current: CandidateTotal
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setupToolbar()
-        setupMenu()
+        setToolbar()
+        setMenu()
         setupComMenu()
         observeCandidate()
     }
@@ -49,6 +50,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setUpUI(candidate: CandidateTotal) {
+        current = candidate
         val title = "%s %s".format(candidate.firstName, candidate.lastName)
         binding.toolbar.title = title
         setFavoriteUi(candidate.isFavorite)
@@ -123,7 +125,7 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupToolbar() {
+    private fun setToolbar() {
         val toolbar = binding.toolbar
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
@@ -132,7 +134,7 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupMenu() {
+    private fun setMenu() {
         val menuHost: MenuHost = this
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -142,11 +144,7 @@ class DetailActivity : AppCompatActivity() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.fab_favorite -> {
-                        Toast.makeText(
-                            this@DetailActivity,
-                            viewModel.candidateId.toString(),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        viewModel.updateFavorite(current.id, current.isFavorite)
                         true
                     }
 

@@ -1,15 +1,19 @@
 package com.openclassrooms.vitesse.data.dao
 
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.RawQuery
 import androidx.room.Transaction
+import androidx.room.Update
 import androidx.room.Upsert
 import androidx.sqlite.db.SupportSQLiteQuery
 import com.openclassrooms.vitesse.data.entity.CandidateDto
 import com.openclassrooms.vitesse.data.entity.CandidateWithDetailDto
 import com.openclassrooms.vitesse.data.entity.DetailDto
+import com.openclassrooms.vitesse.domain.model.Candidate
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
 @Dao
 interface CandidateDao {
@@ -22,8 +26,14 @@ interface CandidateDao {
     fun getCandidateById(query: SupportSQLiteQuery): Flow<CandidateWithDetailDto>
 
     @Upsert
-    suspend fun updateCandidate(candidate: CandidateDto): Long
+    suspend fun upsertCandidate(candidate: CandidateDto): Long
+
+    @Insert
+    suspend fun insertCandidate(candidate: CandidateDto): Long
 
     @Query("DELETE FROM candidate WHERE id = :id")
     suspend fun deleteCandidate(id: Long)
+
+    @Query("UPDATE candidate SET isFavorite = :fav WHERE id = :id")
+    suspend fun updateCandidateFavorite(id: Long, fav: Boolean)
 }
