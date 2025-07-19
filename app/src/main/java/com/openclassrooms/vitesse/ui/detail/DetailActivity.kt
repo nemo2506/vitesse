@@ -7,14 +7,11 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.view.View
-import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
@@ -23,6 +20,7 @@ import com.bumptech.glide.Glide
 import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.data.entity.CandidateTotal
 import com.openclassrooms.vitesse.databinding.ActivityDetailBinding
+import com.openclassrooms.vitesse.domain.model.Candidate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -53,12 +51,21 @@ class DetailActivity : AppCompatActivity() {
     private fun setUpUI(candidate: CandidateTotal) {
         val title = "%s %s".format(candidate.firstName, candidate.lastName)
         binding.toolbar.title = title
+        setFavoriteUi(candidate.isFavorite)
         setFab(candidate, title)
         setFace(candidate.photoUri, binding.tvFace)
         binding.tvBirth.text = viewModel.setBirth(candidate.date)
         binding.tvSalary.text = viewModel.setSalary(candidate.salaryClaim)
         binding.tvSalaryGbp.text = viewModel.setSalaryGbp(candidate.salaryClaim)
         binding.tvNotes.text = candidate.note
+    }
+
+    private fun setFavoriteUi(fav: Boolean) {
+        val icon = if (fav) R.drawable.ic_star_active else R.drawable.ic_star
+        binding.toolbar.post {
+            binding.toolbar.menu.findItem(R.id.fab_favorite)?.icon =
+                ContextCompat.getDrawable(this, icon)
+        }
     }
 
     private fun setFab(candidate: CandidateTotal, title: String) {
@@ -120,7 +127,6 @@ class DetailActivity : AppCompatActivity() {
         val toolbar = binding.toolbar
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        supportActionBar?.title = title
         toolbar.setNavigationOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
@@ -136,7 +142,11 @@ class DetailActivity : AppCompatActivity() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.fab_favorite -> {
-                        Toast.makeText(this@DetailActivity, viewModel.candidateId.toString(), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@DetailActivity,
+                            viewModel.candidateId.toString(),
+                            Toast.LENGTH_SHORT
+                        ).show()
                         true
                     }
 
