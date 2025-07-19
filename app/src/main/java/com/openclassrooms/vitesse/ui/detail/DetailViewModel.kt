@@ -1,5 +1,6 @@
 package com.openclassrooms.vitesse.ui.detail
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,9 +11,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,29 +33,36 @@ class DetailViewModel @Inject constructor(
     }
 
     private fun observeCandidateTotal(id: Long) {
+        Log.d("MARC", "observeCandidateTotal: $id")
         viewModelScope.launch {
-            launch {
-                getCandidateByIdUseCase.execute(id)
-                    .catch {
-                        _uiState.update {
-                            it.copy(
-                                isCandidateReady = false,
-                                candidate = null
-                            )
+            getCandidateByIdUseCase.execute(id)
+                .collect { result ->
+                    result.fold(
+                        onSuccess = { candidate ->
+                            _uiState.update {
+                                it.copy(
+                                    candidate = candidate,
+                                    isCandidateReady = true
+                                )
+                            }
+                        },
+                        onFailure = { error ->
+                            _uiState.update {
+                                it.copy(
+                                    candidate = null,
+                                    isCandidateReady = false
+                                )
+                            }
                         }
-                    }
-                    .collect { updated ->
-                        _uiState.update {
-                            it.copy(
-                                candidate = updated,
-                                isCandidateReady = updated.isNotEmpty()
-                            )
-                        }
-                    }
-            }
+                    )
+                }
         }
     }
 
+    fun setSalary(salary: Long) = getCandidateByIdUseCase.getSalary(salary)
+    fun setBirth(birthDate: LocalDateTime) = getCandidateByIdUseCase.getBirth(birthDate)
+    fun setTitle(firstName: String, lastName: String) = getCandidateByIdUseCase.getTitle(firstName, lastName)
+    fun setSalaryGbp(salary: Long) = getCandidateByIdUseCase.getSalaryGbp(salary)
 }
 
 /**
@@ -63,7 +71,7 @@ class DetailViewModel @Inject constructor(
  * @param candidate List of candidate to display.
  */
 data class UiState(
-    var candidate: List<CandidateTotal>? = null,
+    var candidate: CandidateTotal? = null,
     var isCandidateReady: Boolean? = null,
     var isFavoriteReady: Boolean? = null
 )

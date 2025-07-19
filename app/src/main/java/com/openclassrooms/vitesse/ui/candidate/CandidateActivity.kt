@@ -46,10 +46,7 @@ class CandidateActivity : AppCompatActivity() {
     private fun setupRecyclerView() {
         candidateAdapter = CandidateAdapter { candidate ->
             val candidateId = candidate.id
-            Log.d("MARC", "setupRecyclerView: $candidateId")
-            if (candidateId != null) {
-                toDetail(candidateId)
-            }
+            toDetail(candidateId)
         }
 
         binding.candidateRecyclerview.layoutManager = LinearLayoutManager(this)

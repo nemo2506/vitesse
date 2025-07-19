@@ -13,7 +13,7 @@ class DetailRepository(
     private val detailDao: DetailDao,
     private val candidateDao: CandidateDao
 ) {
-    // Get all Candidate
+    // Get Candidate By Id
     fun getCandidateById(query: SupportSQLiteQuery): Flow<CandidateWithDetailDto> =
         candidateDao.getCandidateById(query)
 
