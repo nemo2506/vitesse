@@ -1,11 +1,9 @@
 package com.openclassrooms.vitesse.ui.detail
 
-import android.util.Log
-import androidx.core.app.NotificationCompat.MessagingStyle.Message
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.openclassrooms.vitesse.domain.model.CandidateTotal
+import com.openclassrooms.vitesse.domain.model.CandidateDetail
 import com.openclassrooms.vitesse.domain.usecase.DetailUseCase
 import com.openclassrooms.vitesse.ui.ConstantsApp
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +12,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -83,9 +80,6 @@ class DetailViewModel @Inject constructor(
             }
         }
     }
-    fun setSalary(salary: Long) = detailUseCase.getSalary(salary)
-    fun setBirth(birthDate: LocalDateTime) = detailUseCase.getBirth(birthDate)
-    fun setSalaryGbp(salary: Long) = detailUseCase.getSalaryGbp(salary)
 }
 
 /**
@@ -94,9 +88,8 @@ class DetailViewModel @Inject constructor(
  * @param candidate List of candidate to display.
  */
 data class UiState(
-    var candidate: CandidateTotal? = null,
+    var candidate: CandidateDetail? = null,
     var isCandidateReady: Boolean? = null,
-    var isFavoriteReady: Boolean? = null,
     var isFavoriteUpdated: Boolean? = null,
     var isUpdated: Boolean? = null,
     var message: String? = null

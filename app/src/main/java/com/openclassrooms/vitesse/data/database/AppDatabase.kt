@@ -170,7 +170,7 @@ abstract class AppDatabase : RoomDatabase() {
 
             detailDao.updateDetail(
                 DetailDto(
-                    date = LocalDateTime.of(2001, 7, 15, 8, 30),
+                    date = LocalDateTime.of(2000, 7, 15, 8, 30),
                     salaryClaim = 10000,
                     note = "A confondu l'entretien avec un one-man-show. Pas sûr du poste, mais on a bien ri.",
                     candidateId = 1
@@ -218,7 +218,7 @@ abstract class AppDatabase : RoomDatabase() {
             )
             detailDao.updateDetail(
                 DetailDto(
-                    date = LocalDateTime.of(2025, 7, 15, 10, 0),
+                    date = LocalDateTime.of(2004, 7, 15, 10, 0),
                     salaryClaim = 8000,
                     note = "Répondait à nos questions avant qu’on les pose. Très proactif, ou un peu médium.",
                     candidateId = 7
@@ -227,7 +227,7 @@ abstract class AppDatabase : RoomDatabase() {
 
             detailDao.updateDetail(
                 DetailDto(
-                    date = LocalDateTime.of(2025, 7, 15, 11, 30),
+                    date = LocalDateTime.of(2005, 7, 15, 11, 30),
                     salaryClaim = 12000,
                     note = "Maîtrise parfaite des frameworks. A mentionné « Clean Architecture » 12 fois.",
                     candidateId = 8
@@ -236,7 +236,7 @@ abstract class AppDatabase : RoomDatabase() {
 
             detailDao.updateDetail(
                 DetailDto(
-                    date = LocalDateTime.of(2025, 7, 15, 14, 0),
+                    date = LocalDateTime.of(2006, 7, 15, 14, 0),
                     salaryClaim = 10000,
                     note = "Est venu avec un PowerPoint intitulé ‘Pourquoi moi ?’. Convaincant.",
                     candidateId = 9
@@ -245,7 +245,7 @@ abstract class AppDatabase : RoomDatabase() {
 
             detailDao.updateDetail(
                 DetailDto(
-                    date = LocalDateTime.of(2025, 7, 15, 15, 45),
+                    date = LocalDateTime.of(2007, 7, 15, 15, 45),
                     salaryClaim = 9500,
                     note = "A demandé s’il y avait un code vestimentaire pour le télétravail.",
                     candidateId = 10

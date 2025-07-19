@@ -34,9 +34,8 @@ data class CandidateDetail(
     var email: String,
     var isFavorite: Boolean = false,
     var photoUri: String = "",
-    var date: LocalDateTime,
     var dateDescription: String,
-    var salaryClaim: Long,
-    var salaryClaimDescription: Long,
+    var salaryClaimDescription: String,
+    var salaryClaimGpb: String,
     var note: String
 )

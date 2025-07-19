@@ -20,7 +20,7 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.databinding.ActivityDetailBinding
-import com.openclassrooms.vitesse.domain.model.CandidateTotal
+import com.openclassrooms.vitesse.domain.model.CandidateDetail
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -29,7 +29,7 @@ class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
     private val viewModel: DetailViewModel by viewModels()
-    private lateinit var current: CandidateTotal
+    private lateinit var current: CandidateDetail
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,16 +49,16 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun setUpUI(candidate: CandidateTotal) {
+    private fun setUpUI(candidate: CandidateDetail) {
         current = candidate
         val title = "%s %s".format(candidate.firstName, candidate.lastName)
         binding.toolbar.title = title
         setFavoriteUi(candidate.isFavorite)
         setFab(candidate, title)
         setFace(candidate.photoUri, binding.tvFace)
-        binding.tvBirth.text = viewModel.setBirth(candidate.date)
-        binding.tvSalary.text = viewModel.setSalary(candidate.salaryClaim)
-        binding.tvSalaryGbp.text = viewModel.setSalaryGbp(candidate.salaryClaim)
+        binding.tvBirth.text = candidate.dateDescription
+        binding.tvSalary.text = candidate.salaryClaimDescription
+        binding.tvSalaryGbp.text = candidate.salaryClaimGpb
         binding.tvNotes.text = candidate.note
     }
 
@@ -70,7 +70,7 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun setFab(candidate: CandidateTotal, title: String) {
+    private fun setFab(candidate: CandidateDetail, title: String) {
         binding.btnCall.setOnClickListener {
             setCall(candidate.phone)
         }
@@ -144,7 +144,7 @@ class DetailActivity : AppCompatActivity() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.fab_favorite -> {
-                        viewModel.updateFavorite(current.id, current.isFavorite)
+                        current.candidateId?.let { viewModel.updateFavorite(it, current.isFavorite) }
                         true
                     }
 

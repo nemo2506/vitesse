@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.openclassrooms.vitesse.data.entity.toDetail
 import com.openclassrooms.vitesse.data.repository.DetailRepository
+import com.openclassrooms.vitesse.domain.model.CandidateDetail
 import com.openclassrooms.vitesse.domain.model.CandidateTotal
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -21,16 +22,33 @@ class DetailUseCase @Inject constructor(
     private val detailRepository: DetailRepository
 ) {
 
-    fun getCandidateById(id: Long): Flow<Result<CandidateTotal>> {
+    fun getCandidateById(id: Long): Flow<Result<CandidateDetail>> {
         val query = searchCandidateQuery(id)
         return detailRepository.getCandidateById(query)
             .map { dto ->
-                Result.success(dto.toDetail())
+                Result.success(convertToDetailScreen(dto.toDetail()))
             }
             .catch { e ->
                 Log.d("ERROR", "executeError: $e")
                 emit(Result.failure(e))
             }
+    }
+
+    private fun convertToDetailScreen(candidateTotal: CandidateTotal): CandidateDetail{
+        return CandidateDetail(
+            candidateId= candidateTotal.id,
+            detailId= candidateTotal.detailId,
+            firstName= candidateTotal.firstName,
+            lastName= candidateTotal.lastName,
+            phone= candidateTotal.phone,
+            email= candidateTotal.email,
+            isFavorite= candidateTotal.isFavorite,
+            photoUri= candidateTotal.photoUri,
+            dateDescription= getDateDescription(candidateTotal.date),
+            salaryClaimDescription= getSalaryClaimDescription(candidateTotal.salaryClaim),
+            salaryClaimGpb= getClaimGbpDescription(candidateTotal.salaryClaim),
+            note= candidateTotal.note,
+        )
     }
 
     private fun searchCandidateQuery(
@@ -51,7 +69,7 @@ class DetailUseCase @Inject constructor(
         return detailRepository.updateFavoriteCandidate(id, !fav) // INVERSE LA VALEUR FAV POUR LA MODIFIER
     }
 
-    fun getSalary(salaryClaim: Long): CharSequence {
+    private fun getSalaryClaimDescription(salaryClaim: Long): String {
         val symbols = DecimalFormatSymbols(Locale.FRANCE).apply {
             groupingSeparator = ' '
             decimalSeparator = ','
@@ -62,12 +80,12 @@ class DetailUseCase @Inject constructor(
         return decimalFormat.format(salaryClaim)
     }
 
-    fun getSalaryGbp(salaryClaim: Long): CharSequence{
+    private fun getClaimGbpDescription(salaryClaim: Long): String{
         val converted = salaryClaim * 0.86705
         return "soit £ $converted"
     }
 
-    fun getBirth(dateTime: LocalDateTime): CharSequence {
+    private fun getDateDescription(dateTime: LocalDateTime): String{
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         val age = calculateAge(dateTime)
         val date = dateTime.format(formatter)
