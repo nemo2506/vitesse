@@ -5,13 +5,10 @@ import androidx.core.app.NotificationCompat.MessagingStyle.Message
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.openclassrooms.vitesse.data.entity.CandidateTotal
-import com.openclassrooms.vitesse.domain.model.Candidate
-import com.openclassrooms.vitesse.domain.usecase.CandidateUseCase
+import com.openclassrooms.vitesse.domain.model.CandidateTotal
 import com.openclassrooms.vitesse.domain.usecase.DetailUseCase
 import com.openclassrooms.vitesse.ui.ConstantsApp
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -53,7 +50,8 @@ class DetailViewModel @Inject constructor(
                             _uiState.update {
                                 it.copy(
                                     candidate = null,
-                                    isCandidateReady = false
+                                    isCandidateReady = false,
+                                    message = error.toString()
                                 )
                             }
                         }
@@ -76,7 +74,8 @@ class DetailViewModel @Inject constructor(
                         onFailure = { error ->
                             _uiState.update {
                                 it.copy(
-                                    isFavoriteUpdated = false
+                                    isFavoriteUpdated = false,
+                                    message = error.toString()
                                 )
                             }
                         }

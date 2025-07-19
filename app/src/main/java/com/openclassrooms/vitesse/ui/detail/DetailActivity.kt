@@ -19,8 +19,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.openclassrooms.vitesse.R
-import com.openclassrooms.vitesse.data.entity.CandidateTotal
 import com.openclassrooms.vitesse.databinding.ActivityDetailBinding
+import com.openclassrooms.vitesse.domain.model.CandidateTotal
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

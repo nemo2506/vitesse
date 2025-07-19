@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
-import com.openclassrooms.vitesse.data.entity.CandidateSummary
+import com.openclassrooms.vitesse.domain.model.CandidateSummary
 import com.openclassrooms.vitesse.domain.usecase.CandidateUseCase
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update

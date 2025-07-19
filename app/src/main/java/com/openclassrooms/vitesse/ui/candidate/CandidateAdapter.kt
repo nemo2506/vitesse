@@ -10,8 +10,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.openclassrooms.vitesse.R
-import com.openclassrooms.vitesse.data.entity.CandidateSummary
-import com.openclassrooms.vitesse.domain.model.Candidate
+import com.openclassrooms.vitesse.domain.model.CandidateSummary
 
 class CandidateAdapter(
     private val toDetail: (CandidateSummary) -> Unit

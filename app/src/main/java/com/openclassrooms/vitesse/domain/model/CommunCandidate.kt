@@ -2,10 +2,7 @@ package com.openclassrooms.vitesse.domain.model
 
 import java.time.LocalDateTime
 
-
-
 data class CandidateTotal(
-    // candidate
     val id: Long,
     val firstName: String,
     val lastName: String,
@@ -13,7 +10,6 @@ data class CandidateTotal(
     val phone: String,
     val photoUri: String,
     val isFavorite: Boolean,
-    // detail
     val detailId: Long,
     val date: LocalDateTime,
     val salaryClaim: Long,
