@@ -14,7 +14,6 @@ import javax.inject.Inject
 
 
 class CandidateUseCase @Inject constructor(
-    private val detailRepository: DetailRepository,
     private val candidateRepository: CandidateRepository
 ) {
 

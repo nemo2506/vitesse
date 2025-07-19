@@ -3,6 +3,7 @@ package com.openclassrooms.vitesse.domain.usecase
 import android.util.Log
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.openclassrooms.vitesse.data.entity.toDetail
+import com.openclassrooms.vitesse.data.repository.CandidateRepository
 import com.openclassrooms.vitesse.data.repository.DetailRepository
 import com.openclassrooms.vitesse.domain.model.CandidateDetail
 import com.openclassrooms.vitesse.domain.model.CandidateTotal
@@ -19,7 +20,8 @@ import java.util.Locale
 import javax.inject.Inject
 
 class DetailUseCase @Inject constructor(
-    private val detailRepository: DetailRepository
+    private val detailRepository: DetailRepository,
+    private val candidateRepository: CandidateRepository
 ) {
 
     fun getCandidateById(id: Long): Flow<Result<CandidateDetail>> {

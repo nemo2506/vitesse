@@ -7,6 +7,8 @@ import com.openclassrooms.vitesse.data.database.AppDatabase
 import com.openclassrooms.vitesse.data.repository.CandidateRepository
 import com.openclassrooms.vitesse.data.repository.DetailRepository
 import com.openclassrooms.vitesse.domain.model.Candidate
+import com.openclassrooms.vitesse.domain.usecase.CandidateUseCase
+import com.openclassrooms.vitesse.domain.usecase.DetailUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -77,6 +79,31 @@ class AppModule {
             DetailRepository(detailDao, candidateDao)
         } catch (e: Exception) {
             throw RuntimeException("Failed to provide DetailRepository", e)
+        }
+    }
+
+    @Provides
+    @Singleton
+    fun provideDetailUseCase(
+        detailRepository: DetailRepository,
+        candidateRepository: CandidateRepository
+    ): DetailUseCase {
+        return try {
+            DetailUseCase(detailRepository, candidateRepository)
+        } catch (e: Exception) {
+            throw RuntimeException("Failed to provide DetailUseCase", e)
+        }
+    }
+
+    @Provides
+    @Singleton
+    fun provideCandidateUseCase(
+        candidateRepository: CandidateRepository
+    ): CandidateUseCase {
+        return try {
+            CandidateUseCase(candidateRepository)
+        } catch (e: Exception) {
+            throw RuntimeException("Failed to provide CandidateUseCase", e)
         }
     }
 }
