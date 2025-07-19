@@ -2,9 +2,9 @@ package com.openclassrooms.vitesse.domain.usecase
 
 import android.util.Log
 import androidx.sqlite.db.SimpleSQLiteQuery
-import com.openclassrooms.vitesse.data.entity.CandidateTotal
 import com.openclassrooms.vitesse.data.entity.toDetail
 import com.openclassrooms.vitesse.data.repository.DetailRepository
+import com.openclassrooms.vitesse.domain.model.CandidateTotal
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map

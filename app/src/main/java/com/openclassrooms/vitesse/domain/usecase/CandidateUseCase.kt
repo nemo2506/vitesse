@@ -2,23 +2,14 @@ package com.openclassrooms.vitesse.domain.usecase
 
 import android.util.Log
 import androidx.sqlite.db.SimpleSQLiteQuery
-import com.openclassrooms.vitesse.data.entity.CandidateTotal
-import com.openclassrooms.vitesse.data.entity.toDetail
 import com.openclassrooms.vitesse.data.repository.DetailRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
-import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.Period
-import java.time.format.DateTimeFormatter
-import java.util.Locale
-import com.openclassrooms.vitesse.data.entity.CandidateSummary
 import com.openclassrooms.vitesse.data.entity.toSummary
 import com.openclassrooms.vitesse.data.repository.CandidateRepository
 import com.openclassrooms.vitesse.domain.model.Candidate
+import com.openclassrooms.vitesse.domain.model.CandidateSummary
 import javax.inject.Inject
 
 

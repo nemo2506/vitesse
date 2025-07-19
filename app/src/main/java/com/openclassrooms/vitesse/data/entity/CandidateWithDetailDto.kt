@@ -3,37 +3,13 @@ package com.openclassrooms.vitesse.data.entity
 import androidx.room.Relation
 import androidx.room.Embedded
 import java.time.LocalDateTime
+import com.openclassrooms.vitesse.domain.model.CandidateSummary
+import com.openclassrooms.vitesse.domain.model.CandidateTotal
 
 data class CandidateWithDetailDto(
     @Embedded val candidate: CandidateDto,
     @Relation(parentColumn = "id", entityColumn = "candidateId")
     val details: List<DetailDto> = emptyList()
-)
-
-// Classe conteneur résumé
-data class CandidateSummary(
-    val id: Long,
-    val firstName: String,
-    val lastName: String,
-    val isFavorite: Boolean,
-    val photoUri: String,
-    val note: String
-)
-// Classe conteneur résumé
-data class CandidateTotal(
-    // candidate
-    val id: Long,
-    val firstName: String,
-    val lastName: String,
-    val email: String,
-    val phone: String,
-    val photoUri: String,
-    val isFavorite: Boolean,
-    // detail
-    val detailId: Long,
-    val date: LocalDateTime,
-    val salaryClaim: Long,
-    val note: String
 )
 
 fun CandidateWithDetailDto.toSummary(): CandidateSummary {
