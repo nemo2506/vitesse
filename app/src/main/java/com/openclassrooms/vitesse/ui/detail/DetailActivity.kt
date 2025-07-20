@@ -48,7 +48,6 @@ class DetailActivity : AppCompatActivity() {
                 uiState.isLoading?.let { toLoaderUi(it) }
                 uiState.candidate?.let { setUpUI(it) }
                 uiState.message?.let {
-                    Log.d("MARC", "observeDetail: $it")
                     toMessageUi(it)
                 }
                 if (uiState.isDeleted == true) toCandidateScreen()

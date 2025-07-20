@@ -65,9 +65,6 @@ class DetailViewModel @Inject constructor(
 
                         is Result.Failure -> {
                             _uiState.update {
-                                val test = result.message
-                                val del = uiState.value.isDeleted
-                                Log.d("MARC", "getCandidateById: $test DELETED:$del")
                                 it.copy(
                                     isLoading = false,
                                     isFavoriteUpdated = false,
