@@ -1,9 +1,9 @@
 package com.openclassrooms.vitesse.ui.detail
 
 import android.content.Intent
-import android.icu.text.CaseMap.Title
 import android.net.Uri
 import android.os.Bundle
+import android.os.Message
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide
 import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.databinding.ActivityDetailBinding
 import com.openclassrooms.vitesse.domain.model.CandidateDetail
+import com.openclassrooms.vitesse.ui.candidate.CandidateActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -29,7 +30,7 @@ class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
     private val viewModel: DetailViewModel by viewModels()
-    private lateinit var current: CandidateDetail
+    private lateinit var candidate: CandidateDetail
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,14 +44,27 @@ class DetailActivity : AppCompatActivity() {
 
     private fun observeCandidate() {
         lifecycleScope.launch {
-            viewModel.uiState.collect {
-                it.candidate?.let { it1 -> setUpUI(it1) }
+            viewModel.uiState.collect { uiState ->
+                uiState.candidate?.let {
+                    setUpUI(uiState.candidate!!)
+                }
+                uiState.isDeleted?.let {
+                    toCandidateScreen()
+                }
+                uiState.message?.let {
+                    toMessageUi(uiState.message!!)
+                }
             }
         }
     }
 
+    private fun toCandidateScreen() {
+        val intent = Intent(this, CandidateActivity::class.java)
+        startActivity(intent)
+    }
+
     private fun setUpUI(candidate: CandidateDetail) {
-        current = candidate
+        this@DetailActivity.candidate = candidate
         val title = "%s %s".format(candidate.firstName, candidate.lastName)
         binding.toolbar.title = title
         setFavoriteUi(candidate.isFavorite)
@@ -60,6 +74,11 @@ class DetailActivity : AppCompatActivity() {
         binding.tvSalary.text = candidate.salaryClaimDescription
         binding.tvSalaryGbp.text = candidate.salaryClaimGpb
         binding.tvNotes.text = candidate.note
+
+    }
+
+    private fun toMessageUi(message: String){
+        Toast.makeText(this@DetailActivity, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun setFavoriteUi(fav: Boolean) {
@@ -144,17 +163,26 @@ class DetailActivity : AppCompatActivity() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.fab_favorite -> {
-                        current.candidateId?.let { viewModel.updateFavorite(it, current.isFavorite) }
+                        candidate.candidateId?.let {
+                            viewModel.updateFavorite(
+                                it,
+                                candidate.isFavorite
+                            )
+                        }
                         true
                     }
 
                     R.id.fab_edit -> {
-                        Toast.makeText(this@DetailActivity, "Éditer", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@DetailActivity, "MODIFIER EN COURS ...", Toast.LENGTH_SHORT).show()
                         true
                     }
 
                     R.id.fab_delete -> {
-                        Toast.makeText(this@DetailActivity, "Supprimer", Toast.LENGTH_SHORT).show()
+                        try {
+                            candidate.candidateId?.let { viewModel.deleteCandidate(it)}
+                        } catch(e: Exception) {
+                            Log.d("MARC", "deleteCandidate: $e")
+                        }
                         true
                     }
 

@@ -45,7 +45,7 @@ class CandidateActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         candidateAdapter = CandidateAdapter { candidate ->
-            toDetail(candidate.id)
+            toDetailScreen(candidate.id)
         }
 
         binding.candidateRecyclerview.layoutManager = LinearLayoutManager(this)
@@ -93,7 +93,7 @@ class CandidateActivity : AppCompatActivity() {
         }
     }
 
-    private fun toDetail(candidateId: Long) {
+    private fun toDetailScreen(candidateId: Long) {
         val intent = Intent(this, DetailActivity::class.java).apply {
             putExtra(ConstantsApp.CANDIDATE_ID, candidateId)
         }

@@ -19,30 +19,12 @@ class DetailRepository(
         candidateDao.getCandidateById(query)
 
     // Del a candidate
-    fun deleteCandidate(candidateId: Long, detailId: Long): Flow<Result<Unit>> = flow {
-        deleteDetailFlow(detailId)
-        deleteCandidateFlow(candidateId)
+    fun deleteCandidate(candidateId: Long): Flow<Result<Unit>> = flow {
+        candidateDao.deleteCandidate(candidateId)
         emit(Result.success(Unit))
     }.catch { e ->
+        Log.d("MARC", "deleteCandidate: $e")
         emit(Result.failure(CandidateRepositoryException("Failed to del exercise", e)))
-    }
-
-    private fun deleteDetailFlow(id: Long): Flow<Result<Unit>> = flow {
-        try {
-            detailDao.deleteDetail(id)
-            emit(Result.success(Unit))
-        } catch (e: Exception) {
-            emit(Result.failure(e))
-        }
-    }
-
-    private fun deleteCandidateFlow(id: Long): Flow<Result<Unit>> = flow {
-        try {
-            candidateDao.deleteCandidate(id)
-            emit(Result.success(Unit))
-        } catch (e: Exception) {
-            emit(Result.failure(e))
-        }
     }
 
     // Add or Modify a new candidate

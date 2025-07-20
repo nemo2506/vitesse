@@ -80,6 +80,29 @@ class DetailViewModel @Inject constructor(
             }
         }
     }
+
+    fun deleteCandidate(candidateId: Long){
+        viewModelScope.launch {
+            detailUseCase.deleteCandidate(candidateId).collect { result ->
+                    result.fold(
+                        onSuccess = {
+                            _uiState.update {
+                                it.copy(
+                                    isDeleted = result.isSuccess
+                                )
+                            }
+                        },
+                        onFailure = { error ->
+                            _uiState.update {
+                                it.copy(
+                                    message = error.toString()
+                                )
+                            }
+                        }
+                    )
+            }
+        }
+    }
 }
 
 /**
@@ -92,5 +115,6 @@ data class UiState(
     var isCandidateReady: Boolean? = null,
     var isFavoriteUpdated: Boolean? = null,
     var isUpdated: Boolean? = null,
+    var isDeleted: Boolean? = null,
     var message: String? = null
 )

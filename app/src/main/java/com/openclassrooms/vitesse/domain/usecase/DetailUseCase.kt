@@ -37,8 +37,8 @@ class DetailUseCase @Inject constructor(
             }
     }
 
-    fun deleteCandidate(candidateId: Long, detailId: Long): Flow<Result<Unit>> {
-        return detailRepository.deleteCandidate(candidateId, detailId)
+    fun deleteCandidate(candidateId: Long): Flow<Result<Unit>> {
+        return detailRepository.deleteCandidate(candidateId)
     }
 
     private fun convertToDetailScreen(candidateTotal: CandidateTotal): CandidateDetail{
