@@ -6,6 +6,7 @@ import com.openclassrooms.vitesse.data.dao.CandidateDao
 import com.openclassrooms.vitesse.data.dao.DetailDao
 import com.openclassrooms.vitesse.data.entity.CandidateWithDetailDto
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 
 class DetailRepository(
@@ -13,9 +14,13 @@ class DetailRepository(
     private val candidateDao: CandidateDao
 ) {
     // Get Candidate By Id
-    fun getCandidateById(query: SupportSQLiteQuery): Flow<CandidateWithDetailDto> {
-        return candidateDao.getCandidateById(query)
-    }
+fun getCandidateById(query: SupportSQLiteQuery): Flow<CandidateWithDetailDto?> {
+    return candidateDao.getCandidateById(query)
+        .catch { e ->
+            Log.d("ERROR", "getCandidateByIdError: $e")
+            emit(null)
+        }
+}
 
     // Del a candidate
     fun deleteCandidate(candidateId: Long): Flow<Int> = flow {
@@ -23,7 +28,7 @@ class DetailRepository(
             val result = candidateDao.deleteCandidate(candidateId)
             emit(result)
         } catch (e: Exception) {
-            Log.d("MARC", "deleteCandidate: $e")
+            Log.d("ERROR", "deleteCandidateError: $e")
             emit(0)
         }
     }
@@ -34,7 +39,7 @@ class DetailRepository(
             val result = candidateDao.updateCandidateFavorite(id, fav)
             emit(result)
         } catch (e: Exception) {
-            Log.d("MARC", "updateFavoriteCandidate: $e")
+            Log.d("ERROR", "updateFavoriteCandidateError: $e")
             emit(0)
         }
     }

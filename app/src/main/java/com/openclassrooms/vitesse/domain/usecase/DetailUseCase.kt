@@ -21,13 +21,14 @@ import javax.inject.Inject
 class DetailUseCase @Inject constructor(
     private val detailRepository: DetailRepository
 ) {
-    fun getCandidateById(id: Long): Flow<Result<CandidateDetail>> = flow {
+    fun getCandidateById(id: Long): Flow<Result<CandidateDetail?>> = flow {
         emit(Result.Loading)
         try {
             val query = searchCandidateQuery(id)
             detailRepository.getCandidateById(query).collect { dto ->
-                val candidate = convertToDetailScreen(dto.toDetail())
-                emit(Result.Success(candidate))
+                if (dto != null) {
+                    emit(Result.Success(dto.toDetail()?.let { convertToDetailScreen(it) }) )
+                }
             }
         } catch (e: Throwable) {
             Log.d("ERROR", "getCandidateByIdError: $e")

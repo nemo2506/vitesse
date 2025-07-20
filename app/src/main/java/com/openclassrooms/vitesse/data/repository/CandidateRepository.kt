@@ -1,5 +1,6 @@
 package com.openclassrooms.vitesse.data.repository
 
+import android.util.Log
 import androidx.sqlite.db.SupportSQLiteQuery
 import com.openclassrooms.vitesse.data.dao.CandidateDao
 import com.openclassrooms.vitesse.data.entity.CandidateWithDetailDto
@@ -21,6 +22,7 @@ class CandidateRepository(
             val result = candidateDao.upsertCandidate(candidate.toDto())
             emit(result)
         } catch (e: Exception) {
+            Log.d("ERROR", "upsertCandidateError: $e")
             emit(0)
         }
     }
