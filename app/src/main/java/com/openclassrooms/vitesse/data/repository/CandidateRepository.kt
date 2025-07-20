@@ -22,13 +22,4 @@ class CandidateRepository(
     }.catch { e ->
         emit(Result.failure(CandidateRepositoryException("Failed to update exercise", e)))
     }
-
-    // Del a candidate
-    fun deleteCandidate(candidate: Candidate): Flow<Result<Unit>> = flow {
-        val id = candidate.id ?: throw MissingCandidateIdException()
-        candidateDao.deleteCandidate(id)
-        emit(Result.success(Unit))
-    }.catch { e ->
-        emit(Result.failure(CandidateRepositoryException("Failed to del exercise", e)))
-    }
 }

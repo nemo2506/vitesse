@@ -2,14 +2,11 @@ package com.openclassrooms.vitesse.domain.usecase
 
 import android.util.Log
 import androidx.sqlite.db.SimpleSQLiteQuery
-import com.openclassrooms.vitesse.data.repository.DetailRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
 import com.openclassrooms.vitesse.data.entity.toSummary
 import com.openclassrooms.vitesse.data.repository.CandidateRepository
-import com.openclassrooms.vitesse.domain.model.Candidate
 import com.openclassrooms.vitesse.domain.model.CandidateSummary
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 
@@ -17,22 +14,19 @@ class CandidateUseCase @Inject constructor(
     private val candidateRepository: CandidateRepository
 ) {
 
-    fun getCandidate(fav: Int, searchTerm: String): Flow<List<CandidateSummary>> {
-        val query = searchCandidateAddQuery(searchTerm, fav)
-        return candidateRepository.getCandidate(query)
-            .map { listDto ->
-                listDto.map { dto ->
-                    dto.toSummary()
-                }
-            }
-            .catch { e ->
-                Log.d("ERROR", "executeError: $e")
-                emit(emptyList())
-            }
-    }
+    fun getCandidate(fav: Int, searchTerm: String): Flow<Result<List<CandidateSummary>>> = flow {
 
-    fun upsertCandidate(candidate: Candidate): Flow<Result<Unit>> {
-        return candidateRepository.upsertCandidate(candidate)
+        emit(Result.Loading)
+        try {
+            val query = searchCandidateAddQuery(searchTerm, fav)
+            candidateRepository.getCandidate(query).collect { listDto ->
+                val summaries = listDto.map { it.toSummary() }
+                emit(Result.Success(summaries))
+            }
+        } catch (e: Throwable) {
+            Log.d("ERROR", "executeError: $e")
+            emit(Result.Failure(e.message ?: "Unknown error"))
+        }
     }
 
     private fun searchCandidateAddQuery(

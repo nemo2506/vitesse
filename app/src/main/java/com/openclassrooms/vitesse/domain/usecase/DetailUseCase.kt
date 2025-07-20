@@ -3,14 +3,12 @@ package com.openclassrooms.vitesse.domain.usecase
 import android.util.Log
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.openclassrooms.vitesse.data.entity.toDetail
+import kotlinx.coroutines.flow.Flow
 import com.openclassrooms.vitesse.data.repository.CandidateRepository
 import com.openclassrooms.vitesse.data.repository.DetailRepository
-import com.openclassrooms.vitesse.domain.model.Candidate
 import com.openclassrooms.vitesse.domain.model.CandidateDetail
 import com.openclassrooms.vitesse.domain.model.CandidateTotal
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.flow
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.time.LocalDate
@@ -24,21 +22,39 @@ class DetailUseCase @Inject constructor(
     private val detailRepository: DetailRepository,
     private val candidateRepository: CandidateRepository
 ) {
-
-    fun getCandidateById(id: Long): Flow<Result<CandidateDetail>> {
-        val query = searchCandidateQuery(id)
-        return detailRepository.getCandidateById(query)
-            .map { dto ->
-                Result.success(convertToDetailScreen(dto.toDetail()))
+    fun getCandidateById(id: Long): Flow<Result<CandidateDetail>> = flow {
+        emit(Result.Loading)
+        try {
+            val query = searchCandidateQuery(id)
+            detailRepository.getCandidateById(query).collect { dto ->
+                val candidate = convertToDetailScreen(dto.toDetail())
+                emit(Result.Success(candidate))
             }
-            .catch { e ->
-                Log.d("ERROR", "executeError: $e")
-                emit(Result.failure(e))
-            }
+        } catch (e: Throwable) {
+            Log.d("ERROR", "executeError: $e")
+            emit(Result.Failure(e.message ?: "Unknown error"))
+        }
     }
 
-    fun deleteCandidate(candidateId: Long): Flow<Result<Unit>> {
-        return detailRepository.deleteCandidate(candidateId)
+    fun deleteCandidate(candidateId: Long): Flow<Result<Boolean>> = flow {
+        emit(Result.Loading)
+        try {
+            detailRepository.deleteCandidate(candidateId).collect { emit(Result.Success(it)) }
+        } catch (e: Throwable) {
+            Log.d("ERROR", "executeError: $e")
+            emit(Result.Failure(e.message ?: "Unknown error"))
+        }
+    }
+
+    fun updateFavoriteCandidate(id: Long, fav: Boolean): Flow<Result<Boolean>>  = flow {
+        emit(Result.Loading)
+        try {
+            detailRepository.updateFavoriteCandidate(id, !fav) // INVERSE LA VALEUR FAV POUR LA MODIFIER
+                .collect { emit(Result.Success(it)) }
+        } catch (e: Throwable) {
+            Log.d("ERROR", "executeError: $e")
+            emit(Result.Failure(e.message ?: "Unknown error"))
+        }
     }
 
     private fun convertToDetailScreen(candidateTotal: CandidateTotal): CandidateDetail{
@@ -71,9 +87,6 @@ class DetailUseCase @Inject constructor(
         return SimpleSQLiteQuery(newSql, argsList.toTypedArray())
     }
 
-    fun updateFavoriteCandidate(id: Long, fav: Boolean): Flow<Result<Unit>> {
-        return detailRepository.updateFavoriteCandidate(id, !fav) // INVERSE LA VALEUR FAV POUR LA MODIFIER
-    }
 
     private fun getSalaryClaimDescription(salaryClaim: Long): String {
         val symbols = DecimalFormatSymbols(Locale.FRANCE).apply {

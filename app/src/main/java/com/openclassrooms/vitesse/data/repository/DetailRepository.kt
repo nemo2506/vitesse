@@ -15,24 +15,29 @@ class DetailRepository(
     private val candidateDao: CandidateDao
 ) {
     // Get Candidate By Id
-    fun getCandidateById(query: SupportSQLiteQuery): Flow<CandidateWithDetailDto> =
-        candidateDao.getCandidateById(query)
+    fun getCandidateById(query: SupportSQLiteQuery): Flow<CandidateWithDetailDto> {
+        return candidateDao.getCandidateById(query)
+    }
 
     // Del a candidate
-    fun deleteCandidate(candidateId: Long): Flow<Result<Unit>> = flow {
-        candidateDao.deleteCandidate(candidateId)
-        emit(Result.success(Unit))
-    }.catch { e ->
-        Log.d("MARC", "deleteCandidate: $e")
-        emit(Result.failure(CandidateRepositoryException("Failed to del exercise", e)))
+    fun deleteCandidate(candidateId: Long): Flow<Boolean> = flow {
+        try {
+            val result = candidateDao.deleteCandidate(candidateId)
+            emit(result)
+        } catch (e: Exception) {
+            Log.d("MARC", "deleteCandidate: $e")
+            emit(false)
+        }
     }
 
     // Add or Modify a new candidate
-    fun updateFavoriteCandidate(id: Long, fav: Boolean): Flow<Result<Unit>> = flow {
-        candidateDao.updateCandidateFavorite(id, fav)
-        emit(Result.success(Unit))
-    }.catch { e ->
-        Log.d("MARC", "updateFavoriteCandidate: $e")
-        emit(Result.failure(CandidateRepositoryException("Failed to update exercise", e)))
+    fun updateFavoriteCandidate(id: Long, fav: Boolean): Flow<Boolean> = flow {
+        try {
+            val result = candidateDao.updateCandidateFavorite(id, fav)
+            emit(result)
+        } catch (e: Exception) {
+            Log.d("MARC", "updateFavoriteCandidate: $e")
+            emit(false)
+        }
     }
 }
