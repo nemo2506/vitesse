@@ -16,6 +16,9 @@
         android:theme="@style/Theme.Vitesse"
         tools:targetApi="31">
         <activity
+            android:name=".ui.add.AddActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.candidate.CandidateActivity"
             android:exported="false" />
         <activity

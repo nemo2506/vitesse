@@ -15,6 +15,7 @@ import com.google.android.material.tabs.TabLayout
 import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.databinding.ActivityCandidateBinding
 import com.openclassrooms.vitesse.ui.ConstantsApp
+import com.openclassrooms.vitesse.ui.add.AddActivity
 import com.openclassrooms.vitesse.ui.detail.DetailActivity
 import com.openclassrooms.vitesse.ui.upsert.UpsertActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -98,7 +99,7 @@ class CandidateActivity : AppCompatActivity() {
 
     private fun setupFabAdd() {
         fabAdd.setOnClickListener {
-            val intent = Intent(this, UpsertActivity::class.java)
+            val intent = Intent(this, AddActivity::class.java)
             startActivity(intent)
         }
     }

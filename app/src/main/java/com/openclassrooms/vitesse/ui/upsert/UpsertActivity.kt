@@ -67,14 +67,14 @@ class UpsertActivity : AppCompatActivity() {
     }
 
     private fun setupComMenu() {
-        binding.btnCall.setOnClickListener {
-            Toast.makeText(this, "Call", Toast.LENGTH_SHORT).show()
-        }
-        binding.btnSms.setOnClickListener {
-            Toast.makeText(this, "SMS", Toast.LENGTH_SHORT).show()
-        }
-        binding.btnEmail.setOnClickListener {
-            Toast.makeText(this, "EMAIL", Toast.LENGTH_SHORT).show()
-        }
+//        binding.btnCall.setOnClickListener {
+//            Toast.makeText(this, "Call", Toast.LENGTH_SHORT).show()
+//        }
+//        binding.btnSms.setOnClickListener {
+//            Toast.makeText(this, "SMS", Toast.LENGTH_SHORT).show()
+//        }
+//        binding.btnEmail.setOnClickListener {
+//            Toast.makeText(this, "EMAIL", Toast.LENGTH_SHORT).show()
+//        }
     }
 }
