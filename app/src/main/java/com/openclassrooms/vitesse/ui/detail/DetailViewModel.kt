@@ -1,6 +1,5 @@
 package com.openclassrooms.vitesse.ui.detail
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,7 +14,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.lang.Thread.sleep
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,7 +28,6 @@ class DetailViewModel @Inject constructor(
 
     init {
         if (candidateId != null) {
-            Log.d("MARC", "DetailViewModel/candidateId: $candidateId")
             observeCandidateTotal(candidateId)
         }
     }
@@ -50,13 +47,12 @@ class DetailViewModel @Inject constructor(
                                     message = null
                                 )
                             }
-                            delay(2000)  // TO TEST
+                            delay(1000)  // TO TEST
                         }
 
                         is Result.Success -> {
                             _uiState.update {
                                 val candidate = result.value
-                                Log.d("MARC", "observeCandidateTotal: $candidate")
                                 it.copy(
                                     candidate = result.value,
                                     isLoading = false,
@@ -147,7 +143,6 @@ class DetailViewModel @Inject constructor(
 
                         is Result.Success -> {
                             _uiState.update {
-                                Log.d("MARC", "deleteCandidate: $result")
                                 it.copy(
                                     isDeleted = true,
                                     candidate = null,

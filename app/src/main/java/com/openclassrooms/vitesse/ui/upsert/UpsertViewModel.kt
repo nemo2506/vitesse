@@ -30,7 +30,5 @@ class UpsertViewModel @Inject constructor(
  */
 data class UiState(
     var candidate: List<Candidate>? = null,
-    var isCandidateReady: Boolean? = null,
-    var isFavoriteReady: Boolean? = null,
-    var searchKey: String? = null
+    var isUpdated: Boolean? = null,
 )

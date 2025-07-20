@@ -3,7 +3,6 @@ package com.openclassrooms.vitesse.ui.detail
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Message
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
@@ -64,7 +63,6 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setUpUI(candidate: CandidateDetail) {
-        Log.d("MARC", "setUpUI: $candidate")
         this@DetailActivity.candidate = candidate
         val title = "%s %s".format(candidate.firstName, candidate.lastName)
         binding.toolbar.title = title

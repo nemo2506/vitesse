@@ -16,10 +16,12 @@ class CandidateRepository(
     }
 
     // Add or Modify a new candidate
-    fun upsertCandidate(candidate: Candidate): Flow<Result<Unit>> = flow {
-        candidateDao.upsertCandidate(candidate.toDto())
-        emit(Result.success(Unit))
-    }.catch { e ->
-        emit(Result.failure(CandidateRepositoryException("Failed to update exercise", e)))
+    fun upsertCandidate(candidate: Candidate): Flow<Long> = flow {
+        try {
+            val result = candidateDao.upsertCandidate(candidate.toDto())
+            emit(result)
+        } catch (e: Exception) {
+            emit(0)
+        }
     }
 }

@@ -2,7 +2,6 @@ package com.openclassrooms.vitesse.ui.candidate
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -106,7 +105,6 @@ class CandidateActivity : AppCompatActivity() {
     }
 
     private fun toDetailScreen(candidateId: Long) {
-        Log.d("MARC", "toDetailScreen: $candidateId")
         val intent = Intent(this, DetailActivity::class.java).apply {
             putExtra(ConstantsApp.CANDIDATE_ID, candidateId)
         }
