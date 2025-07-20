@@ -6,36 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ui.detail.DetailActivity">
-<!--    <androidx.coordinatorlayout.widget.CoordinatorLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent">-->
-<!--        -->
-<!--        &lt;!&ndash; Toolbar ici &ndash;&gt;-->
-<!--        <androidx.appcompat.widget.Toolbar-->
-<!--            android:id="@+id/toolbar"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="?attr/actionBarSize"-->
-<!--            android:background="?attr/colorPrimary"-->
-<!--            app:navigationIcon="@drawable/ic_arrow_back"-->
-<!--            app:titleCentered="true"-->
-<!--            app:titleTextAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"-->
-<!--            app:titleTextColor="@color/customIcon" />-->
 
-
-<!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--            android:id="@+id/fab_favorite"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="bottom|end"-->
-<!--            android:layout_margin="16dp"-->
-<!--            android:contentDescription="favorite icon"-->
-<!--            android:src="@drawable/ic_star"-->
-<!--            app:tint="?attr/colorOnPrimary" />-->
-
-<!--    </androidx.coordinatorlayout.widget.CoordinatorLayout>-->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
@@ -48,6 +19,20 @@
         app:titleCentered="true"
         app:titleTextAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
         app:titleTextColor="@color/customIcon" />
+
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="64dp"
+        android:layout_marginBottom="64dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.5" />
 
     <ScrollView
         android:id="@+id/scroll"
