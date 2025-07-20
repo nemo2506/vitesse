@@ -39,16 +39,19 @@ class DetailActivity : AppCompatActivity() {
         setToolbar()
         setMenu()
         setupComMenu()
-        observeCandidate()
+        observeDetail()
     }
 
-    private fun observeCandidate() {
+    private fun observeDetail() {
         lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
                 uiState.isLoading?.let { toLoaderUi(it) }
-                uiState.candidate?.let { setUpUI(uiState.candidate!!) }
-                uiState.message?.let{ toMessageUi(uiState.message!!) }
-                if(uiState.isDeleted == true) toCandidateScreen()
+                uiState.candidate?.let { setUpUI(it) }
+                uiState.message?.let {
+                    Log.d("MARC", "observeDetail: $it")
+                    toMessageUi(it)
+                }
+                if (uiState.isDeleted == true) toCandidateScreen()
             }
         }
     }
@@ -76,7 +79,7 @@ class DetailActivity : AppCompatActivity() {
 
     }
 
-    private fun toMessageUi(message: String){
+    private fun toMessageUi(message: String) {
         Toast.makeText(this@DetailActivity, message, Toast.LENGTH_SHORT).show()
     }
 
@@ -172,14 +175,18 @@ class DetailActivity : AppCompatActivity() {
                     }
 
                     R.id.fab_edit -> {
-                        Toast.makeText(this@DetailActivity, "MODIFIER EN COURS ...", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@DetailActivity,
+                            "MODIFIER EN COURS ...",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         true
                     }
 
                     R.id.fab_delete -> {
                         try {
-                            candidate.candidateId?.let { viewModel.deleteCandidate(it)}
-                        } catch(e: Exception) {
+                            candidate.candidateId?.let { viewModel.deleteCandidate(it) }
+                        } catch (e: Exception) {
                             Log.d("MARC", "deleteCandidate: $e")
                         }
                         true

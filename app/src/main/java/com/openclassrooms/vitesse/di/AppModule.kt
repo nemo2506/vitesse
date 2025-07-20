@@ -84,11 +84,10 @@ class AppModule {
     @Provides
     @Singleton
     fun provideDetailUseCase(
-        detailRepository: DetailRepository,
-        candidateRepository: CandidateRepository
+        detailRepository: DetailRepository
     ): DetailUseCase {
         return try {
-            DetailUseCase(detailRepository, candidateRepository)
+            DetailUseCase(detailRepository)
         } catch (e: Exception) {
             throw RuntimeException("Failed to provide DetailUseCase", e)
         }

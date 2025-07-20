@@ -19,8 +19,7 @@ import java.util.Locale
 import javax.inject.Inject
 
 class DetailUseCase @Inject constructor(
-    private val detailRepository: DetailRepository,
-    private val candidateRepository: CandidateRepository
+    private val detailRepository: DetailRepository
 ) {
     fun getCandidateById(id: Long): Flow<Result<CandidateDetail>> = flow {
         emit(Result.Loading)
@@ -31,7 +30,7 @@ class DetailUseCase @Inject constructor(
                 emit(Result.Success(candidate))
             }
         } catch (e: Throwable) {
-            Log.d("ERROR", "executeError: $e")
+            Log.d("ERROR", "getCandidateByIdError: $e")
             emit(Result.Failure(e.message ?: "Unknown error"))
         }
     }
@@ -43,7 +42,7 @@ class DetailUseCase @Inject constructor(
                 emit(Result.Success(it))
             }
         } catch (e: Throwable) {
-            Log.d("ERROR", "executeError: $e")
+            Log.d("ERROR", "deleteCandidateError: $e")
             emit(Result.Failure(e.message ?: "Unknown error"))
         }
     }
@@ -54,7 +53,7 @@ class DetailUseCase @Inject constructor(
             detailRepository.updateFavoriteCandidate(id, !fav) // INVERSE LA VALEUR FAV POUR LA MODIFIER
                 .collect { emit(Result.Success(it)) }
         } catch (e: Throwable) {
-            Log.d("ERROR", "executeError: $e")
+            Log.d("ERROR", "updateFavoriteCandidateError: $e")
             emit(Result.Failure(e.message ?: "Unknown error"))
         }
     }

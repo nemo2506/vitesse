@@ -1,5 +1,6 @@
 package com.openclassrooms.vitesse.ui.detail
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -52,7 +53,6 @@ class DetailViewModel @Inject constructor(
 
                         is Result.Success -> {
                             _uiState.update {
-                                val candidate = result.value
                                 it.copy(
                                     candidate = result.value,
                                     isLoading = false,
@@ -65,6 +65,9 @@ class DetailViewModel @Inject constructor(
 
                         is Result.Failure -> {
                             _uiState.update {
+                                val test = result.message
+                                val del = uiState.value.isDeleted
+                                Log.d("MARC", "getCandidateById: $test DELETED:$del")
                                 it.copy(
                                     isLoading = false,
                                     isFavoriteUpdated = false,

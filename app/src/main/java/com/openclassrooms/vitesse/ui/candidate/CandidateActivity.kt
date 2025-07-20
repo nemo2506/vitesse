@@ -2,6 +2,7 @@ package com.openclassrooms.vitesse.ui.candidate
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -32,12 +33,10 @@ class CandidateActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCandidateBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         fabAdd = findViewById(R.id.fab_add)
-
         setupRecyclerView()
         setupTab()
-        observeCandidates()
+        observeCandidate()
         choiceUser = viewModel.tabStarted
         viewModel.getSearch(choiceUser, "")
         userCall()
@@ -45,11 +44,11 @@ class CandidateActivity : AppCompatActivity() {
     }
 
 
-    private fun observeCandidates() {
+    private fun observeCandidate() {
         lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
                 uiState.isLoading?.let { toLoaderUi(it) }
-                uiState.candidate.let { candidateAdapter.submitList(uiState.candidate) }
+                uiState.candidate.let { candidateAdapter.submitList(it) }
                 uiState.message?.let { toMessageUi(it) }
             }
         }
