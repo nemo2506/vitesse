@@ -1,17 +1,18 @@
 package com.openclassrooms.vitesse.ui.candidate
 
 import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import javax.inject.Inject
-import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.update
 import com.openclassrooms.vitesse.domain.model.CandidateSummary
 import com.openclassrooms.vitesse.domain.usecase.CandidateUseCase
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
+import com.openclassrooms.vitesse.domain.usecase.Result
+import javax.inject.Inject
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 
 @HiltViewModel
 class CandidateViewModel @Inject constructor(
@@ -27,20 +28,22 @@ class CandidateViewModel @Inject constructor(
 
     private fun observeCandidate(fav: Int, searchTerm: String) {
         viewModelScope.launch {
-            launch {
-                candidateUseCase.getCandidate(fav, searchTerm)
-                    .catch {
-                        _uiState.update { it.copy(isCandidateReady = false, candidate = emptyList()) }
-                    }
-                    .collect { updated ->
-                        _uiState.update {
-                            it.copy(
-                                candidate = updated,
-                                isCandidateReady = updated.isNotEmpty()
-                            )
+            candidateUseCase.getCandidate(fav, searchTerm)
+                .collect { result ->
+                    when (result) {
+                        is Result.Loading -> {
+                            _uiState.update { it.copy(isLoading = true,  candidate = emptyList(), message = null) }
+
+                            delay(2000) // TO TEST
+                        }
+                        is Result.Success -> {
+                            _uiState.update { it.copy(isLoading = false, candidate = result.value, message = null) }
+                        }
+                        is Result.Failure -> {
+                            _uiState.update { it.copy(isLoading = false,  candidate = emptyList(), message = result.message) }
                         }
                     }
-            }
+                }
         }
     }
 
@@ -56,7 +59,6 @@ class CandidateViewModel @Inject constructor(
  */
 data class UiState(
     var candidate: List<CandidateSummary> = emptyList(),
-    var isCandidateReady: Boolean? = null,
-    var isFavoriteReady: Boolean? = null,
-    var searchKey: String? = null
+    var isLoading: Boolean? = null,
+    var message: String? = null
 )

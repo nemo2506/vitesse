@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -45,17 +46,16 @@ class DetailActivity : AppCompatActivity() {
     private fun observeCandidate() {
         lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
-                uiState.candidate?.let {
-                    setUpUI(uiState.candidate!!)
-                }
-                uiState.isDeleted?.let {
-                    toCandidateScreen()
-                }
-                uiState.message?.let {
-                    toMessageUi(uiState.message!!)
-                }
+                uiState.isLoading?.let { toLoaderUi(it) }
+                uiState.candidate?.let { setUpUI(uiState.candidate!!) }
+                uiState.message?.let{ toMessageUi(uiState.message!!) }
+                if(uiState.isDeleted == true) toCandidateScreen()
             }
         }
+    }
+
+    private fun toLoaderUi(loading: Boolean) {
+        binding.loading.visibility = if (loading) View.VISIBLE else View.GONE
     }
 
     private fun toCandidateScreen() {
@@ -64,6 +64,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setUpUI(candidate: CandidateDetail) {
+        Log.d("MARC", "setUpUI: $candidate")
         this@DetailActivity.candidate = candidate
         val title = "%s %s".format(candidate.firstName, candidate.lastName)
         binding.toolbar.title = title

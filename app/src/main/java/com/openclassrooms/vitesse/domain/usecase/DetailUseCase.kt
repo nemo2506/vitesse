@@ -36,17 +36,19 @@ class DetailUseCase @Inject constructor(
         }
     }
 
-    fun deleteCandidate(candidateId: Long): Flow<Result<Boolean>> = flow {
+    fun deleteCandidate(candidateId: Long): Flow<Result<Int>> = flow {
         emit(Result.Loading)
         try {
-            detailRepository.deleteCandidate(candidateId).collect { emit(Result.Success(it)) }
+            detailRepository.deleteCandidate(candidateId).collect {
+                emit(Result.Success(it))
+            }
         } catch (e: Throwable) {
             Log.d("ERROR", "executeError: $e")
             emit(Result.Failure(e.message ?: "Unknown error"))
         }
     }
 
-    fun updateFavoriteCandidate(id: Long, fav: Boolean): Flow<Result<Boolean>>  = flow {
+    fun updateFavoriteCandidate(id: Long, fav: Boolean): Flow<Result<Int>>  = flow {
         emit(Result.Loading)
         try {
             detailRepository.updateFavoriteCandidate(id, !fav) // INVERSE LA VALEUR FAV POUR LA MODIFIER

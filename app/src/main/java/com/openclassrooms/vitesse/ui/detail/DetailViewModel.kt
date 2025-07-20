@@ -1,17 +1,21 @@
 package com.openclassrooms.vitesse.ui.detail
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.openclassrooms.vitesse.domain.model.CandidateDetail
 import com.openclassrooms.vitesse.domain.usecase.DetailUseCase
 import com.openclassrooms.vitesse.ui.ConstantsApp
+import com.openclassrooms.vitesse.domain.usecase.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.lang.Thread.sleep
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,6 +30,7 @@ class DetailViewModel @Inject constructor(
 
     init {
         if (candidateId != null) {
+            Log.d("MARC", "DetailViewModel/candidateId: $candidateId")
             observeCandidateTotal(candidateId)
         }
     }
@@ -34,73 +39,138 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch {
             detailUseCase.getCandidateById(id)
                 .collect { result ->
-                    result.fold(
-                        onSuccess = { candidate ->
+                    when (result) {
+                        is Result.Loading -> {
                             _uiState.update {
                                 it.copy(
-                                    candidate = candidate,
-                                    isCandidateReady = true
+                                    isLoading = true,
+                                    candidate = null,
+                                    isFavoriteUpdated = false,
+                                    isDeleted = false,
+                                    message = null
                                 )
                             }
-                        },
-                        onFailure = { error ->
+                            delay(2000)  // TO TEST
+                        }
+
+                        is Result.Success -> {
                             _uiState.update {
+                                val candidate = result.value
+                                Log.d("MARC", "observeCandidateTotal: $candidate")
                                 it.copy(
-                                    candidate = null,
-                                    isCandidateReady = false,
-                                    message = error.toString()
+                                    candidate = result.value,
+                                    isLoading = false,
+                                    isFavoriteUpdated = false,
+                                    isDeleted = false,
+                                    message = null
                                 )
                             }
                         }
-                    )
+
+                        is Result.Failure -> {
+                            _uiState.update {
+                                it.copy(
+                                    isLoading = false,
+                                    isFavoriteUpdated = false,
+                                    isDeleted = false,
+                                    candidate = null,
+                                    message = result.message
+                                )
+                            }
+                        }
+                    }
                 }
         }
     }
-    
-    fun updateFavorite( id: Long, fav: Boolean ){
+
+    fun updateFavorite(id: Long, fav: Boolean) {
         viewModelScope.launch {
-            detailUseCase.updateFavoriteCandidate(id, fav).collect { result ->
-                    result.fold(
-                        onSuccess = {
+            detailUseCase.updateFavoriteCandidate(id, fav)
+                .collect { result ->
+                    when (result) {
+                        is Result.Loading -> {
                             _uiState.update {
                                 it.copy(
-                                    isFavoriteUpdated = true
-                                )
-                            }
-                        },
-                        onFailure = { error ->
-                            _uiState.update {
-                                it.copy(
+                                    isLoading = true,
                                     isFavoriteUpdated = false,
-                                    message = error.toString()
+                                    isDeleted = false,
+                                    candidate = null,
+                                    message = null
                                 )
                             }
                         }
-                    )
-            }
+
+                        is Result.Success -> {
+                            _uiState.update {
+                                it.copy(
+                                    isFavoriteUpdated = true,
+                                    isLoading = false,
+                                    candidate = null,
+                                    isDeleted = false,
+                                    message = null
+                                )
+                            }
+                        }
+
+                        is Result.Failure -> {
+                            _uiState.update {
+                                it.copy(
+                                    candidate = null,
+                                    isFavoriteUpdated = true,
+                                    isDeleted = false,
+                                    isLoading = false,
+                                    message = result.message
+                                )
+                            }
+                        }
+                    }
+                }
         }
     }
 
-    fun deleteCandidate(candidateId: Long){
+    fun deleteCandidate(candidateId: Long) {
         viewModelScope.launch {
-            detailUseCase.deleteCandidate(candidateId).collect { result ->
-                    result.fold(
-                        onSuccess = {
+            detailUseCase.deleteCandidate(candidateId)
+                .collect { result ->
+                    when (result) {
+                        is Result.Loading -> {
                             _uiState.update {
                                 it.copy(
-                                    isDeleted = result.isSuccess
-                                )
-                            }
-                        },
-                        onFailure = { error ->
-                            _uiState.update {
-                                it.copy(
-                                    message = error.toString()
+                                    isLoading = true,
+                                    isDeleted = false,
+                                    candidate = null,
+                                    isFavoriteUpdated = false,
+                                    message = null
                                 )
                             }
                         }
-                    )
-            }
+
+                        is Result.Success -> {
+                            _uiState.update {
+                                Log.d("MARC", "deleteCandidate: $result")
+                                it.copy(
+                                    isDeleted = true,
+                                    candidate = null,
+                                    isFavoriteUpdated = false,
+                                    isLoading = false,
+                                    message = null
+                                )
+                            }
+                        }
+
+                        is Result.Failure -> {
+                            _uiState.update {
+                                it.copy(
+                                    isDeleted = false,
+                                    candidate = null,
+                                    isFavoriteUpdated = false,
+                                    isLoading = false,
+                                    message = result.message
+                                )
+                            }
+                        }
+                    }
+                }
         }
     }
 }
@@ -112,9 +182,8 @@ class DetailViewModel @Inject constructor(
  */
 data class UiState(
     var candidate: CandidateDetail? = null,
-    var isCandidateReady: Boolean? = null,
     var isFavoriteUpdated: Boolean? = null,
-    var isUpdated: Boolean? = null,
     var isDeleted: Boolean? = null,
-    var message: String? = null
+    var isLoading: Boolean? = null,
+    var message: String? = null,
 )

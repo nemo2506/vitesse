@@ -9,6 +9,7 @@ import com.openclassrooms.vitesse.domain.model.Candidate
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import kotlin.time.Duration.Companion.milliseconds
 
 class DetailRepository(
     private val detailDao: DetailDao,
@@ -20,24 +21,24 @@ class DetailRepository(
     }
 
     // Del a candidate
-    fun deleteCandidate(candidateId: Long): Flow<Boolean> = flow {
+    fun deleteCandidate(candidateId: Long): Flow<Int> = flow {
         try {
             val result = candidateDao.deleteCandidate(candidateId)
             emit(result)
         } catch (e: Exception) {
             Log.d("MARC", "deleteCandidate: $e")
-            emit(false)
+            emit(0)
         }
     }
 
     // Add or Modify a new candidate
-    fun updateFavoriteCandidate(id: Long, fav: Boolean): Flow<Boolean> = flow {
+    fun updateFavoriteCandidate(id: Long, fav: Boolean): Flow<Int> = flow {
         try {
             val result = candidateDao.updateCandidateFavorite(id, fav)
             emit(result)
         } catch (e: Exception) {
             Log.d("MARC", "updateFavoriteCandidate: $e")
-            emit(false)
+            emit(0)
         }
     }
 }

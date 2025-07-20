@@ -32,8 +32,8 @@ interface CandidateDao {
     suspend fun insertCandidate(candidate: CandidateDto): Long
 
     @Query("DELETE FROM candidate WHERE id = :id")
-    suspend fun deleteCandidate(id: Long)
+    suspend fun deleteCandidate(id: Long): Int
 
     @Query("UPDATE candidate SET isFavorite = :fav WHERE id = :id")
-    suspend fun updateCandidateFavorite(id: Long, fav: Boolean)
+    suspend fun updateCandidateFavorite(id: Long, fav: Boolean): Int
 }

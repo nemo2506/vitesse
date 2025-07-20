@@ -3,6 +3,8 @@ package com.openclassrooms.vitesse.ui.candidate
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
@@ -43,6 +45,25 @@ class CandidateActivity : AppCompatActivity() {
         setupFabAdd()
     }
 
+
+    private fun observeCandidates() {
+        lifecycleScope.launch {
+            viewModel.uiState.collect { uiState ->
+                uiState.isLoading?.let { toLoaderUi(it) }
+                uiState.candidate.let { candidateAdapter.submitList(uiState.candidate) }
+                uiState.message?.let { toMessageUi(it) }
+            }
+        }
+    }
+
+    private fun toLoaderUi(loading: Boolean) {
+        binding.loading.visibility = if (loading) View.VISIBLE else View.GONE
+    }
+
+    private fun toMessageUi(message: String) {
+        Toast.makeText(this@CandidateActivity, message, Toast.LENGTH_SHORT).show()
+    }
+
     private fun setupRecyclerView() {
         candidateAdapter = CandidateAdapter { candidate ->
             toDetailScreen(candidate.id)
@@ -70,15 +91,6 @@ class CandidateActivity : AppCompatActivity() {
         tabLayout.getTabAt(viewModel.tabStarted)?.select()
     }
 
-    private fun observeCandidates() {
-        lifecycleScope.launch {
-            viewModel.uiState.collect { flowState ->
-                val candidate = flowState.candidate
-                candidateAdapter.submitList(candidate)
-            }
-        }
-    }
-
     private fun userCall() {
         viewModel.getSearch(choiceUser, binding.tvSearchEdit.text.toString())
         binding.tvSearchEdit.doOnTextChanged { text, _, _, _ ->
@@ -94,6 +106,7 @@ class CandidateActivity : AppCompatActivity() {
     }
 
     private fun toDetailScreen(candidateId: Long) {
+        Log.d("MARC", "toDetailScreen: $candidateId")
         val intent = Intent(this, DetailActivity::class.java).apply {
             putExtra(ConstantsApp.CANDIDATE_ID, candidateId)
         }
