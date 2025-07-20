@@ -1,4 +1,4 @@
-package com.openclassrooms.vitesse.data.repository
+package com.openclassrooms.vitesse.domain.usecase
 
 sealed class Result<out T> {
     object Loading : Result<Nothing>()
