@@ -25,9 +25,6 @@ interface CandidateDao {
     @Upsert
     suspend fun upsertCandidate(candidate: CandidateDto): Long
 
-    @Insert
-    suspend fun insertCandidate(candidate: CandidateDto): Long
-
     @Query("DELETE FROM candidate WHERE id = :id")
     suspend fun deleteCandidate(id: Long): Int
 
