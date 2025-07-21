@@ -14,10 +14,9 @@ interface CandidateWithDetailsDao {
     @Transaction
     suspend fun upsertCandidateWithDetails(candidateWithDetail: CandidateWithDetailDto): Long {
         val candidateId = upsertCandidate(candidateWithDetail.candidate)
-        val details = candidateWithDetail.details.map { detail ->
-            detail.copy(candidateId = candidateId)
-        }
-        details.forEach { detail ->
+        val detail = candidateWithDetail.detail
+        detail?.candidateId = candidateId
+        if (detail != null) {
             upsertDetail(detail)
         }
         return candidateId

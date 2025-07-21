@@ -10,11 +10,11 @@ import com.openclassrooms.vitesse.domain.model.CandidateTotal
 data class CandidateWithDetailDto(
     @Embedded val candidate: CandidateDto,
     @Relation(parentColumn = "id", entityColumn = "candidateId")
-    val details: List<DetailDto> = emptyList()
+    val detail: DetailDto? = null
 )
 
 fun CandidateWithDetailDto.toSummary(): CandidateSummary {
-    val noteValue = details.firstOrNull()?.note ?: ""
+    val noteValue = detail?.note ?: ""
     return CandidateSummary(
         id = candidate.id,
         firstName = candidate.firstName,
@@ -26,12 +26,12 @@ fun CandidateWithDetailDto.toSummary(): CandidateSummary {
 }
 
 fun CandidateWithDetailDto.toDetail(): CandidateTotal? {
-    Log.d("ERROR", "toDetail: $details")
-    details.firstOrNull() ?: return null
-    val detailIdValue = details.firstOrNull()?.candidateId
-    val dateValue = details.firstOrNull()?.date
-    val salaryClaimValue = details.firstOrNull()?.salaryClaim
-    val noteValue = details.firstOrNull()?.note
+    Log.d("ERROR", "toDetail: $detail")
+    detail ?: return null
+    val detailIdValue = detail.candidateId
+    val dateValue = detail.date
+    val salaryClaimValue = detail.salaryClaim
+    val noteValue = detail.note
     return CandidateTotal(
         id = candidate.id,
         firstName = candidate.firstName,
@@ -40,9 +40,9 @@ fun CandidateWithDetailDto.toDetail(): CandidateTotal? {
         phone = candidate.phone,
         isFavorite = candidate.isFavorite,
         photoUri = candidate.photoUri,
-        detailId = detailIdValue ?: return null,
-        date = dateValue ?: return null,
-        salaryClaim = salaryClaimValue ?: return null,
-        note = noteValue  ?: return null
+        detailId = detailIdValue,
+        date = dateValue,
+        salaryClaim = salaryClaimValue,
+        note = noteValue
     )
 }
