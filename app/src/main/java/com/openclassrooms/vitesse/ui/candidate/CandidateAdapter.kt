@@ -32,7 +32,7 @@ class CandidateAdapter(
             .load(candidate.photoUri)
             .into(holder.tvFace)
         holder.tvFirstName.text = String.format("%s", candidate.firstName)
-        holder.tvLastName.text = String.format("%s", candidate.lastName)
+        holder.tvLastName.text = String.format("%s", candidate.lastName.uppercase())
         holder.tvNote.text = String.format("%s", candidate.note)
         holder.itemView.setOnClickListener {
             toDetailScreen(candidate)
