@@ -8,6 +8,7 @@ import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.openclassrooms.vitesse.data.converter.Converters
 import com.openclassrooms.vitesse.data.dao.CandidateDao
+import com.openclassrooms.vitesse.data.dao.CandidateWithDetailsDao
 import com.openclassrooms.vitesse.data.dao.DetailDao
 import com.openclassrooms.vitesse.data.entity.CandidateDto
 import com.openclassrooms.vitesse.data.entity.DetailDto
@@ -23,7 +24,7 @@ import java.time.LocalDateTime
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun candidateDao(): CandidateDao
-    abstract fun detailDao(): DetailDao
+    abstract fun candidateWithDetailsDao(): CandidateWithDetailsDao
 
     private class AppDatabaseCallback(
         private val scope: CoroutineScope
@@ -32,7 +33,7 @@ abstract class AppDatabase : RoomDatabase() {
             super.onCreate(db)
             INSTANCE?.let { database ->
                 scope.launch {
-                    populateDatabase(database.candidateDao(), database.detailDao())
+                    populateDatabase(database.candidateDao(), database.candidateWithDetailsDao())
                 }
             }
         }
@@ -56,7 +57,7 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
-        suspend fun populateDatabase(candidateDao: CandidateDao, detailDao: DetailDao) {
+        suspend fun populateDatabase(candidateDao: CandidateDao, candidateWithDetailsDao: CandidateWithDetailsDao) {
 
             candidateDao.upsertCandidate(
                 CandidateDto(
@@ -167,8 +168,7 @@ abstract class AppDatabase : RoomDatabase() {
                 )
             )
 
-
-            detailDao.upsertDetail(
+            candidateWithDetailsDao.upsertDetail(
                 DetailDto(
                     date = LocalDateTime.of(2000, 7, 15, 8, 30),
                     salaryClaim = 10000,
@@ -176,7 +176,7 @@ abstract class AppDatabase : RoomDatabase() {
                     candidateId = 1
                 )
             )
-            detailDao.upsertDetail(
+            candidateWithDetailsDao.upsertDetail(
                 DetailDto(
                     date = LocalDateTime.of(2003, 5, 15, 15, 15),
                     salaryClaim = 1500,
@@ -184,7 +184,7 @@ abstract class AppDatabase : RoomDatabase() {
                     candidateId = 2
                 )
             )
-            detailDao.upsertDetail(
+            candidateWithDetailsDao.upsertDetail(
                 DetailDto(
                     date = LocalDateTime.of(2005, 3, 15, 9, 30),
                     salaryClaim = 3000,
@@ -192,7 +192,7 @@ abstract class AppDatabase : RoomDatabase() {
                     candidateId = 3
                 )
             )
-            detailDao.upsertDetail(
+            candidateWithDetailsDao.upsertDetail(
                 DetailDto(
                     date = LocalDateTime.of(2001, 1, 3, 8, 30),
                     salaryClaim = 5000,
@@ -200,7 +200,7 @@ abstract class AppDatabase : RoomDatabase() {
                     candidateId = 4
                 )
             )
-            detailDao.upsertDetail(
+            candidateWithDetailsDao.upsertDetail(
                 DetailDto(
                     date = LocalDateTime.of(2002, 6, 15, 8, 30),
                     salaryClaim = 1,
@@ -208,7 +208,7 @@ abstract class AppDatabase : RoomDatabase() {
                     candidateId = 5
                 )
             )
-            detailDao.upsertDetail(
+            candidateWithDetailsDao.upsertDetail(
                 DetailDto(
                     date = LocalDateTime.now(),
                     salaryClaim = 8000,
@@ -216,7 +216,7 @@ abstract class AppDatabase : RoomDatabase() {
                     candidateId = 6
                 )
             )
-            detailDao.upsertDetail(
+            candidateWithDetailsDao.upsertDetail(
                 DetailDto(
                     date = LocalDateTime.of(2004, 7, 15, 10, 0),
                     salaryClaim = 8000,
@@ -225,7 +225,7 @@ abstract class AppDatabase : RoomDatabase() {
                 )
             )
 
-            detailDao.upsertDetail(
+            candidateWithDetailsDao.upsertDetail(
                 DetailDto(
                     date = LocalDateTime.of(2005, 7, 15, 11, 30),
                     salaryClaim = 12000,
@@ -234,7 +234,7 @@ abstract class AppDatabase : RoomDatabase() {
                 )
             )
 
-            detailDao.upsertDetail(
+            candidateWithDetailsDao.upsertDetail(
                 DetailDto(
                     date = LocalDateTime.of(2006, 7, 15, 14, 0),
                     salaryClaim = 10000,
@@ -243,7 +243,7 @@ abstract class AppDatabase : RoomDatabase() {
                 )
             )
 
-            detailDao.upsertDetail(
+            candidateWithDetailsDao.upsertDetail(
                 DetailDto(
                     date = LocalDateTime.of(2007, 7, 15, 15, 45),
                     salaryClaim = 9500,

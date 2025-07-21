@@ -5,7 +5,9 @@ import androidx.sqlite.db.SimpleSQLiteQuery
 import kotlinx.coroutines.flow.Flow
 import com.openclassrooms.vitesse.data.entity.toSummary
 import com.openclassrooms.vitesse.data.repository.CandidateRepository
+import com.openclassrooms.vitesse.domain.model.Candidate
 import com.openclassrooms.vitesse.domain.model.CandidateSummary
+import com.openclassrooms.vitesse.domain.model.Detail
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
@@ -28,6 +30,20 @@ class CandidateUseCase @Inject constructor(
             emit(Result.Failure(e.message ?: "Unknown error"))
         }
     }
+
+//    fun updateCandidate(candidate: Candidate, detail: Detail): Flow<Result<Long>> = flow {
+//
+//        emit(Result.Loading)
+//        try {
+//            candidateRepository.upsertCandidateTotal(candidate, detail).collect { listDto ->
+//                val summaries = listDto.map { it.toSummary() }
+//                emit(Result.Success(summaries))
+//            }
+//        } catch (e: Throwable) {
+//            Log.d("ERROR", "executeError: $e")
+//            emit(Result.Failure(e.message ?: "Unknown error"))
+//        }
+//    }
 
     private fun searchCandidateAddQuery(
         searchTerm: String,

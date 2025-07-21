@@ -11,6 +11,7 @@ import com.openclassrooms.vitesse.data.entity.CandidateDto
 import com.openclassrooms.vitesse.data.entity.CandidateWithDetailDto
 import com.openclassrooms.vitesse.data.entity.DetailDto
 import kotlinx.coroutines.flow.Flow
+import com.openclassrooms.vitesse.data.dao.DetailDao
 
 @Dao
 interface CandidateDao {

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "f98f7b63051bbc3611798cc4615b59df",
+    "identityHash": "2c8784159cf41d5e81c7c899e6e26eac",
     "entities": [
       {
         "tableName": "candidate",
@@ -57,7 +57,17 @@
             "id"
           ]
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_candidate_email",
+            "unique": true,
+            "columnNames": [
+              "email"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_candidate_email` ON `${TABLE_NAME}` (`email`)"
+          }
+        ],
         "foreignKeys": []
       },
       {
@@ -120,7 +130,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f98f7b63051bbc3611798cc4615b59df')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2c8784159cf41d5e81c7c899e6e26eac')"
     ]
   }
 }

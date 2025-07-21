@@ -2,6 +2,7 @@ package com.openclassrooms.vitesse.di
 
 import android.content.Context
 import com.openclassrooms.vitesse.data.dao.CandidateDao
+import com.openclassrooms.vitesse.data.dao.CandidateWithDetailsDao
 import com.openclassrooms.vitesse.data.dao.DetailDao
 import com.openclassrooms.vitesse.data.database.AppDatabase
 import com.openclassrooms.vitesse.data.repository.CandidateRepository
@@ -48,21 +49,22 @@ class AppModule {
     }
 
     @Provides
-    fun provideDetailDao(appDatabase: AppDatabase): DetailDao {
+    fun provideCandidateWithDetailsDao(appDatabase: AppDatabase): CandidateWithDetailsDao {
         return try {
-            appDatabase.detailDao()
+            appDatabase.candidateWithDetailsDao()
         } catch (e: Exception) {
-            throw RuntimeException("Failed to provide DetailDao", e)
+            throw RuntimeException("Failed to provide CandidateWithDetailsDao", e)
         }
     }
 
     @Provides
     @Singleton
     fun provideCandidateRepository(
-        candidateDao: CandidateDao
+        candidateDao: CandidateDao,
+        candidateWithDetailsDao: CandidateWithDetailsDao
     ): CandidateRepository {
         return try {
-            CandidateRepository(candidateDao)
+            CandidateRepository(candidateDao,candidateWithDetailsDao)
         } catch (e: Exception) {
             throw RuntimeException("Failed to provide CandidateRepository", e)
         }
@@ -71,11 +73,10 @@ class AppModule {
     @Provides
     @Singleton
     fun provideDetailRepository(
-        detailDao: DetailDao,
         candidateDao: CandidateDao
     ): DetailRepository {
         return try {
-            DetailRepository(detailDao, candidateDao)
+            DetailRepository(candidateDao)
         } catch (e: Exception) {
             throw RuntimeException("Failed to provide DetailRepository", e)
         }
