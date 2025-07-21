@@ -26,7 +26,6 @@ class AddActivity : AppCompatActivity() {
     }
 
     private fun setUi() {
-        binding.etFirstname.setText("MARC")
         binding.toolbar.title = "Ajouter un candidat"
         val etDate = binding.etDate
         etDate.setOnClickListener {
