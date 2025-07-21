@@ -13,7 +13,7 @@ interface DetailDao {
     fun getDetailById(id: Long): Flow<DetailDto?>
 
     @Upsert
-    suspend fun updateDetail(detail: DetailDto): Long
+    suspend fun upsertDetail(detail: DetailDto): Long
 
     @Query("DELETE FROM detail WHERE id = :id")
     suspend fun deleteDetail(id: Long)
