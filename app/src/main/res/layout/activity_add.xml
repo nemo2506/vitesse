@@ -344,7 +344,6 @@
                     android:layout_height="wrap_content"
                     android:gravity="top|start"
                     android:hint="Note"
-                    android:background="@android:color/transparent"
                     android:inputType="textMultiLine"
                     android:minLines="8" />
             </com.google.android.material.textfield.TextInputLayout>
