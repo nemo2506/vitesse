@@ -17,7 +17,6 @@ import com.openclassrooms.vitesse.databinding.ActivityCandidateBinding
 import com.openclassrooms.vitesse.ui.ConstantsApp
 import com.openclassrooms.vitesse.ui.add.AddActivity
 import com.openclassrooms.vitesse.ui.detail.DetailActivity
-import com.openclassrooms.vitesse.ui.upsert.UpsertActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
