@@ -39,9 +39,9 @@ class AddActivity : AppCompatActivity() {
     }
 
     private fun setUi() {
-        val dateEditText = findViewById<TextInputEditText>(R.id.et_date)
-
-        dateEditText.setOnClickListener {
+        binding.etFirstname.setText("MARC")
+        val etDate = binding.etDate
+        etDate.setOnClickListener {
             val calendar = Calendar.getInstance()
             val year = calendar.get(Calendar.YEAR)
             val month = calendar.get(Calendar.MONTH)
@@ -50,7 +50,7 @@ class AddActivity : AppCompatActivity() {
             val datePicker = DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
                 val formattedDate =
                     "%02d/%02d/%04d".format(selectedDay, selectedMonth + 1, selectedYear)
-                dateEditText.setText(formattedDate)
+                etDate.setText(formattedDate)
             }, year, month, day)
 
             datePicker.show()
