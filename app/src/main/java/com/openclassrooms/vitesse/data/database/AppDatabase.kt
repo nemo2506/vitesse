@@ -58,7 +58,7 @@ abstract class AppDatabase : RoomDatabase() {
 
         suspend fun populateDatabase(candidateDao: CandidateDao, detailDao: DetailDao) {
 
-            candidateDao.insertCandidate(
+            candidateDao.upsertCandidate(
                 CandidateDto(
                     firstName = "Emma",
                     lastName = "Durand",
@@ -69,7 +69,7 @@ abstract class AppDatabase : RoomDatabase() {
                 )
             )
 
-            candidateDao.insertCandidate(
+            candidateDao.upsertCandidate(
                 CandidateDto(
                     firstName = "Lucas",
                     lastName = "Martin",
@@ -80,7 +80,7 @@ abstract class AppDatabase : RoomDatabase() {
                 )
             )
 
-            candidateDao.insertCandidate(
+            candidateDao.upsertCandidate(
                 CandidateDto(
                     firstName = "Chloé",
                     lastName = "Bernard",
@@ -91,7 +91,7 @@ abstract class AppDatabase : RoomDatabase() {
                 )
             )
 
-            candidateDao.insertCandidate(
+            candidateDao.upsertCandidate(
                 CandidateDto(
                     firstName = "Nathan",
                     lastName = "Robert",
@@ -102,7 +102,7 @@ abstract class AppDatabase : RoomDatabase() {
                 )
             )
 
-            candidateDao.insertCandidate(
+            candidateDao.upsertCandidate(
                 CandidateDto(
                     firstName = "Léa",
                     lastName = "Petit",
@@ -113,7 +113,7 @@ abstract class AppDatabase : RoomDatabase() {
                 )
             )
 
-            candidateDao.insertCandidate(
+            candidateDao.upsertCandidate(
                 CandidateDto(
                     firstName = "Hugo",
                     lastName = "Richard",
@@ -124,7 +124,7 @@ abstract class AppDatabase : RoomDatabase() {
                 )
             )
 
-            candidateDao.insertCandidate(
+            candidateDao.upsertCandidate(
                 CandidateDto(
                     firstName = "Camille",
                     lastName = "Garcia",
@@ -134,7 +134,7 @@ abstract class AppDatabase : RoomDatabase() {
                     photoUri = "https://xsgames.co/randomusers/assets/avatars/female/6.jpg"
                 )
             )
-            candidateDao.insertCandidate(
+            candidateDao.upsertCandidate(
                 CandidateDto(
                     firstName = "Joe",
                     lastName = "Dalton",
@@ -145,7 +145,7 @@ abstract class AppDatabase : RoomDatabase() {
                 )
             )
 
-            candidateDao.insertCandidate(
+            candidateDao.upsertCandidate(
                 CandidateDto(
                     firstName = "Julien",
                     lastName = "Moreau",
@@ -156,7 +156,7 @@ abstract class AppDatabase : RoomDatabase() {
                 )
             )
 
-            candidateDao.insertCandidate(
+            candidateDao.upsertCandidate(
                 CandidateDto(
                     firstName = "Sophie",
                     lastName = "Dubois",
