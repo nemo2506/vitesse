@@ -21,26 +21,23 @@ class CandidateRepository(
     }
 
     // Add or Modify a new candidate
-//    private fun upsertCandidateTotal(candidate: Candidate, detail: Detail): Flow<Long> = flow {
-//        try {
-//            val candidateWithDetail = CandidateWithDetailDto(candidate.toDto(), detail.toDto())
-//            val candidateId = candidateWithDetailsDao.upsertCandidate(candidateWithDetail)
-//            if (candidateId.toInt() != 0) {
-//                try {
-//                    upsertDetail(detail).collect { long ->
-//                        emit(long)
-//                    }
-//                } catch (e: Exception) {
-//                    Log.d("ERROR", "Constraint violation: $e")
-//                    emit(0)
-//                }
-//            }
-//        } catch (e: android.database.sqlite.SQLiteConstraintException) {
-//            Log.d("ERROR", "Constraint violation: $e")
-//            emit(0)
-//        } catch (e: Exception) {
-//            Log.d("ERROR", "upsertCandidateError: $e")
-//            emit(0)
-//        }
-//    }
+    fun upsertCandidateTotal(candidate: Candidate, detail: Detail): Flow<Long> = flow {
+        try {
+            val candidateWithDetail = CandidateWithDetailDto(candidate.toDto(), detail.toDto())
+            val candidateId =
+                candidateWithDetailsDao.upsertCandidateWithDetails(candidateWithDetail)
+            if (candidateId == 0L) {
+                emit(0)
+            } else {
+                emit(candidateId)
+            }
+            emit(candidateId)
+        } catch (e: android.database.sqlite.SQLiteConstraintException) {
+            Log.d("ERROR", "Constraint violation: $e")
+            emit(0)
+        } catch (e: Exception) {
+            Log.d("ERROR", "upsertCandidateError: $e")
+            emit(0)
+        }
+    }
 }

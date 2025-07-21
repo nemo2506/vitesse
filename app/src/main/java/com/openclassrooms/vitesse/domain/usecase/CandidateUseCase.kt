@@ -31,19 +31,17 @@ class CandidateUseCase @Inject constructor(
         }
     }
 
-//    fun updateCandidate(candidate: Candidate, detail: Detail): Flow<Result<Long>> = flow {
-//
-//        emit(Result.Loading)
-//        try {
-//            candidateRepository.upsertCandidateTotal(candidate, detail).collect { listDto ->
-//                val summaries = listDto.map { it.toSummary() }
-//                emit(Result.Success(summaries))
-//            }
-//        } catch (e: Throwable) {
-//            Log.d("ERROR", "executeError: $e")
-//            emit(Result.Failure(e.message ?: "Unknown error"))
-//        }
-//    }
+    fun updateCandidate(candidate: Candidate, detail: Detail): Flow<Result<Long>> = flow {
+        emit(Result.Loading)
+        try {
+            candidateRepository.upsertCandidateTotal(candidate, detail).collect {
+                emit(Result.Success(it))
+            }
+        } catch (e: Throwable) {
+            Log.d("ERROR", "executeError: $e")
+            emit(Result.Failure(e.message ?: "Unknown error"))
+        }
+    }
 
     private fun searchCandidateAddQuery(
         searchTerm: String,
