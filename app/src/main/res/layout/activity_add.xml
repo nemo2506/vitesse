@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.add.AddActivity">
+    android:layout_height="match_parent">
 
     <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
@@ -69,10 +67,17 @@
                 android:id="@+id/label_firstname"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
+                android:background="@null"
                 android:hint="Prénom"
+                app:boxBackgroundColor="@android:color/transparent"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusTopStart="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/icon_person"
                 app:layout_constraintTop_toBottomOf="@id/tv_face">
@@ -80,8 +85,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_firstname"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_rectangle" />
+                    android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Nom -->
@@ -90,7 +94,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:background="@null"
                 android:hint="Nom"
+                app:boxBackgroundColor="@android:color/transparent"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusTopStart="8dp"
                 app:layout_constraintEnd_toEndOf="@id/label_firstname"
                 app:layout_constraintStart_toStartOf="@id/label_firstname"
                 app:layout_constraintTop_toBottomOf="@id/label_firstname">
@@ -98,8 +109,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_lastname"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_rectangle" />
+                    android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Téléphone -->
@@ -118,7 +128,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:background="@null"
                 android:hint="Phone"
+                app:boxBackgroundColor="@android:color/transparent"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusTopStart="8dp"
                 app:layout_constraintEnd_toEndOf="@id/label_firstname"
                 app:layout_constraintStart_toStartOf="@id/label_firstname"
                 app:layout_constraintTop_toBottomOf="@id/label_lastname">
@@ -127,7 +144,6 @@
                     android:id="@+id/et_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_rectangle"
                     android:inputType="phone" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -147,7 +163,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:background="@null"
                 android:hint="Email"
+                app:boxBackgroundColor="@android:color/transparent"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusTopStart="8dp"
                 app:layout_constraintEnd_toEndOf="@id/label_firstname"
                 app:layout_constraintStart_toStartOf="@id/label_firstname"
                 app:layout_constraintTop_toBottomOf="@id/label_phone">
@@ -156,7 +179,6 @@
                     android:id="@+id/et_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_rectangle"
                     android:inputType="textEmailAddress" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -176,8 +198,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/bg_rectangle_add"
                 android:paddingBottom="20dp"
+                android:background="@drawable/bg_rectangle_add"
                 app:layout_constraintEnd_toEndOf="@id/label_firstname"
                 app:layout_constraintStart_toStartOf="@id/label_firstname"
                 app:layout_constraintTop_toBottomOf="@id/label_email">
@@ -226,6 +248,13 @@
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="15dp"
+                    android:background="@null"
+                    app:boxBackgroundColor="@android:color/transparent"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusBottomEnd="8dp"
+                    app:boxCornerRadiusBottomStart="8dp"
+                    app:boxCornerRadiusTopEnd="8dp"
+                    app:boxCornerRadiusTopStart="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/separator">
@@ -234,7 +263,6 @@
                         android:id="@+id/et_date"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_rectangle"
                         android:clickable="true"
                         android:focusable="false"
                         android:hint="Date"
@@ -259,10 +287,17 @@
                 android:id="@+id/tv_salary_claim"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
+                android:background="@null"
                 android:hint="Prétentions salariales"
+                app:boxBackgroundColor="@android:color/transparent"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusTopStart="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/icon_person"
                 app:layout_constraintTop_toBottomOf="@id/group_date">
@@ -271,7 +306,6 @@
                     android:id="@+id/et_salarary_claim"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_rectangle"
                     android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -291,10 +325,15 @@
                 android:id="@+id/tv_note"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="50dp"
+                app:boxBackgroundMode="outline"
+                app:boxCornerRadiusBottomEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusTopStart="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/icon_person"
                 app:layout_constraintTop_toBottomOf="@id/tv_salary_claim">
@@ -303,9 +342,8 @@
                     android:id="@+id/et_note"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_rectangle"
-                    android:hint="Note"
                     android:gravity="top|start"
+                    android:hint="Note"
                     android:inputType="textMultiLine"
                     android:minLines="8" />
             </com.google.android.material.textfield.TextInputLayout>
