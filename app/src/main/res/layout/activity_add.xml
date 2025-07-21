@@ -14,13 +14,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_arrow_back"
-        app:titleCentered="true"
         app:titleTextAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
         app:titleTextColor="@color/customIcon" />
 
     <!-- Scrollable content -->
     <ScrollView
-        android:id="@+id/scroll"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:fillViewport="true"
@@ -45,7 +43,7 @@
                 android:background="?attr/colorOnSecondary"
                 android:contentDescription="@string/candidate_face"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_candidate"
+                android:src="@drawable/ic_avatar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -59,19 +57,19 @@
                 android:layout_marginEnd="24dp"
                 android:clickable="true"
                 android:contentDescription="@string/appel"
-                android:src="@drawable/ic_candidate"
+                android:src="@drawable/ic_avatar"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_face" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/label_firstname"
+                android:id="@+id/tv_firstname"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:background="@null"
-                android:hint="Prénom"
+                android:hint="@string/firstname"
                 app:boxBackgroundColor="@android:color/transparent"
                 app:boxBackgroundMode="outline"
                 app:boxCornerRadiusBottomEnd="5dp"
@@ -90,21 +88,21 @@
 
             <!-- Nom -->
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/label_lastname"
+                android:id="@+id/tv_lastname"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@null"
-                android:hint="Nom"
+                android:hint="@string/lastname"
                 app:boxBackgroundColor="@android:color/transparent"
                 app:boxBackgroundMode="outline"
                 app:boxCornerRadiusBottomEnd="5dp"
                 app:boxCornerRadiusBottomStart="5dp"
                 app:boxCornerRadiusTopEnd="5dp"
                 app:boxCornerRadiusTopStart="5dp"
-                app:layout_constraintEnd_toEndOf="@id/label_firstname"
-                app:layout_constraintStart_toStartOf="@id/label_firstname"
-                app:layout_constraintTop_toBottomOf="@id/label_firstname">
+                app:layout_constraintEnd_toEndOf="@id/tv_firstname"
+                app:layout_constraintStart_toStartOf="@id/tv_firstname"
+                app:layout_constraintTop_toBottomOf="@id/tv_firstname">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_lastname"
@@ -121,24 +119,24 @@
                 android:contentDescription="@string/appel"
                 android:src="@drawable/ic_call"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/label_lastname" />
+                app:layout_constraintTop_toBottomOf="@id/tv_lastname" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/label_phone"
+                android:id="@+id/tv_phone"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@null"
-                android:hint="Phone"
+                android:hint="@string/phone"
                 app:boxBackgroundColor="@android:color/transparent"
                 app:boxBackgroundMode="outline"
                 app:boxCornerRadiusBottomEnd="5dp"
                 app:boxCornerRadiusBottomStart="5dp"
                 app:boxCornerRadiusTopEnd="5dp"
                 app:boxCornerRadiusTopStart="5dp"
-                app:layout_constraintEnd_toEndOf="@id/label_firstname"
-                app:layout_constraintStart_toStartOf="@id/label_firstname"
-                app:layout_constraintTop_toBottomOf="@id/label_lastname">
+                app:layout_constraintEnd_toEndOf="@id/tv_firstname"
+                app:layout_constraintStart_toStartOf="@id/tv_firstname"
+                app:layout_constraintTop_toBottomOf="@id/tv_lastname">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_phone"
@@ -153,27 +151,27 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="10dp"
-                android:contentDescription="ICON EMAIL"
+                android:contentDescription="@string/icon_email"
                 android:src="@drawable/ic_mail"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/label_phone" />
+                app:layout_constraintTop_toBottomOf="@id/tv_phone" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/label_email"
+                android:id="@+id/tv_email"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@null"
-                android:hint="Email"
+                android:hint="@string/email"
                 app:boxBackgroundColor="@android:color/transparent"
                 app:boxBackgroundMode="outline"
                 app:boxCornerRadiusBottomEnd="5dp"
                 app:boxCornerRadiusBottomStart="5dp"
                 app:boxCornerRadiusTopEnd="5dp"
                 app:boxCornerRadiusTopStart="5dp"
-                app:layout_constraintEnd_toEndOf="@id/label_firstname"
-                app:layout_constraintStart_toStartOf="@id/label_firstname"
-                app:layout_constraintTop_toBottomOf="@id/label_phone">
+                app:layout_constraintEnd_toEndOf="@id/tv_firstname"
+                app:layout_constraintStart_toStartOf="@id/tv_firstname"
+                app:layout_constraintTop_toBottomOf="@id/tv_phone">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_email"
@@ -188,10 +186,10 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="10dp"
-                android:contentDescription="ICON BIRTH"
+                android:contentDescription="@string/icon_birth"
                 android:src="@drawable/ic_birth"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/label_email" />
+                app:layout_constraintTop_toBottomOf="@id/tv_email" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/group_date"
@@ -200,9 +198,9 @@
                 android:layout_marginTop="10dp"
                 android:paddingBottom="20dp"
                 android:background="@drawable/bg_rectangle_add"
-                app:layout_constraintEnd_toEndOf="@id/label_firstname"
-                app:layout_constraintStart_toStartOf="@id/label_firstname"
-                app:layout_constraintTop_toBottomOf="@id/label_email">
+                app:layout_constraintEnd_toEndOf="@id/tv_firstname"
+                app:layout_constraintStart_toStartOf="@id/tv_firstname"
+                app:layout_constraintTop_toBottomOf="@id/tv_email">
 
                 <TextView
                     android:id="@+id/date_title"
@@ -211,7 +209,7 @@
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="15dp"
-                    android:text="Sélectionner une date"
+                    android:text="@string/select_date"
                     android:textSize="15sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -225,7 +223,7 @@
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="15dp"
-                    android:text="Entrer une date"
+                    android:text="@string/enter_date"
                     android:textSize="25sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -242,7 +240,7 @@
                     app:layout_constraintTop_toBottomOf="@id/cmd_date" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/label_date"
+                    android:id="@+id/tv_date"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
@@ -265,7 +263,7 @@
                         android:layout_height="wrap_content"
                         android:clickable="true"
                         android:focusable="false"
-                        android:hint="Date"
+                        android:hint="@string/date"
                         android:inputType="none" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -278,7 +276,7 @@
                 android:layout_height="30dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="24dp"
-                android:contentDescription="@string/appel"
+                android:contentDescription="@string/salary_description"
                 android:src="@drawable/ic_dollar"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/group_date" />
@@ -291,7 +289,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:background="@null"
-                android:hint="Prétentions salariales"
+                android:hint="@string/salary_claim"
                 app:boxBackgroundColor="@android:color/transparent"
                 app:boxBackgroundMode="outline"
                 app:boxCornerRadiusBottomEnd="5dp"
@@ -303,7 +301,7 @@
                 app:layout_constraintTop_toBottomOf="@id/group_date">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_salarary_claim"
+                    android:id="@+id/et_salary_claim"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number" />
@@ -316,7 +314,7 @@
                 android:layout_height="30dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="24dp"
-                android:contentDescription="@string/appel"
+                android:contentDescription="@string/appel_description"
                 android:src="@drawable/ic_edit"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_salary_claim" />
@@ -343,7 +341,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="top|start"
-                    android:hint="Note"
+                    android:hint="@string/note"
                     android:inputType="textMultiLine"
                     android:minLines="8" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -358,7 +356,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:backgroundTint="@color/colorPrimaryVariant"
-        android:text="Sauvegarder"
+        android:text="@string/save"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         app:cornerRadius="24dp"

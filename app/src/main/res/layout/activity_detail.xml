@@ -59,6 +59,7 @@
                 android:layout_marginTop="12dp"
                 android:background="?attr/colorOnSecondary"
                 android:contentDescription="@string/candidate_face"
+                android:src="@drawable/ic_avatar"
                 android:scaleType="fitCenter"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
