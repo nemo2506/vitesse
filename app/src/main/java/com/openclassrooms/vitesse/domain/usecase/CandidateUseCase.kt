@@ -2,16 +2,14 @@ package com.openclassrooms.vitesse.domain.usecase
 
 import android.util.Log
 import androidx.sqlite.db.SimpleSQLiteQuery
-import kotlinx.coroutines.flow.Flow
 import com.openclassrooms.vitesse.data.entity.toSummary
 import com.openclassrooms.vitesse.data.repository.CandidateRepository
+import kotlinx.coroutines.flow.Flow
 import com.openclassrooms.vitesse.domain.model.Candidate
 import com.openclassrooms.vitesse.domain.model.CandidateSummary
 import com.openclassrooms.vitesse.domain.model.Detail
-import com.openclassrooms.vitesse.domain.usecase.Result
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
-
 
 class CandidateUseCase @Inject constructor(
     private val candidateRepository: CandidateRepository

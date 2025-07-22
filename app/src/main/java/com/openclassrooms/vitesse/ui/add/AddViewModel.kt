@@ -58,6 +58,7 @@ class AddViewModel @Inject constructor(
                     when (result) {
                         is Result.Loading -> {
                             _uiState.update { it.copy(isLoading = true, message = null, isUpdated = false) }
+                            delay(1000)
                         }
 
                         is Result.Success -> {

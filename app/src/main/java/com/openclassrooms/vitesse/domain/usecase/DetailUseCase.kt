@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.openclassrooms.vitesse.data.entity.toDetail
 import kotlinx.coroutines.flow.Flow
-import com.openclassrooms.vitesse.data.repository.CandidateRepository
 import com.openclassrooms.vitesse.data.repository.DetailRepository
 import com.openclassrooms.vitesse.domain.model.CandidateDetail
 import com.openclassrooms.vitesse.domain.model.CandidateTotal

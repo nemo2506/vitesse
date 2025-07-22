@@ -64,9 +64,6 @@ class AddActivity : AppCompatActivity() {
     }
 
     private fun setSave() {
-
-        binding.etFirstname.setText("TEST")
-
         val tvFace: ImageView = binding.tvFace
 
         val tvFaceUrl = binding.tvFaceUrl.text.toString()
