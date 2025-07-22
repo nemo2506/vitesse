@@ -2,9 +2,6 @@ package com.openclassrooms.vitesse.ui.candidate
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
@@ -13,9 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.databinding.ActivityCandidateBinding
-import com.openclassrooms.vitesse.ui.ConstantsApp
 import com.openclassrooms.vitesse.ui.add.AddActivity
-import com.openclassrooms.vitesse.ui.detail.DetailActivity
+import com.openclassrooms.vitesse.ui.utils.navigateToDetailScreen
 import com.openclassrooms.vitesse.ui.utils.setVisible
 import com.openclassrooms.vitesse.ui.utils.showToastMessage
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,19 +44,15 @@ class CandidateActivity : AppCompatActivity() {
             viewModel.uiState.collect { uiState ->
                 uiState.isLoading?.let { binding.loading.setVisible(it) }
                 uiState.candidate.let { candidateAdapter.submitList(it) }
-                uiState.message?.let {
-                    Log.d("MARC", "observeCandidate/message: $it")
-                    showToastMessage(this@CandidateActivity ,it)
-                }
+                uiState.message?.let { showToastMessage(this@CandidateActivity, it) }
             }
         }
     }
 
     private fun setupRecyclerView() {
         candidateAdapter = CandidateAdapter { candidate ->
-            toDetailScreen(candidate.id)
+            navigateToDetailScreen(this@CandidateActivity, candidate.id)
         }
-
         binding.candidateRecyclerview.layoutManager = LinearLayoutManager(this)
         binding.candidateRecyclerview.adapter = candidateAdapter
     }
@@ -96,12 +88,5 @@ class CandidateActivity : AppCompatActivity() {
             val intent = Intent(this, AddActivity::class.java)
             startActivity(intent)
         }
-    }
-
-    private fun toDetailScreen(candidateId: Long) {
-        val intent = Intent(this, DetailActivity::class.java).apply {
-            putExtra(ConstantsApp.CANDIDATE_ID, candidateId)
-        }
-        startActivity(intent)
     }
 }

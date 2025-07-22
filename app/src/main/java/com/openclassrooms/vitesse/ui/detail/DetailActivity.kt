@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -20,6 +19,7 @@ import com.openclassrooms.vitesse.databinding.ActivityDetailBinding
 import com.openclassrooms.vitesse.domain.model.CandidateDetail
 import com.openclassrooms.vitesse.ui.utils.loadImage
 import com.openclassrooms.vitesse.ui.utils.navigateToCandidateScreen
+import com.openclassrooms.vitesse.ui.utils.navigateToEditScreen
 import com.openclassrooms.vitesse.ui.utils.setVisible
 import com.openclassrooms.vitesse.ui.utils.showToastMessage
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,7 +31,7 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
     private val viewModel: DetailViewModel by viewModels()
     private lateinit var candidate: CandidateDetail
-    lateinit var toolbar: androidx.appcompat.widget.Toolbar
+    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +40,6 @@ class DetailActivity : AppCompatActivity() {
         toolbar = binding.toolbar
         setToolbar()
         setMenu()
-        setupComMenu()
         observeDetail()
     }
 
@@ -62,7 +61,7 @@ class DetailActivity : AppCompatActivity() {
         val title = "%s %s".format(candidate.firstName, candidate.lastName)
         toolbar.title = title
         setFavoriteUi(candidate.isFavorite)
-        setFab(candidate, title)
+        setCom(candidate, title)
         candidate.photoUri?.let { binding.tvFace.loadImage(it) }
         binding.tvBirth.text = candidate.dateDescription
         binding.tvSalary.text = candidate.salaryClaimDescription
@@ -79,7 +78,7 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun setFab(candidate: CandidateDetail, title: String) {
+    private fun setCom(candidate: CandidateDetail, title: String) {
         binding.btnCall.setOnClickListener {
             candidate.phone?.let { it1 -> setCall(it1) }
         }
@@ -152,11 +151,7 @@ class DetailActivity : AppCompatActivity() {
                     }
 
                     R.id.fab_edit -> {
-                        Toast.makeText(
-                            this@DetailActivity,
-                            "MODIFIER EN COURS ...",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        viewModel.candidateId?.let { navigateToEditScreen(this@DetailActivity, it) }
                         true
                     }
 
@@ -173,17 +168,5 @@ class DetailActivity : AppCompatActivity() {
                 }
             }
         }, this, Lifecycle.State.RESUMED)
-    }
-
-    private fun setupComMenu() {
-        binding.btnCall.setOnClickListener {
-            Toast.makeText(this, "Call", Toast.LENGTH_SHORT).show()
-        }
-        binding.btnSms.setOnClickListener {
-            Toast.makeText(this, "SMS", Toast.LENGTH_SHORT).show()
-        }
-        binding.btnEmail.setOnClickListener {
-            Toast.makeText(this, "EMAIL", Toast.LENGTH_SHORT).show()
-        }
     }
 }

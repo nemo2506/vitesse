@@ -1,21 +1,16 @@
 package com.openclassrooms.vitesse.ui.add
 
 import android.app.DatePickerDialog
-import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.bumptech.glide.Glide
 import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.databinding.ActivityAddBinding
-import com.openclassrooms.vitesse.ui.ConstantsApp
-import com.openclassrooms.vitesse.ui.candidate.CandidateActivity
-import com.openclassrooms.vitesse.ui.detail.DetailActivity
 import com.openclassrooms.vitesse.ui.utils.loadImage
 import com.openclassrooms.vitesse.ui.utils.navigateToCandidateScreen
+import com.openclassrooms.vitesse.ui.utils.navigateToDetailScreen
 import com.openclassrooms.vitesse.ui.utils.setVisible
 import com.openclassrooms.vitesse.ui.utils.showToastMessage
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,7 +22,7 @@ class AddActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddBinding
     private val viewModel: AddViewModel by viewModels()
-    lateinit var toolbar: androidx.appcompat.widget.Toolbar
+    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +30,7 @@ class AddActivity : AppCompatActivity() {
         setContentView(binding.root)
         toolbar = binding.toolbar
         setUi()
+        setDateUi()
         setToolbar()
         observeAdd()
     }
@@ -44,7 +40,7 @@ class AddActivity : AppCompatActivity() {
             viewModel.uiState.collect { uiState ->
                 uiState.isLoading?.let { binding.loading.setVisible(it) }
                 uiState.message?.let { showToastMessage(this@AddActivity ,it) }
-                uiState.candidateId?.let { toDetailScreen(it) }
+                uiState.candidateId?.let { navigateToDetailScreen(this@AddActivity, it) }
             }
         }
     }
@@ -54,23 +50,23 @@ class AddActivity : AppCompatActivity() {
         binding.saveButton.setOnClickListener {
             setSave()
         }
+    }
+
+    private fun setDateUi(){
         val etDate = binding.etDate
         etDate.setOnClickListener {
             val calendar = Calendar.getInstance()
             val year = calendar.get(Calendar.YEAR)
             val month = calendar.get(Calendar.MONTH)
             val day = calendar.get(Calendar.DAY_OF_MONTH)
-
             val datePicker = DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
                 val formattedDate =
                     "%02d/%02d/%04d".format(selectedDay, selectedMonth + 1, selectedYear)
                 etDate.setText(formattedDate)
             }, year, month, day)
-
             datePicker.show()
         }
     }
-
     private fun setToolbar() {
         setSupportActionBar(toolbar)
         toolbar.setNavigationOnClickListener {
@@ -81,7 +77,6 @@ class AddActivity : AppCompatActivity() {
     private fun setSave() {
         val etLastname = binding.etLastname
         val etEmail = binding.etEmail
-        val etDate = binding.etDate
 
         if (etLastname.text?.toString().isNullOrBlank()) {
             etLastname.error = "Ce champ est obligatoire"
@@ -111,15 +106,8 @@ class AddActivity : AppCompatActivity() {
             email = binding.etEmail.text.toString(),
             photoUri = binding.tvFaceUrl.text.toString(),
             note = binding.etNote.text.toString(),
-            date = birthDate, // binding.etDate.text.toString()
+            date = birthDate,
             salaryClaim = binding.etSalaryClaim.text.toString().toLongOrNull()
         )
-    }
-
-    private fun toDetailScreen(candidateId: Long) {
-        val intent = Intent(this, DetailActivity::class.java).apply {
-            putExtra(ConstantsApp.CANDIDATE_ID, candidateId)
-        }
-        startActivity(intent)
     }
 }
