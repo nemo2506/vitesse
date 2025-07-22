@@ -31,7 +31,7 @@ class CandidateAdapter(
         Glide.with(holder.itemView.context)
             .load(candidate.photoUri)
             .into(holder.tvFace)
-        holder.tvFirstName.text = String.format("%s", candidate.firstName)
+        holder.tvFirstName.text = candidate.firstName?.let { String.format("%s", it.capitalizeFirstLetter()) }
         holder.tvLastName.text = String.format("%s", candidate.lastName.uppercase())
         holder.tvNote.text = String.format("%s", candidate.note)
         holder.itemView.setOnClickListener {
@@ -65,5 +65,9 @@ class CandidateAdapter(
                     return oldItem == newItem
                 }
             }
+    }
+
+    private fun String.capitalizeFirstLetter(): String {
+        return this.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.lowercase() }
     }
 }
