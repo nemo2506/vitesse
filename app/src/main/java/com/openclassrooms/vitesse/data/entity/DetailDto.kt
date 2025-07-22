@@ -17,8 +17,8 @@ import androidx.room.ForeignKey
 data class DetailDto(
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0,
-    var date: LocalDateTime,
-    var salaryClaim: Long,
-    var note: String,
+    var date: LocalDateTime? = null,
+    var salaryClaim: Long? = null,
+    var note: String? = null,
     var candidateId: Long
 )

@@ -12,11 +12,12 @@ import com.openclassrooms.vitesse.data.entity.DetailDto
 interface CandidateWithDetailsDao {
 
     @Transaction
-    suspend fun upsertCandidateWithDetails(candidateWithDetail: CandidateWithDetailDto): Long {
-        val candidateId = upsertCandidate(candidateWithDetail.candidateDto)
-        candidateWithDetail.detailDto?.let {
-            val detailToUpsert = it.copy(candidateId = candidateId)
-            upsertDetail(detailToUpsert)
+    suspend fun upsertCandidateWithDetails(candidateWithDetailDto: CandidateWithDetailDto): Long {
+        val candidateId = upsertCandidate(candidateWithDetailDto.candidateDto)
+        candidateWithDetailDto.detailDto?.let {
+            val detailDto = it.copy(candidateId = candidateId)
+            Log.d("MARC", "upsertCandidateWithDetails: $detailDto")
+            upsertDetail(detailDto)
         }
         return candidateId
     }

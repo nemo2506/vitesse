@@ -64,8 +64,20 @@ class AddActivity : AppCompatActivity() {
     }
 
     private fun setSave() {
-        val tvFace: ImageView = binding.tvFace
+        val etLastname = binding.etLastname
+        val etEmail = binding.etEmail
 
+        val tvFace: ImageView = binding.tvFace
+        if (etLastname.text?.toString().isNullOrBlank()) {
+            etLastname.error = "Ce champ est obligatoire"
+        } else {
+            etLastname.error = null // pour retirer l’erreur
+        }
+        if (etEmail.text?.toString().isNullOrBlank()) {
+            etEmail.error = "Ce champ est obligatoire"
+        } else {
+            etEmail.error = null // pour retirer l’erreur
+        }
         val tvFaceUrl = binding.tvFaceUrl.text.toString()
         if (tvFaceUrl.isNotBlank()) {
             Glide.with(this)

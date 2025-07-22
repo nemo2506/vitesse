@@ -43,14 +43,13 @@ class AddViewModel @Inject constructor(
             photoUri = photoUri,
             note = note
         )
-        val detail = if (date != null && salaryClaim != null) {
+        val detail =
             Detail(
                 date = date,
                 salaryClaim = salaryClaim,
-                note = note ?: "",
+                note = note,
                 candidateId = 0
             )
-        } else null
 
         viewModelScope.launch {
             candidateUseCase.updateCandidate(candidate, detail)

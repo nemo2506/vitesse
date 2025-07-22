@@ -4,12 +4,12 @@ import com.openclassrooms.vitesse.data.entity.CandidateDto
 
 data class Candidate(
     val id: Long? = null,
-    var firstName: String,
+    var firstName: String? = null,
     var lastName: String,
-    var phone: String,
+    var phone: String? = null,
     var email: String,
     var isFavorite: Boolean = false,
-    var photoUri: String = "",
+    var photoUri: String? = null,
     var note: String? = null
 ) {
     companion object {

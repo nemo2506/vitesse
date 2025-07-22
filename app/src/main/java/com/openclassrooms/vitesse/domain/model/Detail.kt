@@ -5,9 +5,9 @@ import java.time.LocalDateTime
 
 data class Detail(
     val id: Long? = null,
-    var date: LocalDateTime,
-    var salaryClaim: Long,
-    var note: String,
+    var date: LocalDateTime? = null,
+    var salaryClaim: Long? = null,
+    var note: String? = null,
     var candidateId: Long
 
     ) {

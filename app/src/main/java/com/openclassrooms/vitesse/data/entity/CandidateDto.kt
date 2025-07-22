@@ -12,12 +12,12 @@ import androidx.room.Index
 data class CandidateDto(
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0,
-    var firstName: String,
+    var firstName: String? = null,
     var lastName: String,
-    var phone: String,
+    var phone: String? = null,
     var email: String,
     var isFavorite: Boolean,
-    var photoUri: String,
+    var photoUri: String? = null,
 ) {
     @Ignore
     var note: String? = null

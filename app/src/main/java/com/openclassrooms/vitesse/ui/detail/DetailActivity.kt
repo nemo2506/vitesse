@@ -70,7 +70,7 @@ class DetailActivity : AppCompatActivity() {
         binding.toolbar.title = title
         setFavoriteUi(candidate.isFavorite)
         setFab(candidate, title)
-        setFace(candidate.photoUri, binding.tvFace)
+        candidate.photoUri?.let { setFace(it, binding.tvFace) }
         binding.tvBirth.text = candidate.dateDescription
         binding.tvSalary.text = candidate.salaryClaimDescription
         binding.tvSalaryGbp.text = candidate.salaryClaimGpb
@@ -92,10 +92,10 @@ class DetailActivity : AppCompatActivity() {
 
     private fun setFab(candidate: CandidateDetail, title: String) {
         binding.btnCall.setOnClickListener {
-            setCall(candidate.phone)
+            candidate.phone?.let { it1 -> setCall(it1) }
         }
         binding.btnSms.setOnClickListener {
-            setSms(candidate.phone, title)
+            candidate.phone?.let { it1 -> setSms(it1, title) }
         }
         binding.btnEmail.setOnClickListener {
             setEmail(candidate.email, title)

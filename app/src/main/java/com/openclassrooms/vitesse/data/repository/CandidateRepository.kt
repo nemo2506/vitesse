@@ -20,13 +20,14 @@ class CandidateRepository(
     }
 
     // Add or Modify a new candidate
-    fun upsertCandidateTotal(candidate: Candidate, detail: Detail?): Flow<Long> = flow {
+    fun upsertCandidateTotal(candidate: Candidate, detail: Detail): Flow<Long> = flow {
         try {
-            val candidateWithDetail = CandidateWithDetailDto(
+            val candidateWithDetailDto = CandidateWithDetailDto(
                 candidate.toDto(),
-                detail?.toDto()
+                detail.toDto()
             )
-            val validate = candidateWithDetailsDao.upsertCandidateWithDetails(candidateWithDetail)
+            Log.d("MARC", "upsertCandidateTotal/candidateWithDetailDto: $candidateWithDetailDto")
+            val validate = candidateWithDetailsDao.upsertCandidateWithDetails(candidateWithDetailDto)
             emit(validate)
         } catch (e: SQLiteConstraintException) {
             Log.d("ERROR", "Constraint violation: $e")

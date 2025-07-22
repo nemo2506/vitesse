@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "2c8784159cf41d5e81c7c899e6e26eac",
+    "identityHash": "438e751ea5c4adbebd5791db47f2c1b6",
     "entities": [
       {
         "tableName": "candidate",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `firstName` TEXT NOT NULL, `lastName` TEXT NOT NULL, `phone` TEXT NOT NULL, `email` TEXT NOT NULL, `isFavorite` INTEGER NOT NULL, `photoUri` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `firstName` TEXT, `lastName` TEXT NOT NULL, `phone` TEXT, `email` TEXT NOT NULL, `isFavorite` INTEGER NOT NULL, `photoUri` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -18,7 +18,7 @@
             "fieldPath": "firstName",
             "columnName": "firstName",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "lastName",
@@ -30,7 +30,7 @@
             "fieldPath": "phone",
             "columnName": "phone",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "email",
@@ -48,7 +48,7 @@
             "fieldPath": "photoUri",
             "columnName": "photoUri",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -72,7 +72,7 @@
       },
       {
         "tableName": "detail",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `date` INTEGER NOT NULL, `salaryClaim` INTEGER NOT NULL, `note` TEXT NOT NULL, `candidateId` INTEGER NOT NULL, FOREIGN KEY(`candidateId`) REFERENCES `candidate`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `date` INTEGER, `salaryClaim` INTEGER, `note` TEXT, `candidateId` INTEGER NOT NULL, FOREIGN KEY(`candidateId`) REFERENCES `candidate`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -84,19 +84,19 @@
             "fieldPath": "date",
             "columnName": "date",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "salaryClaim",
             "columnName": "salaryClaim",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "note",
             "columnName": "note",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "candidateId",
@@ -130,7 +130,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2c8784159cf41d5e81c7c899e6e26eac')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '438e751ea5c4adbebd5791db47f2c1b6')"
     ]
   }
 }

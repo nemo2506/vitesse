@@ -68,9 +68,9 @@ class DetailUseCase @Inject constructor(
             email= candidateTotal.email,
             isFavorite= candidateTotal.isFavorite,
             photoUri= candidateTotal.photoUri,
-            dateDescription= getDateDescription(candidateTotal.date),
-            salaryClaimDescription= getSalaryClaimDescription(candidateTotal.salaryClaim),
-            salaryClaimGpb= getClaimGbpDescription(candidateTotal.salaryClaim),
+            dateDescription= candidateTotal.date?.let { getDateDescription(it) },
+            salaryClaimDescription= candidateTotal.salaryClaim?.let { getSalaryClaimDescription(it) },
+            salaryClaimGpb= candidateTotal.salaryClaim?.let { getClaimGbpDescription(it) },
             note= candidateTotal.note,
         )
     }

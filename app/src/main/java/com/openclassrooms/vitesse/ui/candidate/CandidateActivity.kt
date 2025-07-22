@@ -49,7 +49,10 @@ class CandidateActivity : AppCompatActivity() {
             viewModel.uiState.collect { uiState ->
                 uiState.isLoading?.let { toLoaderUi(it) }
                 uiState.candidate.let { candidateAdapter.submitList(it) }
-                uiState.message?.let { toMessageUi(it) }
+                uiState.message?.let {
+                    Log.d("MARC", "observeCandidate/message: $it")
+                    toMessageUi(it)
+                }
             }
         }
     }
