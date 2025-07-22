@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.domain.model.CandidateSummary
+import com.openclassrooms.vitesse.utils.capitalizeFirstLetter
 
 class CandidateAdapter(
     private val toDetailScreen: (CandidateSummary) -> Unit
@@ -65,9 +66,5 @@ class CandidateAdapter(
                     return oldItem == newItem
                 }
             }
-    }
-
-    private fun String.capitalizeFirstLetter(): String {
-        return this.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
     }
 }

@@ -16,6 +16,8 @@ import com.openclassrooms.vitesse.databinding.ActivityCandidateBinding
 import com.openclassrooms.vitesse.ui.ConstantsApp
 import com.openclassrooms.vitesse.ui.add.AddActivity
 import com.openclassrooms.vitesse.ui.detail.DetailActivity
+import com.openclassrooms.vitesse.ui.utils.setVisible
+import com.openclassrooms.vitesse.ui.utils.showToastMessage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -44,22 +46,14 @@ class CandidateActivity : AppCompatActivity() {
         viewModel.getSearch(choiceUser, "")
         lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
-                uiState.isLoading?.let { toLoaderUi(it) }
+                uiState.isLoading?.let { binding.loading.setVisible(it) }
                 uiState.candidate.let { candidateAdapter.submitList(it) }
                 uiState.message?.let {
                     Log.d("MARC", "observeCandidate/message: $it")
-                    toMessageUi(it)
+                    showToastMessage(this@CandidateActivity ,it)
                 }
             }
         }
-    }
-
-    private fun toLoaderUi(loading: Boolean) {
-        binding.loading.visibility = if (loading) View.VISIBLE else View.GONE
-    }
-
-    private fun toMessageUi(message: String) {
-        Toast.makeText(this@CandidateActivity, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun setupRecyclerView() {
@@ -104,7 +98,7 @@ class CandidateActivity : AppCompatActivity() {
         }
     }
 
-    fun toDetailScreen(candidateId: Long) {
+    private fun toDetailScreen(candidateId: Long) {
         val intent = Intent(this, DetailActivity::class.java).apply {
             putExtra(ConstantsApp.CANDIDATE_ID, candidateId)
         }

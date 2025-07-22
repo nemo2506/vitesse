@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -13,7 +12,12 @@ import com.bumptech.glide.Glide
 import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.databinding.ActivityAddBinding
 import com.openclassrooms.vitesse.ui.ConstantsApp
+import com.openclassrooms.vitesse.ui.candidate.CandidateActivity
 import com.openclassrooms.vitesse.ui.detail.DetailActivity
+import com.openclassrooms.vitesse.ui.utils.loadImage
+import com.openclassrooms.vitesse.ui.utils.navigateToCandidateScreen
+import com.openclassrooms.vitesse.ui.utils.setVisible
+import com.openclassrooms.vitesse.ui.utils.showToastMessage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.Calendar
@@ -23,27 +27,30 @@ class AddActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddBinding
     private val viewModel: AddViewModel by viewModels()
+    lateinit var toolbar: androidx.appcompat.widget.Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        toolbar = binding.toolbar
         setUi()
+        setToolbar()
         observeAdd()
     }
 
     private fun observeAdd() {
         lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
-                uiState.isLoading?.let { toLoaderUi(it) }
-                uiState.message?.let { toMessageUi(it) }
-                uiState.candidateId?.let{toDetailScreen(it)}
+                uiState.isLoading?.let { binding.loading.setVisible(it) }
+                uiState.message?.let { showToastMessage(this@AddActivity ,it) }
+                uiState.candidateId?.let { toDetailScreen(it) }
             }
         }
     }
 
     private fun setUi() {
-        binding.toolbar.title = "Ajouter un candidat"
+        toolbar.title = "Ajouter un candidat"
         binding.saveButton.setOnClickListener {
             setSave()
         }
@@ -61,6 +68,13 @@ class AddActivity : AppCompatActivity() {
             }, year, month, day)
 
             datePicker.show()
+        }
+    }
+
+    private fun setToolbar() {
+        setSupportActionBar(toolbar)
+        toolbar.setNavigationOnClickListener {
+            navigateToCandidateScreen(this)
         }
     }
 
@@ -83,11 +97,7 @@ class AddActivity : AppCompatActivity() {
         val tvFace: ImageView = binding.tvFace
         val tvFaceUrl = binding.tvFaceUrl.text.toString()
         if (tvFaceUrl.isNotBlank()) {
-            Glide.with(this)
-                .load(tvFaceUrl)
-                .placeholder(R.drawable.ic_avatar)
-//                .error(R.drawable.error)
-                .into(binding.tvFace)
+            tvFace.loadImage(tvFaceUrl)
         } else {
             tvFace.setImageResource(R.drawable.ic_edit)
         }
@@ -104,15 +114,6 @@ class AddActivity : AppCompatActivity() {
             date = birthDate, // binding.etDate.text.toString()
             salaryClaim = binding.etSalaryClaim.text.toString().toLongOrNull()
         )
-    }
-
-    private fun toLoaderUi(loading: Boolean) {
-        binding.loading.visibility = if (loading) View.VISIBLE else View.GONE
-    }
-
-
-    private fun toMessageUi(message: String) {
-        Toast.makeText(this@AddActivity, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun toDetailScreen(candidateId: Long) {
