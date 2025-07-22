@@ -30,12 +30,12 @@ class CandidateUseCase @Inject constructor(
         }
     }
 
-    fun updateCandidate(candidate: Candidate, detail: Detail): Flow<Result<Boolean>> = flow {
+    fun updateCandidate(candidate: Candidate, detail: Detail): Flow<Result<Long>> = flow {
         emit(Result.Loading)
         try {
             Log.d("MARC", "updateCandidate/DETAIL: $detail")
             candidateRepository.upsertCandidateTotal(candidate, detail).collect {
-                emit(Result.Success(it > 0L))
+                emit(Result.Success(it))
             }
         } catch (e: Throwable) {
             Log.d("ERROR", "updateCandidate: $e")

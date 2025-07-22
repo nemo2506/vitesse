@@ -104,7 +104,7 @@ class CandidateActivity : AppCompatActivity() {
         }
     }
 
-    private fun toDetailScreen(candidateId: Long) {
+    fun toDetailScreen(candidateId: Long) {
         val intent = Intent(this, DetailActivity::class.java).apply {
             putExtra(ConstantsApp.CANDIDATE_ID, candidateId)
         }

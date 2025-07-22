@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.openclassrooms.vitesse.domain.model.Candidate
 import com.openclassrooms.vitesse.domain.model.Detail
+import com.openclassrooms.vitesse.domain.usecase.AddUseCase
 import com.openclassrooms.vitesse.domain.usecase.CandidateUseCase
 import com.openclassrooms.vitesse.domain.usecase.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +19,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddViewModel @Inject constructor(
-    private val candidateUseCase: CandidateUseCase
+    private val candidateUseCase: CandidateUseCase,
+    private val addUseCase: AddUseCase,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
@@ -56,26 +58,29 @@ class AddViewModel @Inject constructor(
                 .collect { result ->
                     when (result) {
                         is Result.Loading -> {
-                            _uiState.update { it.copy(isLoading = true, message = null, isUpdated = false) }
+                            _uiState.update { it.copy(isLoading = true, message = null, candidateId = null) }
                             delay(1000)
                         }
 
                         is Result.Success -> {
-                            _uiState.update { it.copy(isLoading = false, message = null, isUpdated = result.value) }
+                            _uiState.update { it.copy(isLoading = false, message = null, candidateId = result.value) }
                         }
 
                         is Result.Failure -> {
-                            _uiState.update { it.copy( isLoading = false, message = result.message, isUpdated = false) }
+                            _uiState.update { it.copy( isLoading = false, message = result.message, candidateId = null) }
                         }
                     }
                 }
         }
     }
+
+    fun getLocalDateTime(birthDate: String) =
+        addUseCase.getDateTime(birthDate)
 }
 
 
 data class UiState(
     var isLoading: Boolean? = false,
-    var isUpdated: Boolean? = false,
+    var candidateId: Long? = null,
     var message: String? = null
 )

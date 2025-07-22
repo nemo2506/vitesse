@@ -1,19 +1,19 @@
 package com.openclassrooms.vitesse.ui.add
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.google.android.material.textfield.TextInputEditText
 import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.databinding.ActivityAddBinding
+import com.openclassrooms.vitesse.ui.ConstantsApp
+import com.openclassrooms.vitesse.ui.detail.DetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.Calendar
@@ -37,6 +37,7 @@ class AddActivity : AppCompatActivity() {
             viewModel.uiState.collect { uiState ->
                 uiState.isLoading?.let { toLoaderUi(it) }
                 uiState.message?.let { toMessageUi(it) }
+                uiState.candidateId?.let{toDetailScreen(it)}
             }
         }
     }
@@ -66,8 +67,8 @@ class AddActivity : AppCompatActivity() {
     private fun setSave() {
         val etLastname = binding.etLastname
         val etEmail = binding.etEmail
+        val etDate = binding.etDate
 
-        val tvFace: ImageView = binding.tvFace
         if (etLastname.text?.toString().isNullOrBlank()) {
             etLastname.error = "Ce champ est obligatoire"
         } else {
@@ -78,6 +79,8 @@ class AddActivity : AppCompatActivity() {
         } else {
             etEmail.error = null // pour retirer l’erreur
         }
+
+        val tvFace: ImageView = binding.tvFace
         val tvFaceUrl = binding.tvFaceUrl.text.toString()
         if (tvFaceUrl.isNotBlank()) {
             Glide.with(this)
@@ -89,6 +92,8 @@ class AddActivity : AppCompatActivity() {
             tvFace.setImageResource(R.drawable.ic_edit)
         }
 
+        val birthDate = viewModel.getLocalDateTime(binding.etDate.text.toString())
+
         viewModel.addCandidate(
             firstName = binding.etFirstname.text.toString(),
             lastName = binding.etLastname.text.toString(),
@@ -96,7 +101,7 @@ class AddActivity : AppCompatActivity() {
             email = binding.etEmail.text.toString(),
             photoUri = binding.tvFaceUrl.text.toString(),
             note = binding.etNote.text.toString(),
-            date = null, // binding.etDate.text.toString()
+            date = birthDate, // binding.etDate.text.toString()
             salaryClaim = binding.etSalaryClaim.text.toString().toLongOrNull()
         )
     }
@@ -108,5 +113,12 @@ class AddActivity : AppCompatActivity() {
 
     private fun toMessageUi(message: String) {
         Toast.makeText(this@AddActivity, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun toDetailScreen(candidateId: Long) {
+        val intent = Intent(this, DetailActivity::class.java).apply {
+            putExtra(ConstantsApp.CANDIDATE_ID, candidateId)
+        }
+        startActivity(intent)
     }
 }
