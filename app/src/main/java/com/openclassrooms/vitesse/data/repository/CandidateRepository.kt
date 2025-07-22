@@ -1,11 +1,10 @@
 package com.openclassrooms.vitesse.data.repository
 
+import android.database.sqlite.SQLiteConstraintException
 import android.util.Log
 import androidx.sqlite.db.SupportSQLiteQuery
-import com.openclassrooms.vitesse.domain.usecase.Result
 import com.openclassrooms.vitesse.data.dao.CandidateDao
 import com.openclassrooms.vitesse.data.dao.CandidateWithDetailsDao
-import com.openclassrooms.vitesse.data.dao.DetailDao
 import com.openclassrooms.vitesse.data.entity.CandidateWithDetailDto
 import com.openclassrooms.vitesse.domain.model.Candidate
 import com.openclassrooms.vitesse.domain.model.Detail
@@ -21,23 +20,20 @@ class CandidateRepository(
     }
 
     // Add or Modify a new candidate
-    fun upsertCandidateTotal(candidate: Candidate, detail: Detail): Flow<Long> = flow {
+    fun upsertCandidateTotal(candidate: Candidate, detail: Detail?): Flow<Long> = flow {
         try {
-            val candidateWithDetail = CandidateWithDetailDto(candidate.toDto(), detail.toDto())
-            val candidateId =
-                candidateWithDetailsDao.upsertCandidateWithDetails(candidateWithDetail)
-            if (candidateId == 0L) {
-                emit(0)
-            } else {
-                emit(candidateId)
-            }
-            emit(candidateId)
-        } catch (e: android.database.sqlite.SQLiteConstraintException) {
+            val candidateWithDetail = CandidateWithDetailDto(
+                candidate.toDto(),
+                detail?.toDto()
+            )
+            val validate = candidateWithDetailsDao.upsertCandidateWithDetails(candidateWithDetail)
+            emit(validate)
+        } catch (e: SQLiteConstraintException) {
             Log.d("ERROR", "Constraint violation: $e")
-            emit(0)
+            emit(0L)
         } catch (e: Exception) {
             Log.d("ERROR", "upsertCandidateError: $e")
-            emit(0)
+            emit(0L)
         }
     }
 }

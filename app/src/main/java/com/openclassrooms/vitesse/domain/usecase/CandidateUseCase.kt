@@ -8,6 +8,7 @@ import com.openclassrooms.vitesse.data.repository.CandidateRepository
 import com.openclassrooms.vitesse.domain.model.Candidate
 import com.openclassrooms.vitesse.domain.model.CandidateSummary
 import com.openclassrooms.vitesse.domain.model.Detail
+import com.openclassrooms.vitesse.domain.usecase.Result
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
@@ -31,14 +32,14 @@ class CandidateUseCase @Inject constructor(
         }
     }
 
-    fun updateCandidate(candidate: Candidate, detail: Detail): Flow<Result<Long>> = flow {
+    fun updateCandidate(candidate: Candidate, detail: Detail?): Flow<Result<Boolean>> = flow {
         emit(Result.Loading)
         try {
             candidateRepository.upsertCandidateTotal(candidate, detail).collect {
-                emit(Result.Success(it))
+                emit(Result.Success(it > 0L))
             }
         } catch (e: Throwable) {
-            Log.d("ERROR", "executeError: $e")
+            Log.d("ERROR", "updateCandidate: $e")
             emit(Result.Failure(e.message ?: "Unknown error"))
         }
     }
