@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.databinding.ActivityCandidateBinding
@@ -27,24 +26,22 @@ class CandidateActivity : AppCompatActivity() {
     private val viewModel: CandidateViewModel by viewModels()
     private lateinit var candidateAdapter: CandidateAdapter
     private var choiceUser: Int = 0
-    private lateinit var fabAdd: FloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCandidateBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        fabAdd = findViewById(R.id.fab_add)
+        choiceUser = viewModel.tabStarted
         setupRecyclerView()
         setupTab()
         observeCandidate()
-        choiceUser = viewModel.tabStarted
-        viewModel.getSearch(choiceUser, "")
         userCall()
-        setupFabAdd()
+        setAdd()
     }
 
 
     private fun observeCandidate() {
+        viewModel.getSearch(choiceUser, "")
         lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
                 uiState.isLoading?.let { toLoaderUi(it) }
@@ -99,7 +96,8 @@ class CandidateActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupFabAdd() {
+    private fun setAdd() {
+        val fabAdd = binding.fabAdd
         fabAdd.setOnClickListener {
             val intent = Intent(this, AddActivity::class.java)
             startActivity(intent)
