@@ -29,10 +29,13 @@ class CandidateActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCandidateBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        choiceUser = viewModel.tabStarted
+        setUi()
         setupRecyclerView()
-        setupTab()
         observeCandidate()
+    }
+
+    private fun setUi() {
+        setupTab()
         userCall()
         setAdd()
     }
@@ -59,6 +62,7 @@ class CandidateActivity : AppCompatActivity() {
     }
 
     private fun setupTab() {
+        choiceUser = viewModel.tabStarted
         val tabLayout = findViewById<TabLayout>(R.id.tab_layout)
         tabLayout.addTab(tabLayout.newTab().setText(R.string.candidate_all))
         tabLayout.addTab(tabLayout.newTab().setText(R.string.candidate_favorites))
