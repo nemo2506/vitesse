@@ -3,10 +3,7 @@ package com.openclassrooms.vitesse.data.repository
 import android.util.Log
 import androidx.sqlite.db.SupportSQLiteQuery
 import com.openclassrooms.vitesse.data.dao.CandidateDao
-import com.openclassrooms.vitesse.data.dao.CandidateWithDetailsDao
-import com.openclassrooms.vitesse.data.dao.DetailDao
 import com.openclassrooms.vitesse.data.entity.CandidateWithDetailDto
-import com.openclassrooms.vitesse.data.entity.DetailDto
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow

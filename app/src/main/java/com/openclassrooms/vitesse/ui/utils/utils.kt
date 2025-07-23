@@ -5,14 +5,17 @@ import android.widget.Toast
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.openclassrooms.vitesse.R
-import android.content.Intent
 import com.openclassrooms.vitesse.ui.ConstantsApp
 import com.openclassrooms.vitesse.ui.candidate.CandidateActivity
 import com.openclassrooms.vitesse.ui.detail.DetailActivity
 import com.openclassrooms.vitesse.ui.edit.EditActivity
 import android.net.Uri
+import android.content.Intent
 import com.openclassrooms.vitesse.ui.add.AddActivity
 
+fun String.capitalizeFirstLetter(): String {
+    return this.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
+}
 fun showToastMessage(context: Context, message: String) {
     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }

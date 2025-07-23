@@ -14,7 +14,7 @@ interface CandidateWithDetailsDao {
     @Transaction
     suspend fun upsertCandidateWithDetails(candidateWithDetailDto: CandidateWithDetailDto): Long {
         val candidateId = upsertCandidate(candidateWithDetailDto.candidateDto)
-        candidateWithDetailDto.detailDto?.let {
+        candidateWithDetailDto.detailDto.let {
             val detailDto = it.copy(candidateId = candidateId)
             Log.d("MARC", "upsertCandidateWithDetails: $detailDto")
             upsertDetail(detailDto)

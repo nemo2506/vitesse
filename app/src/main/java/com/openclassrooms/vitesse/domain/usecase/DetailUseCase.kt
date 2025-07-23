@@ -26,7 +26,7 @@ class DetailUseCase @Inject constructor(
             val query = searchCandidateQuery(id)
             detailRepository.getCandidateById(query).collect { dto ->
                 if (dto != null) {
-                    emit(Result.Success(dto.toDetail()?.let { convertToDetailScreen(it) }) )
+                    emit(Result.Success(convertToDetailScreen(dto.toDetail())) )
                 }
             }
         } catch (e: Throwable) {

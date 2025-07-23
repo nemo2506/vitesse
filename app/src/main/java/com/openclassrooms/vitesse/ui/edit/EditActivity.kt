@@ -1,21 +1,31 @@
 package com.openclassrooms.vitesse.ui.edit
 
+import android.net.Uri
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.openclassrooms.vitesse.R
+import com.openclassrooms.vitesse.databinding.ActivityAddBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class EditActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityAddBinding
+    private val viewModel: EditViewModel by viewModels()
+    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
+    private lateinit var pickMediaLauncher: ActivityResultLauncher<PickVisualMediaRequest>
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+    private var currentUri: Uri? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_edit)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        binding = ActivityAddBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+//        setToolbar()
+//        setMenu()
+//        observeEdit()
     }
+
 }
