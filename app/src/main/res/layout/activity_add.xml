@@ -44,7 +44,7 @@
                 android:background="?attr/colorOnSecondary"
                 android:contentDescription="@string/candidate_face"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_avatar"
+                android:src="@drawable/ic_add"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

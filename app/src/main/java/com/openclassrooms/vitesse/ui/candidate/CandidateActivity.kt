@@ -1,7 +1,7 @@
 package com.openclassrooms.vitesse.ui.candidate
 
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.databinding.ActivityCandidateBinding
-import com.openclassrooms.vitesse.ui.add.AddActivity
+import com.openclassrooms.vitesse.ui.utils.navigateToAddScreen
 import com.openclassrooms.vitesse.ui.utils.navigateToDetailScreen
 import com.openclassrooms.vitesse.ui.utils.setVisible
 import com.openclassrooms.vitesse.ui.utils.showToastMessage
@@ -37,14 +37,15 @@ class CandidateActivity : AppCompatActivity() {
         setAdd()
     }
 
-
     private fun observeCandidate() {
         viewModel.getSearch(choiceUser, "")
         lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
                 uiState.isLoading?.let { binding.loading.setVisible(it) }
                 uiState.candidate.let { candidateAdapter.submitList(it) }
-                uiState.message?.let { showToastMessage(this@CandidateActivity, it) }
+                uiState.message?.let {
+                    Log.d("MARC", "observeCandidate/message: $it")
+                    showToastMessage(this@CandidateActivity, it) }
             }
         }
     }
@@ -85,8 +86,7 @@ class CandidateActivity : AppCompatActivity() {
     private fun setAdd() {
         val fabAdd = binding.fabAdd
         fabAdd.setOnClickListener {
-            val intent = Intent(this, AddActivity::class.java)
-            startActivity(intent)
+            navigateToAddScreen(this@CandidateActivity)
         }
     }
 }

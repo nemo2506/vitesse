@@ -78,7 +78,6 @@ class AddViewModel @Inject constructor(
         addUseCase.getDateTime(birthDate)
 }
 
-
 data class UiState(
     var isLoading: Boolean? = false,
     var candidateId: Long? = null,
