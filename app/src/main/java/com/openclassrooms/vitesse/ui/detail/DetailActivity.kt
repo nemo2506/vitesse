@@ -37,7 +37,6 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        toolbar = binding.toolbar
         setToolbar()
         setMenu()
         observeDetail()
@@ -125,6 +124,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setToolbar() {
+        toolbar = binding.toolbar
         setSupportActionBar(toolbar)
         toolbar.setNavigationOnClickListener {
             navigateToCandidateScreen(this)
