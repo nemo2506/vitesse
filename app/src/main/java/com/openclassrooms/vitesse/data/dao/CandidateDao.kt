@@ -1,7 +1,6 @@
 package com.openclassrooms.vitesse.data.dao
 
 import androidx.room.Dao
-import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.RawQuery
 import androidx.room.Transaction
@@ -11,10 +10,10 @@ import com.openclassrooms.vitesse.data.entity.CandidateDto
 import com.openclassrooms.vitesse.data.entity.CandidateWithDetailDto
 import com.openclassrooms.vitesse.data.entity.DetailDto
 import kotlinx.coroutines.flow.Flow
-import com.openclassrooms.vitesse.data.dao.DetailDao
 
 @Dao
 interface CandidateDao {
+
     @Transaction
     @RawQuery(observedEntities = [CandidateWithDetailDto::class, DetailDto::class])
     fun getCandidate(query: SupportSQLiteQuery): Flow<List<CandidateWithDetailDto>>
@@ -22,6 +21,10 @@ interface CandidateDao {
     @Transaction
     @RawQuery(observedEntities = [CandidateWithDetailDto::class, DetailDto::class])
     fun getCandidateById(query: SupportSQLiteQuery): Flow<CandidateWithDetailDto?>
+
+    @Transaction
+    @Query("Select * FROM candidate WHERE id = :id")
+    fun getCandidateById(id: Long): Flow<CandidateWithDetailDto>
 
     @Upsert
     suspend fun upsertCandidate(candidate: CandidateDto): Long
