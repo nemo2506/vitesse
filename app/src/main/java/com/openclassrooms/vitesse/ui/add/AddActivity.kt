@@ -33,16 +33,14 @@ class AddActivity : AppCompatActivity() {
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
     private lateinit var pickMediaLauncher: ActivityResultLauncher<PickVisualMediaRequest>
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
-    var currentUri: Uri? = null
+    private var currentUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        toolbar = binding.toolbar
         setUi()
         observeAdd()
-        setMedia()
     }
 
     private fun setMedia() {
@@ -64,7 +62,6 @@ class AddActivity : AppCompatActivity() {
                 showToastMessage(this@AddActivity, "Aucune image sélectionnée")
                 }
             }
-
         binding.tvFace.setOnClickListener {
             when {
                 ContextCompat.checkSelfPermission(
@@ -98,12 +95,14 @@ class AddActivity : AppCompatActivity() {
     }
 
     private fun setUi() {
+        toolbar = binding.toolbar
         toolbar.title = "Ajouter un candidat"
         binding.saveButton.setOnClickListener {
             setSave()
         }
         setDateUi()
         setToolbar()
+        setMedia()
     }
 
     private fun setDateUi() {
