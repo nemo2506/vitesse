@@ -1,12 +1,10 @@
 package com.openclassrooms.vitesse.domain.usecase
 
 import android.util.Log
-import androidx.sqlite.db.SimpleSQLiteQuery
-import com.openclassrooms.vitesse.data.entity.toDetail
+import com.openclassrooms.vitesse.data.entity.CandidateWithDetailDto
 import kotlinx.coroutines.flow.Flow
 import com.openclassrooms.vitesse.data.repository.DetailRepository
-import com.openclassrooms.vitesse.domain.model.CandidateDetail
-import com.openclassrooms.vitesse.domain.model.CandidateTotal
+import com.openclassrooms.vitesse.domain.model.CandidateDescription
 import kotlinx.coroutines.flow.flow
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
@@ -20,14 +18,12 @@ import javax.inject.Inject
 class DetailUseCase @Inject constructor(
     private val detailRepository: DetailRepository
 ) {
-    fun getCandidateById(id: Long): Flow<Result<CandidateDetail?>> = flow {
+
+    fun getCandidateToDescription(id: Long): Flow<Result<CandidateDescription>> = flow {
         emit(Result.Loading)
         try {
-            val query = searchCandidateQuery(id)
-            detailRepository.getCandidateById(query).collect { dto ->
-                if (dto != null) {
-                    emit(Result.Success(convertToDetailScreen(dto.toDetail())) )
-                }
+            detailRepository.getCandidateById(id).collect {
+                emit(Result.Success(convertToDescription(it)))
             }
         } catch (e: Throwable) {
             Log.d("ERROR", "getCandidateByIdError: $e")
@@ -58,36 +54,25 @@ class DetailUseCase @Inject constructor(
         }
     }
 
-    private fun convertToDetailScreen(candidateTotal: CandidateTotal): CandidateDetail{
-        return CandidateDetail(
-            candidateId= candidateTotal.id,
-            detailId= candidateTotal.detailId,
-            firstName= candidateTotal.firstName,
-            lastName= candidateTotal.lastName,
-            phone= candidateTotal.phone,
-            email= candidateTotal.email,
-            isFavorite= candidateTotal.isFavorite,
-            photoUri= candidateTotal.photoUri,
-            dateDescription= candidateTotal.date?.let { getDateDescription(it) },
-            salaryClaimDescription= candidateTotal.salaryClaim?.let { getSalaryClaimDescription(it) },
-            salaryClaimGpb= candidateTotal.salaryClaim?.let { getClaimGbpDescription(it) },
-            note= candidateTotal.note,
+    private fun convertToDescription(dto: CandidateWithDetailDto): CandidateDescription {
+        val candidate = dto.candidateDto
+        val detail = dto.detailDto
+
+        return CandidateDescription(
+            candidateId = candidate.id,
+            detailId = detail.id,
+            firstName = candidate.firstName,
+            lastName = candidate.lastName,
+            phone = detail.phone,
+            email = detail.email ?: "",
+            isFavorite = candidate.isFavorite,
+            photoUri = candidate.photoUri,
+            dateDescription = detail.date?.let { getDateDescription(it) } ?: "",
+            salaryClaimDescription = detail.salaryClaim?.let { getSalaryClaimDescription(it) } ?: "",
+            salaryClaimGpb = detail.salaryClaim?.let { getClaimGbpDescription(it) } ?: "",
+            note = candidate.note
         )
     }
-
-    private fun searchCandidateQuery(
-        id: Long,
-        sql: String = """
-        SELECT *
-        FROM candidate
-        LEFT JOIN detail ON candidate.id = detail.candidateId
-    """.trimIndent()
-    ): SimpleSQLiteQuery {
-        val newSql = "$sql WHERE candidate.id = ?"
-        val argsList = listOf(id)
-        return SimpleSQLiteQuery(newSql, argsList.toTypedArray())
-    }
-
 
     private fun getSalaryClaimDescription(salaryClaim: Long): String {
         val symbols = DecimalFormatSymbols(Locale.FRANCE).apply {

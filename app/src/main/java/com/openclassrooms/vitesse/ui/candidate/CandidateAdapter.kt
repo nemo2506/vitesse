@@ -10,13 +10,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.openclassrooms.vitesse.R
-import com.openclassrooms.vitesse.domain.model.CandidateSummary
+import com.openclassrooms.vitesse.domain.model.Candidate
 import com.openclassrooms.vitesse.ui.utils.capitalizeFirstLetter
 
 class CandidateAdapter(
-    private val toDetailScreen: (CandidateSummary) -> Unit
+    private val toDetailScreen: (Candidate) -> Unit
 ) :
-    ListAdapter<CandidateSummary, CandidateAdapter.CandidateViewHolder>(
+    ListAdapter<Candidate, CandidateAdapter.CandidateViewHolder>(
         DIFF_CALLBACK
     ) {
 
@@ -33,7 +33,7 @@ class CandidateAdapter(
             .load(candidate.photoUri)
             .into(holder.tvFace)
         holder.tvFirstName.text = candidate.firstName?.let { String.format("%s", it.capitalizeFirstLetter()) }
-        holder.tvLastName.text = String.format("%s", candidate.lastName.uppercase())
+        holder.tvLastName.text = candidate.lastName?.let { String.format("%s", it.uppercase()) }
         holder.tvNote.text = String.format("%s", candidate.note)
         holder.itemView.setOnClickListener {
             toDetailScreen(candidate)
@@ -48,19 +48,19 @@ class CandidateAdapter(
     }
 
     companion object {
-        private val DIFF_CALLBACK: DiffUtil.ItemCallback<CandidateSummary> =
-            object : DiffUtil.ItemCallback<CandidateSummary>() {
+        private val DIFF_CALLBACK: DiffUtil.ItemCallback<Candidate> =
+            object : DiffUtil.ItemCallback<Candidate>() {
                 override fun areItemsTheSame(
-                    oldItem: CandidateSummary,
-                    newItem: CandidateSummary
+                    oldItem: Candidate,
+                    newItem: Candidate
                 ): Boolean {
                     // Comparez les IDs uniques des candidats
                     return oldItem.id == newItem.id
                 }
 
                 override fun areContentsTheSame(
-                    oldItem: CandidateSummary,
-                    newItem: CandidateSummary
+                    oldItem: Candidate,
+                    newItem: Candidate
                 ): Boolean {
                     // Comparez les contenus complets (data class a un equals correctement défini)
                     return oldItem == newItem

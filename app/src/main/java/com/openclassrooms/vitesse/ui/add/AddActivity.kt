@@ -21,6 +21,7 @@ import com.openclassrooms.vitesse.ui.utils.navigateToDetailScreen
 import com.openclassrooms.vitesse.ui.utils.setVisible
 import com.openclassrooms.vitesse.ui.utils.showToastMessage
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.util.Log
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.Calendar

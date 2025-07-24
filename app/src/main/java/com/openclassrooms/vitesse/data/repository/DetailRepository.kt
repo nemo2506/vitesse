@@ -1,23 +1,17 @@
 package com.openclassrooms.vitesse.data.repository
 
 import android.util.Log
-import androidx.sqlite.db.SupportSQLiteQuery
 import com.openclassrooms.vitesse.data.dao.CandidateDao
 import com.openclassrooms.vitesse.data.entity.CandidateWithDetailDto
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 
 class DetailRepository(
     private val candidateDao: CandidateDao
 ) {
     // Get Candidate By Id
-    fun getCandidateById(query: SupportSQLiteQuery): Flow<CandidateWithDetailDto?> {
-        return candidateDao.getCandidateById(query)
-            .catch { e ->
-                Log.d("ERROR", "getCandidateByIdError: $e")
-                emit(null)
-            }
+    fun getCandidateById(id: Long): Flow<CandidateWithDetailDto> {
+        return candidateDao.getCandidateById(id)
     }
 
     // Del a candidate

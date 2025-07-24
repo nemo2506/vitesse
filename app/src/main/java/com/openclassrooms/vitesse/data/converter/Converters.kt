@@ -6,22 +6,13 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 
 class Converters {
-
     @TypeConverter
     fun fromTimestamp(value: Long?): LocalDateTime? {
-        return value?.let {
-            Instant.ofEpochMilli(it)
-                .atZone(ZoneId.systemDefault())
-                .toLocalDateTime()
-        }
+        return value?.let { Instant.ofEpochMilli(it).atZone(ZoneId.systemDefault()).toLocalDateTime() }
     }
-
     @TypeConverter
-    fun dateToTimestamp(dateTime: LocalDateTime?): Long? {
-        return dateTime
-            ?.atZone(ZoneId.systemDefault())
-            ?.toInstant()
-            ?.toEpochMilli()
+    fun dateToTimestamp(date: LocalDateTime?): Long? {
+        return date?.atZone(ZoneId.systemDefault())?.toInstant()?.toEpochMilli()
     }
 }
 

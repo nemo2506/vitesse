@@ -16,7 +16,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.databinding.ActivityDetailBinding
-import com.openclassrooms.vitesse.domain.model.CandidateDetail
+import com.openclassrooms.vitesse.domain.model.CandidateDescription
 import com.openclassrooms.vitesse.ui.utils.loadImage
 import com.openclassrooms.vitesse.ui.utils.navigateToCandidateScreen
 import com.openclassrooms.vitesse.ui.utils.navigateToEditScreen
@@ -30,7 +30,7 @@ class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
     private val viewModel: DetailViewModel by viewModels()
-    private lateinit var candidate: CandidateDetail
+    private lateinit var candidate: CandidateDescription
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +55,7 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun setUpUI(candidate: CandidateDetail) {
+    private fun setUpUI(candidate: CandidateDescription) {
         this@DetailActivity.candidate = candidate
         val title = "%s %s".format(candidate.firstName, candidate.lastName)
         toolbar.title = title
@@ -77,7 +77,7 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun setCom(candidate: CandidateDetail, title: String) {
+    private fun setCom(candidate: CandidateDescription, title: String) {
         binding.btnCall.setOnClickListener {
             candidate.phone?.let { it1 -> setCall(it1) }
         }
@@ -85,7 +85,7 @@ class DetailActivity : AppCompatActivity() {
             candidate.phone?.let { it1 -> setSms(it1, title) }
         }
         binding.btnEmail.setOnClickListener {
-            setEmail(candidate.email, title)
+            candidate.email?.let { it1 -> setEmail(it1, title) }
         }
     }
 

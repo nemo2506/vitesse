@@ -1,13 +1,14 @@
 package com.openclassrooms.vitesse.domain.model
 
 import com.openclassrooms.vitesse.data.entity.CandidateDto
+import com.openclassrooms.vitesse.data.entity.CandidateWithDetailDto
+import com.openclassrooms.vitesse.data.entity.DetailDto
+import java.time.LocalDateTime
 
 data class Candidate(
     val id: Long? = null,
     var firstName: String? = null,
-    var lastName: String,
-    var phone: String? = null,
-    var email: String,
+    var lastName: String? = null,
     var isFavorite: Boolean = false,
     var photoUri: String? = null,
     var note: String? = null
@@ -18,8 +19,6 @@ data class Candidate(
                 id = dto.id,
                 firstName = dto.firstName,
                 lastName = dto.lastName,
-                phone = dto.phone,
-                email = dto.email,
                 isFavorite = dto.isFavorite,
                 photoUri = dto.photoUri,
                 note = dto.note
@@ -29,13 +28,27 @@ data class Candidate(
 
     fun toDto(): CandidateDto {
         return CandidateDto(
-            id = this.id ?: 0,
+            id = this.id ?: 0L,
             firstName = this.firstName,
             lastName = this.lastName,
-            phone = this.phone,
-            email = this.email,
             isFavorite = this.isFavorite,
-            photoUri = this.photoUri
-        ).also { it.note = this.note }
+            photoUri = this.photoUri,
+            note = this.note
+        )
     }
 }
+
+data class CandidateDescription(
+    val candidateId: Long? = null,
+    val detailId: Long? = null,
+    var firstName: String?,
+    var lastName: String?,
+    var phone: String?,
+    var email: String?,
+    var isFavorite: Boolean = false,
+    var photoUri: String?,
+    var dateDescription: String?,
+    var salaryClaimDescription: String?,
+    var salaryClaimGpb: String?,
+    var note: String?
+)

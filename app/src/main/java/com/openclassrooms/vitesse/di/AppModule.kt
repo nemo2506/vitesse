@@ -2,8 +2,6 @@ package com.openclassrooms.vitesse.di
 
 import android.content.Context
 import com.openclassrooms.vitesse.data.dao.CandidateDao
-import com.openclassrooms.vitesse.data.dao.CandidateWithDetailsDao
-import com.openclassrooms.vitesse.data.dao.DetailDao
 import com.openclassrooms.vitesse.data.database.AppDatabase
 import com.openclassrooms.vitesse.data.repository.CandidateRepository
 import com.openclassrooms.vitesse.data.repository.DetailRepository
@@ -49,22 +47,12 @@ class AppModule {
     }
 
     @Provides
-    fun provideCandidateWithDetailsDao(appDatabase: AppDatabase): CandidateWithDetailsDao {
-        return try {
-            appDatabase.candidateWithDetailsDao()
-        } catch (e: Exception) {
-            throw RuntimeException("Failed to provide CandidateWithDetailsDao", e)
-        }
-    }
-
-    @Provides
     @Singleton
     fun provideCandidateRepository(
-        candidateDao: CandidateDao,
-        candidateWithDetailsDao: CandidateWithDetailsDao
+        candidateDao: CandidateDao
     ): CandidateRepository {
         return try {
-            CandidateRepository(candidateDao,candidateWithDetailsDao)
+            CandidateRepository(candidateDao)
         } catch (e: Exception) {
             throw RuntimeException("Failed to provide CandidateRepository", e)
         }

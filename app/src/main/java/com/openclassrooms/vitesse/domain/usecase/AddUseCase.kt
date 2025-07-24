@@ -11,7 +11,6 @@ class AddUseCase @Inject constructor(){
 
     fun getDateTime(birthDate: String?): LocalDateTime? {
         if (birthDate.isNullOrBlank()) {
-            Log.d("MARC", "getDateTime/isNullOrBlank: $birthDate")
             return null
         }
         return try {

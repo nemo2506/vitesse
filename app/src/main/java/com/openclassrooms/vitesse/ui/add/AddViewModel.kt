@@ -1,5 +1,6 @@
 package com.openclassrooms.vitesse.ui.add
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.openclassrooms.vitesse.domain.model.Candidate
@@ -39,8 +40,6 @@ class AddViewModel @Inject constructor(
         val candidate = Candidate(
             firstName = firstName,
             lastName = lastName,
-            phone = phone,
-            email = email,
             isFavorite = isFavorite,
             photoUri = photoUri,
             note = note
@@ -49,7 +48,8 @@ class AddViewModel @Inject constructor(
             Detail(
                 date = date,
                 salaryClaim = salaryClaim,
-                note = note,
+                phone = phone,
+                email = email,
                 candidateId = 0
             )
 

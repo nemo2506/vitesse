@@ -3,7 +3,7 @@ package com.openclassrooms.vitesse.ui.detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.openclassrooms.vitesse.domain.model.CandidateDetail
+import com.openclassrooms.vitesse.domain.model.CandidateDescription
 import com.openclassrooms.vitesse.domain.usecase.DetailUseCase
 import com.openclassrooms.vitesse.ui.ConstantsApp
 import com.openclassrooms.vitesse.domain.usecase.Result
@@ -34,7 +34,7 @@ class DetailViewModel @Inject constructor(
 
     private fun observeCandidateTotal(id: Long) {
         viewModelScope.launch {
-            detailUseCase.getCandidateById(id)
+            detailUseCase.getCandidateToDescription(id)
                 .collect { result ->
                     when (result) {
                         is Result.Loading -> {
@@ -177,7 +177,7 @@ class DetailViewModel @Inject constructor(
  * @param candidate List of candidate to display.
  */
 data class UiState(
-    var candidate: CandidateDetail? = null,
+    var candidate: CandidateDescription? = null,
     var isFavoriteUpdated: Boolean? = null,
     var isDeleted: Boolean? = null,
     var isLoading: Boolean? = null,

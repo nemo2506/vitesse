@@ -12,6 +12,7 @@ import com.openclassrooms.vitesse.ui.edit.EditActivity
 import android.net.Uri
 import android.content.Intent
 import com.openclassrooms.vitesse.ui.add.AddActivity
+import android.view.View
 
 fun String.capitalizeFirstLetter(): String {
     return this.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
@@ -59,4 +60,9 @@ object ImageUtils {
         val imageUri = Uri.parse(uri.toString())
         imageView.setImageURI(imageUri)
     }
+}
+
+
+fun View.setVisible(visible: Boolean) {
+    this.visibility = if (visible) View.VISIBLE else View.GONE
 }

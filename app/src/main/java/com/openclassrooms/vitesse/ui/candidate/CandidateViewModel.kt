@@ -2,12 +2,12 @@ package com.openclassrooms.vitesse.ui.candidate
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.openclassrooms.vitesse.domain.model.Candidate
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import com.openclassrooms.vitesse.domain.model.CandidateSummary
 import com.openclassrooms.vitesse.domain.usecase.CandidateUseCase
 import com.openclassrooms.vitesse.domain.usecase.Result
 import javax.inject.Inject
@@ -58,7 +58,7 @@ class CandidateViewModel @Inject constructor(
  * @param candidate List of candidate to display.
  */
 data class UiState(
-    var candidate: List<CandidateSummary> = emptyList(),
+    var candidate: List<Candidate> = emptyList(),
     var isLoading: Boolean? = null,
     var message: String? = null
 )

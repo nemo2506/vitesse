@@ -2,9 +2,7 @@ package com.openclassrooms.vitesse.data.repository
 
 import android.database.sqlite.SQLiteConstraintException
 import android.util.Log
-import androidx.sqlite.db.SupportSQLiteQuery
 import com.openclassrooms.vitesse.data.dao.CandidateDao
-import com.openclassrooms.vitesse.data.dao.CandidateWithDetailsDao
 import com.openclassrooms.vitesse.data.entity.CandidateWithDetailDto
 import com.openclassrooms.vitesse.domain.model.Candidate
 import com.openclassrooms.vitesse.domain.model.Detail
@@ -12,28 +10,25 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class CandidateRepository(
-    private val candidateDao: CandidateDao,
-    private val candidateWithDetailsDao: CandidateWithDetailsDao,
+    private val candidateDao: CandidateDao
 ) {
-    fun getCandidate(query: SupportSQLiteQuery): Flow<List<CandidateWithDetailDto>> {
-        return candidateDao.getCandidate(query)
+    fun getCandidateByAttr(fav: Int, term: String): Flow<List<Candidate>> {
+        val searchTerm = if (term.isEmpty()) "" else "%$term%"
+        return candidateDao.getCandidate(fav, searchTerm)
     }
 
     // Add or Modify a new candidate
-    fun upsertCandidateTotal(candidate: Candidate, detail: Detail): Flow<Long> = flow {
+    fun upsertCandidate(candidate: Candidate, detail: Detail): Flow<Long> = flow {
         try {
             val candidateWithDetailDto = CandidateWithDetailDto(
                 candidate.toDto(),
                 detail.toDto()
             )
-            Log.d("MARC", "upsertCandidateTotal/candidateWithDetailDto: $candidateWithDetailDto")
-            val validate = candidateWithDetailsDao.upsertCandidateWithDetails(candidateWithDetailDto)
+            val validate = candidateDao.upsertCandidateWithDetail(candidateWithDetailDto)
             emit(validate)
         } catch (e: SQLiteConstraintException) {
-            Log.d("ERROR", "Constraint violation: $e")
             emit(0L)
         } catch (e: Exception) {
-            Log.d("ERROR", "upsertCandidateError: $e")
             emit(0L)
         }
     }

@@ -1,7 +1,6 @@
 package com.openclassrooms.vitesse.ui.candidate
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
@@ -23,7 +22,7 @@ class CandidateActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCandidateBinding
     private val viewModel: CandidateViewModel by viewModels()
     private lateinit var candidateAdapter: CandidateAdapter
-    private var choiceUser: Int = 0
+    private var choiceTab: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,35 +40,33 @@ class CandidateActivity : AppCompatActivity() {
     }
 
     private fun observeCandidate() {
-        viewModel.getSearch(choiceUser, "")
+        viewModel.getSearch(choiceTab, "")
         lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
                 uiState.isLoading?.let { binding.loading.setVisible(it) }
                 uiState.candidate.let { candidateAdapter.submitList(it) }
-                uiState.message?.let {
-                    Log.d("MARC", "observeCandidate/message: $it")
-                    showToastMessage(this@CandidateActivity, it) }
+                uiState.message?.let { showToastMessage(this@CandidateActivity, it) }
             }
         }
     }
 
     private fun setupRecyclerView() {
         candidateAdapter = CandidateAdapter { candidate ->
-            navigateToDetailScreen(this@CandidateActivity, candidate.id)
+            candidate.id?.let { navigateToDetailScreen(this@CandidateActivity, it) }
         }
         binding.candidateRecyclerview.layoutManager = LinearLayoutManager(this)
         binding.candidateRecyclerview.adapter = candidateAdapter
     }
 
     private fun setupTab() {
-        choiceUser = viewModel.tabStarted
+        choiceTab = viewModel.tabStarted
         val tabLayout = findViewById<TabLayout>(R.id.tab_layout)
         tabLayout.addTab(tabLayout.newTab().setText(R.string.candidate_all))
         tabLayout.addTab(tabLayout.newTab().setText(R.string.candidate_favorites))
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                choiceUser = tab.position
+                choiceTab = tab.position
                 userCall()
             }
 
@@ -81,9 +78,9 @@ class CandidateActivity : AppCompatActivity() {
     }
 
     private fun userCall() {
-        viewModel.getSearch(choiceUser, binding.tvSearchEdit.text.toString())
+        viewModel.getSearch(choiceTab, binding.tvSearchEdit.text.toString())
         binding.tvSearchEdit.doOnTextChanged { text, _, _, _ ->
-            viewModel.getSearch(choiceUser, text.toString())
+            viewModel.getSearch(choiceTab, text.toString())
         }
     }
 
