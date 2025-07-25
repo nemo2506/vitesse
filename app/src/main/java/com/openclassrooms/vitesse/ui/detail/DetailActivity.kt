@@ -110,16 +110,21 @@ class DetailActivity : AppCompatActivity() {
 
 
     private fun setEmail(address: String, title: String) {
-        val subject = "Sujet de l’email"
+        showToastMessage(this@DetailActivity, "EMAIL")
+        Log.d("MARC", "setEmail: $address/$title")
+        val subject = "VITESSE"
         val body = "Bonjour $title,\nVoici un message pré-rempli."
 
-        val intent = Intent(Intent.ACTION_SENDTO).apply {
-            data = Uri.parse("mailto:$address")
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "message/rfc822"
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(address))
             putExtra(Intent.EXTRA_SUBJECT, subject)
             putExtra(Intent.EXTRA_TEXT, body)
         }
         if (intent.resolveActivity(packageManager) != null) {
             startActivity(intent)
+        } else {
+            showToastMessage(this@DetailActivity, "MESSAGERIE ABSENTE")
         }
     }
 
