@@ -5,14 +5,12 @@ import com.openclassrooms.vitesse.data.entity.CandidateWithDetailDto
 import kotlinx.coroutines.flow.Flow
 import com.openclassrooms.vitesse.data.repository.DetailRepository
 import com.openclassrooms.vitesse.domain.model.CandidateDescription
+import com.openclassrooms.vitesse.domain.model.CandidateDetail
+import com.openclassrooms.vitesse.domain.usecase.utils.toformatSalary
+import com.openclassrooms.vitesse.domain.usecase.utils.toDateDescription
+import com.openclassrooms.vitesse.domain.usecase.utils.toGbpDescription
+import com.openclassrooms.vitesse.domain.usecase.utils.toLocalDateTime
 import kotlinx.coroutines.flow.flow
-import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.Period
-import java.time.format.DateTimeFormatter
-import java.util.Locale
 import javax.inject.Inject
 
 class DetailUseCase @Inject constructor(
@@ -24,6 +22,18 @@ class DetailUseCase @Inject constructor(
         try {
             detailRepository.getCandidateById(id).collect {
                 emit(Result.Success(convertToDescription(it)))
+            }
+        } catch (e: Throwable) {
+            Log.d("ERROR", "getCandidateByIdError: $e")
+            emit(Result.Failure(e.message ?: "Unknown error"))
+        }
+    }
+
+    fun getCandidateToDetail(id: Long): Flow<Result<CandidateDetail>> = flow {
+        emit(Result.Loading)
+        try {
+            detailRepository.getCandidateById(id).collect {
+                emit(Result.Success(convertToDeDetail(it)))
             }
         } catch (e: Throwable) {
             Log.d("ERROR", "getCandidateByIdError: $e")
@@ -43,10 +53,13 @@ class DetailUseCase @Inject constructor(
         }
     }
 
-    fun updateFavoriteCandidate(id: Long, fav: Boolean): Flow<Result<Int>>  = flow {
+    fun updateFavoriteCandidate(id: Long, fav: Boolean): Flow<Result<Int>> = flow {
         emit(Result.Loading)
         try {
-            detailRepository.updateFavoriteCandidate(id, !fav) // INVERSE LA VALEUR FAV POUR LA MODIFIER
+            detailRepository.updateFavoriteCandidate(
+                id,
+                !fav
+            ) // INVERSE LA VALEUR FAV POUR LA MODIFIER
                 .collect { emit(Result.Success(it)) }
         } catch (e: Throwable) {
             Log.d("ERROR", "updateFavoriteCandidateError: $e")
@@ -64,43 +77,34 @@ class DetailUseCase @Inject constructor(
             firstName = candidate.firstName,
             lastName = candidate.lastName,
             phone = detail.phone,
-            email = detail.email ?: "",
+            email = detail.email,
             isFavorite = candidate.isFavorite,
             photoUri = candidate.photoUri,
-            dateDescription = detail.date?.let { getDateDescription(it) } ?: "",
-            salaryClaimDescription = detail.salaryClaim?.let { getSalaryClaimDescription(it) } ?: "",
-            salaryClaimGpb = detail.salaryClaim?.let { getClaimGbpDescription(it) } ?: "",
+            dateDescription = detail.date?.toDateDescription() ?: "",
+            salaryClaimDescription = detail.salaryClaim?.toformatSalary() ?: "",
+            salaryClaimGpb = detail.salaryClaim?.toGbpDescription() ?: "",
             note = candidate.note
         )
     }
 
-    private fun getSalaryClaimDescription(salaryClaim: Long): String {
-        val symbols = DecimalFormatSymbols(Locale.FRANCE).apply {
-            groupingSeparator = ' '
-            decimalSeparator = ','
-            currencySymbol = "€"
-        }
-        val decimalFormat = DecimalFormat("#,### €", symbols)
-        decimalFormat.maximumFractionDigits = 0
-        return decimalFormat.format(salaryClaim)
-    }
+    private fun convertToDeDetail(dto: CandidateWithDetailDto): CandidateDetail {
+        val candidate = dto.candidateDto
+        val detail = dto.detailDto
+        Log.d("MARc", "convertToDeDetail: $detail")
 
-    private fun getClaimGbpDescription(salaryClaim: Long): String{
-        val converted = salaryClaim * 0.86705
-        return "soit £ $converted"
-    }
+        return CandidateDetail(
+            candidateId = candidate.id,
+            firstName = candidate.firstName,
+            lastName = candidate.lastName,
+            isFavorite = candidate.isFavorite,
+            photoUri = candidate.photoUri,
+            note = candidate.note,
 
-    private fun getDateDescription(dateTime: LocalDateTime): String{
-        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        val age = calculateAge(dateTime)
-        val date = dateTime.format(formatter)
-        return "$date ($age ans)"
+            detailId = detail.id,
+            date = detail.date,
+            salaryClaim = detail.salaryClaim,
+            phone = detail.phone,
+            email = detail.email
+        )
     }
-
-    private fun calculateAge(birthDate: LocalDateTime): Int {
-        val birthLocalDate: LocalDate = birthDate.toLocalDate()
-        val today = LocalDate.now()
-        return Period.between(birthLocalDate, today).years
-    }
-
 }

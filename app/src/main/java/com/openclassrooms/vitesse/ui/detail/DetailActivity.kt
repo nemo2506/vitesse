@@ -114,7 +114,6 @@ class DetailActivity : AppCompatActivity() {
         Log.d("MARC", "setEmail: $address/$title")
         val subject = "VITESSE"
         val body = "Bonjour $title,\nVoici un message pré-rempli."
-
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = "message/rfc822"
             putExtra(Intent.EXTRA_EMAIL, arrayOf(address))

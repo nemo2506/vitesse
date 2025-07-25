@@ -28,11 +28,11 @@ class DetailViewModel @Inject constructor(
 
     init {
         if (candidateId != null) {
-            observeCandidateTotal(candidateId)
+            observeCandidate(candidateId)
         }
     }
 
-    private fun observeCandidateTotal(id: Long) {
+    private fun observeCandidate(id: Long) {
         viewModelScope.launch {
             detailUseCase.getCandidateToDescription(id)
                 .collect { result ->

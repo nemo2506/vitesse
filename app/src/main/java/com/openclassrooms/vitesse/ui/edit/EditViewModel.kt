@@ -1,26 +1,96 @@
 package com.openclassrooms.vitesse.ui.edit
 
+import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.openclassrooms.vitesse.domain.usecase.AddUseCase
-import com.openclassrooms.vitesse.domain.usecase.CandidateUseCase
+import androidx.lifecycle.viewModelScope
+import com.openclassrooms.vitesse.domain.model.CandidateDetail
+import com.openclassrooms.vitesse.domain.usecase.DetailUseCase
+import com.openclassrooms.vitesse.ui.ConstantsApp
+import com.openclassrooms.vitesse.domain.usecase.Result
+import com.openclassrooms.vitesse.domain.usecase.utils.toDateDescription
+import com.openclassrooms.vitesse.ui.utils.toLocalDateString
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class EditViewModel @Inject constructor(
-    private val candidateUseCase: CandidateUseCase,
-    private val addUseCase: AddUseCase,
+    private val detailUseCase: DetailUseCase,
+    appState: SavedStateHandle
 ) : ViewModel() {
+    val candidateId: Long? = appState.get<Long>(ConstantsApp.CANDIDATE_ID)
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
+    init {
+        if (candidateId != null) {
+            Log.d("MARC", "EditViewModel/$candidateId")
+            observeCandidate(candidateId)
+        }
+    }
+
+    private fun observeCandidate(id: Long) {
+        viewModelScope.launch {
+            detailUseCase.getCandidateToDetail(id)
+                .collect { result ->
+                    when (result) {
+                        is Result.Loading -> {
+                            _uiState.update {
+                                it.copy(
+                                    isLoading = true,
+                                    candidate = null,
+                                    isFavoriteUpdated = false,
+                                    isDeleted = false,
+                                    message = null
+                                )
+                            }
+                            delay(1000)  // TO TEST
+                        }
+
+                        is Result.Success -> {
+                            _uiState.update {
+                                it.copy(
+                                    candidate = result.value,
+                                    isLoading = false,
+                                    isFavoriteUpdated = false,
+                                    isDeleted = false,
+                                    message = null
+                                )
+                            }
+                        }
+
+                        is Result.Failure -> {
+                            _uiState.update {
+                                it.copy(
+                                    isLoading = false,
+                                    isFavoriteUpdated = false,
+                                    isDeleted = false,
+                                    candidate = null,
+                                    message = result.message
+                                )
+                            }
+                        }
+                    }
+                }
+        }
+    }
 }
 
+/**
+ * Data class that represents the UI state for the candidate screen.
+ *
+ * @param candidate List of candidate to display.
+ */
 data class UiState(
-    var isLoading: Boolean? = false,
-    var candidateId: Long? = null,
-    var message: String? = null
+    var candidate: CandidateDetail? = null,
+    var isFavoriteUpdated: Boolean? = null,
+    var isDeleted: Boolean? = null,
+    var isLoading: Boolean? = null,
+    var message: String? = null,
 )

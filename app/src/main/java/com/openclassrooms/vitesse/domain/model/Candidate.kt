@@ -1,8 +1,6 @@
 package com.openclassrooms.vitesse.domain.model
 
 import com.openclassrooms.vitesse.data.entity.CandidateDto
-import com.openclassrooms.vitesse.data.entity.CandidateWithDetailDto
-import com.openclassrooms.vitesse.data.entity.DetailDto
 import java.time.LocalDateTime
 
 data class Candidate(
@@ -51,4 +49,18 @@ data class CandidateDescription(
     var salaryClaimDescription: String?,
     var salaryClaimGpb: String?,
     var note: String?
+)
+
+data class CandidateDetail(
+    val candidateId: Long? = null,
+    var firstName: String?,
+    var lastName: String?,
+    var isFavorite: Boolean = false,
+    var photoUri: String?,
+    var note: String?,
+    val detailId: Long? = null,
+    var date: LocalDateTime?,
+    var salaryClaim: Long?,
+    var phone: String?,
+    var email: String?
 )

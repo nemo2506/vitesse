@@ -21,7 +21,6 @@ import com.openclassrooms.vitesse.ui.utils.navigateToDetailScreen
 import com.openclassrooms.vitesse.ui.utils.setVisible
 import com.openclassrooms.vitesse.ui.utils.showToastMessage
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
-import android.util.Log
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.Calendar
@@ -152,8 +151,6 @@ class AddActivity : AppCompatActivity() {
             tvFace.setImageResource(R.drawable.ic_edit)
         }
 
-        val birthDate = viewModel.getLocalDateTime(binding.etDate.text.toString())
-
         viewModel.addCandidate(
             firstName = binding.etFirstname.text.toString(),
             lastName = binding.etLastname.text.toString(),
@@ -161,8 +158,8 @@ class AddActivity : AppCompatActivity() {
             email = binding.etEmail.text.toString(),
             photoUri = currentUri.toString(),
             note = binding.etNote.text.toString(),
-            date = birthDate,
-            salaryClaim = binding.etSalaryClaim.text.toString().toLongOrNull()
+            date = binding.etDate.text.toString(),
+            salaryClaim = binding.etSalaryClaim.text.toString()
         )
     }
 }
