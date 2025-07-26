@@ -17,11 +17,11 @@ import androidx.lifecycle.lifecycleScope
 import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.databinding.ActivityDetailBinding
 import com.openclassrooms.vitesse.domain.model.CandidateDescription
-import com.openclassrooms.vitesse.ui.utils.loadImage
-import com.openclassrooms.vitesse.ui.utils.navigateToCandidateScreen
-import com.openclassrooms.vitesse.ui.utils.navigateToEditScreen
-import com.openclassrooms.vitesse.ui.utils.setVisible
-import com.openclassrooms.vitesse.ui.utils.showToastMessage
+import com.openclassrooms.vitesse.utils.loadImage
+import com.openclassrooms.vitesse.utils.navigateToCandidateScreen
+import com.openclassrooms.vitesse.utils.navigateToEditScreen
+import com.openclassrooms.vitesse.utils.setVisible
+import com.openclassrooms.vitesse.utils.showToastMessage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -54,6 +54,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setUpUI(candidate: CandidateDescription) {
+        Log.d("MARC", "DetailACtivity/setUpUI: $candidate")
         this@DetailActivity.candidate = candidate
         val title = "%s %s".format(candidate.firstName, candidate.lastName)
         toolbar.title = title
