@@ -47,9 +47,7 @@ class DetailActivity : AppCompatActivity() {
             viewModel.uiState.collect { uiState ->
                 uiState.isLoading?.let { binding.loading.setVisible(it) }
                 uiState.candidate?.let { setUpUI(it) }
-                uiState.message?.let {
-                    showToastMessage(this@DetailActivity, it)
-                }
+                uiState.message?.let { showToastMessage(this@DetailActivity, it) }
                 if (uiState.isDeleted == true) navigateToCandidateScreen(this@DetailActivity)
             }
         }

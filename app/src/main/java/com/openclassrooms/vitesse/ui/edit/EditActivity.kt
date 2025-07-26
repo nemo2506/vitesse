@@ -2,17 +2,19 @@ package com.openclassrooms.vitesse.ui.edit
 
 import android.net.Uri
 import android.os.Bundle
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.PickVisualMediaRequest
+import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.databinding.ActivityAddBinding
 import com.openclassrooms.vitesse.domain.model.CandidateDetail
+import com.openclassrooms.vitesse.ui.utils.MediaPickerHelper
 import com.openclassrooms.vitesse.ui.utils.setVisible
 import com.openclassrooms.vitesse.ui.utils.showToastMessage
 import com.openclassrooms.vitesse.ui.utils.loadImage
 import com.openclassrooms.vitesse.ui.utils.navigateToCandidateScreen
+import com.openclassrooms.vitesse.ui.utils.setDateUi
 import com.openclassrooms.vitesse.ui.utils.toLocalDateString
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -24,17 +26,57 @@ class EditActivity : AppCompatActivity() {
     private val viewModel: EditViewModel by viewModels()
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
     private lateinit var candidate: CandidateDetail
-    private lateinit var pickMediaLauncher: ActivityResultLauncher<PickVisualMediaRequest>
-    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+    private lateinit var mediaPickerHelper: MediaPickerHelper
+    private lateinit var tvFace: ImageView
     private var currentUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setToolbar()
-//        setMenu()
+        setUi()
         observeEdit()
+    }
+
+    private fun setUi() {
+        toolbar = binding.toolbar
+        toolbar.title = "Ajouter un candidat"
+        tvFace = binding.tvFace
+        mediaPickerHelper = MediaPickerHelper(this, tvFace) { uri -> currentUri = uri }
+        mediaPickerHelper.setup()
+        binding.saveButton.setOnClickListener { setSave() }
+        setDateUi(this@EditActivity, binding.etDate)
+        setToolbar()
+    }
+
+    private fun setSave() {
+        val etLastname = binding.etLastname
+        val etEmail = binding.etEmail
+
+        if (etLastname.text?.toString().isNullOrBlank()) {
+            etLastname.error = "Ce champ est obligatoire"
+        } else {
+            etLastname.error = null // pour retirer l’erreur
+        }
+        if (etEmail.text?.toString().isNullOrBlank()) {
+            etEmail.error = "Ce champ est obligatoire"
+        } else {
+            etEmail.error = null // pour retirer l’erreur
+        }
+
+        val tvFaceUrl = binding.tvFaceUrl.text.toString()
+        tvFace.loadImage(tvFaceUrl)
+
+        viewModel.addCandidate(
+            firstName = binding.etFirstname.text.toString(),
+            lastName = binding.etLastname.text.toString(),
+            phone = binding.etPhone.text.toString(),
+            email = binding.etEmail.text.toString(),
+            photoUri = currentUri.toString(),
+            note = binding.etNote.text.toString(),
+            date = binding.etDate.text.toString(),
+            salaryClaim = binding.etSalaryClaim.text.toString()
+        )
     }
 
     private fun observeEdit() {

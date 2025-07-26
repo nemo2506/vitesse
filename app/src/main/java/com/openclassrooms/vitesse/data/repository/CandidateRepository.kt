@@ -7,14 +7,19 @@ import com.openclassrooms.vitesse.data.entity.CandidateWithDetailDto
 import com.openclassrooms.vitesse.domain.model.Candidate
 import com.openclassrooms.vitesse.domain.model.Detail
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 
 class CandidateRepository(
     private val candidateDao: CandidateDao
 ) {
-    fun getCandidateByAttr(fav: Int, term: String): Flow<List<Candidate>> {
+    fun getCandidateByAttr(fav: Int, term: String): Flow<List<Candidate?>> {
         val searchTerm = if (term.isEmpty()) "" else "%$term%"
         return candidateDao.getCandidate(fav, searchTerm)
+            .catch { e ->
+                Log.d("ERROR", "getCandidateById error: $e")
+                emit(emptyList())
+            }
     }
 
     // Add or Modify a new candidate

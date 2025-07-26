@@ -1,6 +1,7 @@
 package com.openclassrooms.vitesse.ui.candidate
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
@@ -45,7 +46,9 @@ class CandidateActivity : AppCompatActivity() {
             viewModel.uiState.collect { uiState ->
                 uiState.isLoading?.let { binding.loading.setVisible(it) }
                 uiState.candidate.let { candidateAdapter.submitList(it) }
-                uiState.message?.let { showToastMessage(this@CandidateActivity, it) }
+                uiState.message?.let {
+                    Log.d("MARC", "observeCandidate: $it")
+                    showToastMessage(this@CandidateActivity, it) }
             }
         }
     }

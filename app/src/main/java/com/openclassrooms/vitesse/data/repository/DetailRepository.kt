@@ -4,14 +4,20 @@ import android.util.Log
 import com.openclassrooms.vitesse.data.dao.CandidateDao
 import com.openclassrooms.vitesse.data.entity.CandidateWithDetailDto
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 
 class DetailRepository(
     private val candidateDao: CandidateDao
 ) {
-    // Get Candidate By Id
-    fun getCandidateById(id: Long): Flow<CandidateWithDetailDto> {
+
+    fun getCandidateById(id: Long): Flow<CandidateWithDetailDto?> {
         return candidateDao.getCandidateById(id)
+            .catch { e ->
+                Log.d("ERROR", "getCandidateById error: $e")
+                emit(null)
+            }
     }
 
     // Del a candidate

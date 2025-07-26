@@ -37,11 +37,11 @@ interface CandidateDao {
     firstName LIKE :term COLLATE NOCASE OR
     lastName LIKE :term COLLATE NOCASE
     )""")
-    fun getCandidate(fav: Int, term: String): Flow<List<Candidate>>
+    fun getCandidate(fav: Int, term: String): Flow<List<Candidate?>>
 
     @Transaction
     @Query("Select * FROM candidate WHERE id = :id")
-    fun getCandidateById(id: Long): Flow<CandidateWithDetailDto>
+    fun getCandidateById(id: Long): Flow<CandidateWithDetailDto?>
 
     @Query("DELETE FROM candidate WHERE id = :id")
     suspend fun deleteCandidate(id: Long): Int

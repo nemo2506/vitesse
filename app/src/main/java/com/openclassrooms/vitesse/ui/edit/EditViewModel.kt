@@ -5,11 +5,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.openclassrooms.vitesse.domain.model.CandidateDetail
+import com.openclassrooms.vitesse.domain.usecase.CandidateUseCase
 import com.openclassrooms.vitesse.domain.usecase.DetailUseCase
 import com.openclassrooms.vitesse.ui.ConstantsApp
 import com.openclassrooms.vitesse.domain.usecase.Result
-import com.openclassrooms.vitesse.domain.usecase.utils.toDateDescription
-import com.openclassrooms.vitesse.ui.utils.toLocalDateString
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,6 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class EditViewModel @Inject constructor(
     private val detailUseCase: DetailUseCase,
+    private val candidateUseCase: CandidateUseCase,
     appState: SavedStateHandle
 ) : ViewModel() {
     val candidateId: Long? = appState.get<Long>(ConstantsApp.CANDIDATE_ID)
@@ -80,6 +80,66 @@ class EditViewModel @Inject constructor(
                 }
         }
     }
+
+    fun addCandidate(
+        firstName: String? = null,
+        lastName: String? = null,
+        phone: String? = null,
+        email: String? = null,
+        isFavorite: Boolean = false,
+        photoUri: String? = null,
+        note: String? = null,
+        date: String? = null,
+        salaryClaim: String? = null
+    ) {
+        viewModelScope.launch {
+            candidateUseCase.upsertCandidate(
+                firstName,
+                lastName,
+                phone,
+                email,
+                isFavorite,
+                photoUri,
+                note,
+                date,
+                salaryClaim
+            )
+                .collect { result ->
+                    when (result) {
+                        is Result.Loading -> {
+                            _uiState.update {
+                                it.copy(
+                                    isLoading = true,
+                                    message = null,
+                                    candidateId = null
+                                )
+                            }
+                            delay(1000)
+                        }
+
+                        is Result.Success -> {
+                            _uiState.update {
+                                it.copy(
+                                    isLoading = false,
+                                    message = null,
+                                    candidateId = result.value
+                                )
+                            }
+                        }
+
+                        is Result.Failure -> {
+                            _uiState.update {
+                                it.copy(
+                                    isLoading = false,
+                                    message = result.message,
+                                    candidateId = null
+                                )
+                            }
+                        }
+                    }
+                }
+        }
+    }
 }
 
 /**
@@ -89,6 +149,7 @@ class EditViewModel @Inject constructor(
  */
 data class UiState(
     var candidate: CandidateDetail? = null,
+    var candidateId: Long? = null,
     var isFavoriteUpdated: Boolean? = null,
     var isDeleted: Boolean? = null,
     var isLoading: Boolean? = null,

@@ -1,29 +1,22 @@
 package com.openclassrooms.vitesse.ui.add
 
-import android.app.DatePickerDialog
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageView
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.PickVisualMediaRequest
 import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.databinding.ActivityAddBinding
-import com.openclassrooms.vitesse.ui.utils.ImageUtils
+import com.openclassrooms.vitesse.ui.utils.MediaPickerHelper
 import com.openclassrooms.vitesse.ui.utils.loadImage
 import com.openclassrooms.vitesse.ui.utils.navigateToCandidateScreen
 import com.openclassrooms.vitesse.ui.utils.navigateToDetailScreen
 import com.openclassrooms.vitesse.ui.utils.setVisible
 import com.openclassrooms.vitesse.ui.utils.showToastMessage
-import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import com.openclassrooms.vitesse.ui.utils.setDateUi
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import java.util.Calendar
 
 @AndroidEntryPoint
 class AddActivity : AppCompatActivity() {
@@ -31,8 +24,8 @@ class AddActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddBinding
     private val viewModel: AddViewModel by viewModels()
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
-    private lateinit var pickMediaLauncher: ActivityResultLauncher<PickVisualMediaRequest>
-    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+    private lateinit var mediaPickerHelper: MediaPickerHelper
+    private lateinit var tvFace: ImageView
     private var currentUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,47 +34,6 @@ class AddActivity : AppCompatActivity() {
         setContentView(binding.root)
         setUi()
         observeAdd()
-    }
-
-    private fun setMedia() {
-        requestPermissionLauncher = registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                pickMediaLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-            } else {
-                showToastMessage(this@AddActivity, "Permission refusée")
-            }
-        }
-        pickMediaLauncher =
-            registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-                if (uri != null) {
-                    currentUri = uri
-                    ImageUtils.setPicture(binding.tvFace, uri)
-                } else {
-                showToastMessage(this@AddActivity, "Aucune image sélectionnée")
-                }
-            }
-        binding.tvFace.setOnClickListener {
-            when {
-                ContextCompat.checkSelfPermission(
-                    this@AddActivity,
-                    READ_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_GRANTED -> {
-                    pickMediaLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-                }
-                shouldShowRequestPermissionRationale(READ_EXTERNAL_STORAGE) -> {
-                    showToastMessage(
-                        this@AddActivity,
-                        "Cette permission est nécessaire pour sélectionner une image."
-                    )
-                    requestPermissionLauncher.launch(READ_EXTERNAL_STORAGE)
-                }
-                else -> {
-                    requestPermissionLauncher.launch(READ_EXTERNAL_STORAGE)
-                }
-            }
-        }
     }
 
     private fun observeAdd() {
@@ -97,28 +49,12 @@ class AddActivity : AppCompatActivity() {
     private fun setUi() {
         toolbar = binding.toolbar
         toolbar.title = "Ajouter un candidat"
-        binding.saveButton.setOnClickListener {
-            setSave()
-        }
-        setDateUi()
+        tvFace = binding.tvFace
+        mediaPickerHelper = MediaPickerHelper(this, tvFace) { uri -> currentUri = uri }
+        mediaPickerHelper.setup()
+        binding.saveButton.setOnClickListener { setSave() }
+        setDateUi(this@AddActivity, binding.etDate)
         setToolbar()
-        setMedia()
-    }
-
-    private fun setDateUi() {
-        val etDate = binding.etDate
-        etDate.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            val year = calendar.get(Calendar.YEAR)
-            val month = calendar.get(Calendar.MONTH)
-            val day = calendar.get(Calendar.DAY_OF_MONTH)
-            val datePicker = DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
-                val formattedDate =
-                    "%02d/%02d/%04d".format(selectedDay, selectedMonth + 1, selectedYear)
-                etDate.setText(formattedDate)
-            }, year, month, day)
-            datePicker.show()
-        }
     }
 
     private fun setToolbar() {
@@ -143,13 +79,8 @@ class AddActivity : AppCompatActivity() {
             etEmail.error = null // pour retirer l’erreur
         }
 
-        val tvFace: ImageView = binding.tvFace
         val tvFaceUrl = binding.tvFaceUrl.text.toString()
-        if (tvFaceUrl.isNotBlank()) {
-            tvFace.loadImage(tvFaceUrl)
-        } else {
-            tvFace.setImageResource(R.drawable.ic_edit)
-        }
+        tvFace.loadImage(tvFaceUrl)
 
         viewModel.addCandidate(
             firstName = binding.etFirstname.text.toString(),

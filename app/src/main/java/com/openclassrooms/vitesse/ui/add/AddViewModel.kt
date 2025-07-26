@@ -21,12 +21,12 @@ class AddViewModel @Inject constructor(
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
     fun addCandidate(
-        firstName: String,
-        lastName: String,
-        phone: String,
-        email: String,
+        firstName: String? = null,
+        lastName: String? = null,
+        phone: String? = null,
+        email: String? = null,
         isFavorite: Boolean = false,
-        photoUri: String = "",
+        photoUri: String? = null,
         note: String? = null,
         date: String? = null,
         salaryClaim: String? = null

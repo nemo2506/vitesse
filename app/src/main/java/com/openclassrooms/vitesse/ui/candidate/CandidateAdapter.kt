@@ -1,5 +1,6 @@
 package com.openclassrooms.vitesse.ui.candidate
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.domain.model.Candidate
-import com.openclassrooms.vitesse.ui.utils.capitalizeFirstLetter
 
 class CandidateAdapter(
     private val toDetailScreen: (Candidate) -> Unit
@@ -28,12 +28,11 @@ class CandidateAdapter(
 
     override fun onBindViewHolder(holder: CandidateViewHolder, position: Int) {
         val candidate = getItem(position)
-
         Glide.with(holder.itemView.context)
             .load(candidate.photoUri)
             .into(holder.tvFace)
-        holder.tvFirstName.text = candidate.firstName?.let { String.format("%s", it.capitalizeFirstLetter()) }
-        holder.tvLastName.text = candidate.lastName?.let { String.format("%s", it.uppercase()) }
+        holder.tvFirstName.text = candidate.firstName
+        holder.tvLastName.text = candidate.lastName
         holder.tvNote.text = String.format("%s", candidate.note)
         holder.itemView.setOnClickListener {
             toDetailScreen(candidate)
