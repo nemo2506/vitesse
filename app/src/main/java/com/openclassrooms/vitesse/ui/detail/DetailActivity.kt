@@ -3,7 +3,6 @@ package com.openclassrooms.vitesse.ui.detail
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -32,6 +31,8 @@ class DetailActivity : AppCompatActivity() {
     private val viewModel: DetailViewModel by viewModels()
     private lateinit var candidate: CandidateDescription
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
+    private var candidateId: Long = 0
+    private var detailId : Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,15 +48,16 @@ class DetailActivity : AppCompatActivity() {
             viewModel.uiState.collect { uiState ->
                 uiState.isLoading?.let { binding.loading.setVisible(it) }
                 uiState.candidate?.let { setUpUI(it) }
-                uiState.message?.let { showToastMessage(this@DetailActivity, it) }
+                uiState.message?.showToastMessage(this@DetailActivity)
                 if (uiState.isDeleted == true) navigateToCandidateScreen(this@DetailActivity)
             }
         }
     }
 
     private fun setUpUI(candidate: CandidateDescription) {
-        Log.d("MARC", "DetailACtivity/setUpUI: $candidate")
         this@DetailActivity.candidate = candidate
+        if(candidate.candidateId != null) candidateId = candidate.candidateId
+        if(candidate.detailId != null) detailId = candidate.detailId
         val title = "%s %s".format(candidate.firstName, candidate.lastName)
         toolbar.title = title
         setFavoriteUi(candidate.isFavorite)
@@ -109,8 +111,7 @@ class DetailActivity : AppCompatActivity() {
 
 
     private fun setEmail(address: String, title: String) {
-        showToastMessage(this@DetailActivity, "EMAIL")
-        Log.d("MARC", "setEmail: $address/$title")
+        "EMAIL".showToastMessage(this@DetailActivity )
         val subject = "VITESSE"
         val body = "Bonjour $title,\nVoici un message pré-rempli."
         val intent = Intent(Intent.ACTION_SEND).apply {
@@ -122,7 +123,7 @@ class DetailActivity : AppCompatActivity() {
         if (intent.resolveActivity(packageManager) != null) {
             startActivity(intent)
         } else {
-            showToastMessage(this@DetailActivity, "MESSAGERIE ABSENTE")
+            "MESSAGERIE ABSENTE".showToastMessage(this@DetailActivity)
         }
     }
 
@@ -154,16 +155,12 @@ class DetailActivity : AppCompatActivity() {
                     }
 
                     R.id.fab_edit -> {
-                        viewModel.candidateId?.let { navigateToEditScreen(this@DetailActivity, it) }
+                        navigateToEditScreen(this@DetailActivity, candidateId, detailId)
                         true
                     }
 
                     R.id.fab_delete -> {
-                        try {
-                            candidate.candidateId?.let { viewModel.deleteCandidate(it) }
-                        } catch (e: Exception) {
-                            Log.d("MARC", "deleteCandidate: $e")
-                        }
+                        candidate.candidateId?.let { viewModel.deleteCandidate(it) }
                         true
                     }
 

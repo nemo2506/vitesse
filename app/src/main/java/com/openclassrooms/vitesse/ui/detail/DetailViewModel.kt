@@ -1,6 +1,5 @@
 package com.openclassrooms.vitesse.ui.detail
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -24,7 +23,6 @@ class DetailViewModel @Inject constructor(
 ) : ViewModel() {
 
     val candidateId: Long? = appState.get<Long>(ConstantsApp.CANDIDATE_ID)
-    val detailId: Long? = appState.get<Long>(ConstantsApp.DETAIL_ID)
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
@@ -128,7 +126,6 @@ class DetailViewModel @Inject constructor(
 
     fun deleteCandidate(candidateId: Long) {
         viewModelScope.launch {
-            Log.d("MARC", "deleteCandidate: $candidateId")
             detailUseCase.deleteCandidate(candidateId)
                 .collect { result ->
                     when (result) {
