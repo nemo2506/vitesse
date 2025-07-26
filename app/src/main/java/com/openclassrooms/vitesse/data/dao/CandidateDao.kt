@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import androidx.room.Upsert
 import com.openclassrooms.vitesse.data.entity.CandidateDto
 import com.openclassrooms.vitesse.data.entity.CandidateWithDetailDto
@@ -15,13 +16,22 @@ import kotlinx.coroutines.flow.Flow
 interface CandidateDao {
 
     @Transaction
-    suspend fun upsertCandidateWithDetail(candidateWithDetailDto: CandidateWithDetailDto): Long {
+    suspend fun upsertCandidateAll(candidateWithDetailDto: CandidateWithDetailDto): Long {
+        var id: Long
+        val candidateDtoId = candidateWithDetailDto.candidateDto.id
         val candidateId = upsertCandidate(candidateWithDetailDto.candidateDto)
-        candidateWithDetailDto.detailDto.let {
-            val detailDto = it.copy(candidateId = candidateId)
-            upsertDetail(detailDto)
+        if (candidateDtoId <= 0){
+            candidateWithDetailDto.detailDto.let {
+                id = candidateId
+                val detailDto = it.copy(candidateId = candidateId)
+                upsertDetail(detailDto)
+            }
+        } else {
+            id = candidateDtoId
+            upsertDetail(candidateWithDetailDto.detailDto)
         }
-        return candidateId
+        Log.d("MARC", "Transaction/id: $id")
+        return id
     }
 
     @Upsert
@@ -30,13 +40,15 @@ interface CandidateDao {
     @Upsert
     suspend fun upsertDetail(detail: DetailDto): Long
 
-    @Query("""
+    @Query(
+        """
     SELECT * FROM candidate 
     WHERE isFavorite = :fav 
     AND (:term = '' OR
     firstName LIKE :term COLLATE NOCASE OR
     lastName LIKE :term COLLATE NOCASE
-    )""")
+    )"""
+    )
     fun getCandidate(fav: Int, term: String): Flow<List<Candidate?>>
 
     @Transaction
