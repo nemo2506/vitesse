@@ -6,16 +6,16 @@ import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.databinding.ActivityAddBinding
 import com.openclassrooms.vitesse.domain.model.CandidateDetail
-import com.openclassrooms.vitesse.ui.utils.MediaPickerHelper
-import com.openclassrooms.vitesse.ui.utils.setVisible
-import com.openclassrooms.vitesse.ui.utils.showToastMessage
-import com.openclassrooms.vitesse.ui.utils.loadImage
-import com.openclassrooms.vitesse.ui.utils.navigateToCandidateScreen
-import com.openclassrooms.vitesse.ui.utils.setDateUi
-import com.openclassrooms.vitesse.ui.utils.toLocalDateString
+import com.openclassrooms.vitesse.utils.MediaPickerHelper
+import com.openclassrooms.vitesse.utils.setVisible
+import com.openclassrooms.vitesse.utils.showToastMessage
+import com.openclassrooms.vitesse.utils.loadImage
+import com.openclassrooms.vitesse.utils.navigateToCandidateScreen
+import com.openclassrooms.vitesse.utils.navigateToDetailScreen
+import com.openclassrooms.vitesse.utils.setDateUi
+import com.openclassrooms.vitesse.utils.toLocalDateString
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -38,6 +38,17 @@ class EditActivity : AppCompatActivity() {
         observeEdit()
     }
 
+    private fun observeEdit() {
+        lifecycleScope.launch {
+            viewModel.uiState.collect { uiState ->
+                uiState.isLoading?.let { binding.loading.setVisible(it) }
+                uiState.candidate?.let { setUpUI(it) }
+                uiState.candidateId?.let { navigateToDetailScreen(this@EditActivity, it) }
+                uiState.message?.let { showToastMessage(this@EditActivity, it) }
+            }
+        }
+    }
+
     private fun setUi() {
         toolbar = binding.toolbar
         toolbar.title = "Ajouter un candidat"
@@ -50,24 +61,24 @@ class EditActivity : AppCompatActivity() {
     }
 
     private fun setSave() {
-        val etLastname = binding.etLastname
-        val etEmail = binding.etEmail
-
-        if (etLastname.text?.toString().isNullOrBlank()) {
-            etLastname.error = "Ce champ est obligatoire"
-        } else {
-            etLastname.error = null // pour retirer l’erreur
-        }
-        if (etEmail.text?.toString().isNullOrBlank()) {
-            etEmail.error = "Ce champ est obligatoire"
-        } else {
-            etEmail.error = null // pour retirer l’erreur
-        }
+//        val etLastname = binding.etLastname
+//        val etEmail = binding.etEmail
+//
+//        if (etLastname.text?.toString().isNullOrBlank()) {
+//            etLastname.error = "Ce champ est obligatoire"
+//        } else {
+//            etLastname.error = null // pour retirer l’erreur
+//        }
+//        if (etEmail.text?.toString().isNullOrBlank()) {
+//            etEmail.error = "Ce champ est obligatoire"
+//        } else {
+//            etEmail.error = null // pour retirer l’erreur
+//        }
 
         val tvFaceUrl = binding.tvFaceUrl.text.toString()
         tvFace.loadImage(tvFaceUrl)
 
-        viewModel.addCandidate(
+        viewModel.upsertCandidate(
             firstName = binding.etFirstname.text.toString(),
             lastName = binding.etLastname.text.toString(),
             phone = binding.etPhone.text.toString(),
@@ -77,16 +88,6 @@ class EditActivity : AppCompatActivity() {
             date = binding.etDate.text.toString(),
             salaryClaim = binding.etSalaryClaim.text.toString()
         )
-    }
-
-    private fun observeEdit() {
-        lifecycleScope.launch {
-            viewModel.uiState.collect { uiState ->
-                uiState.isLoading?.let { binding.loading.setVisible(it) }
-                uiState.candidate?.let { setUpUI(it) }
-                uiState.message?.let { showToastMessage(this@EditActivity, it) }
-            }
-        }
     }
 
     private fun setUpUI(candidate: CandidateDetail) {

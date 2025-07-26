@@ -25,6 +25,7 @@ class EditViewModel @Inject constructor(
     appState: SavedStateHandle
 ) : ViewModel() {
     val candidateId: Long? = appState.get<Long>(ConstantsApp.CANDIDATE_ID)
+    val detailId: Long? = appState.get<Long>(ConstantsApp.DETAIL_ID)
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
@@ -45,9 +46,11 @@ class EditViewModel @Inject constructor(
                                 it.copy(
                                     isLoading = true,
                                     candidate = null,
+                                    candidateId = null,
                                     isFavoriteUpdated = false,
                                     isDeleted = false,
                                     message = null
+
                                 )
                             }
                             delay(1000)  // TO TEST
@@ -57,6 +60,7 @@ class EditViewModel @Inject constructor(
                             _uiState.update {
                                 it.copy(
                                     candidate = result.value,
+                                    candidateId = null,
                                     isLoading = false,
                                     isFavoriteUpdated = false,
                                     isDeleted = false,
@@ -72,6 +76,7 @@ class EditViewModel @Inject constructor(
                                     isFavoriteUpdated = false,
                                     isDeleted = false,
                                     candidate = null,
+                                    candidateId = null,
                                     message = result.message
                                 )
                             }
@@ -81,7 +86,7 @@ class EditViewModel @Inject constructor(
         }
     }
 
-    fun addCandidate(
+    fun upsertCandidate(
         firstName: String? = null,
         lastName: String? = null,
         phone: String? = null,
@@ -93,51 +98,57 @@ class EditViewModel @Inject constructor(
         salaryClaim: String? = null
     ) {
         viewModelScope.launch {
-            candidateUseCase.upsertCandidate(
-                firstName,
-                lastName,
-                phone,
-                email,
-                isFavorite,
-                photoUri,
-                note,
-                date,
-                salaryClaim
-            )
-                .collect { result ->
-                    when (result) {
-                        is Result.Loading -> {
-                            _uiState.update {
-                                it.copy(
-                                    isLoading = true,
-                                    message = null,
-                                    candidateId = null
-                                )
+            if (candidateId != null) {
+                candidateUseCase.upsertCandidate(
+                    candidateId = candidateId,
+                    firstName = firstName,
+                    lastName = lastName,
+                    phone = phone,
+                    email = email,
+                    isFavorite = isFavorite,
+                    photoUri = photoUri,
+                    note = note,
+                    date = date,
+                    salaryClaim = salaryClaim
+                )
+                    .collect { result ->
+                        when (result) {
+                            is Result.Loading -> {
+                                _uiState.update {
+                                    it.copy(
+                                        isLoading = true,
+                                        message = null,
+                                        candidateId = null,
+                                        candidate = null,
+                                    )
+                                }
+                                delay(1000)
                             }
-                            delay(1000)
-                        }
 
-                        is Result.Success -> {
-                            _uiState.update {
-                                it.copy(
-                                    isLoading = false,
-                                    message = null,
-                                    candidateId = result.value
-                                )
+                            is Result.Success -> {
+                                _uiState.update {
+                                    it.copy(
+                                        isLoading = false,
+                                        message = null,
+                                        candidateId = result.value,
+                                        candidate = null,
+                                    )
+                                }
                             }
-                        }
 
-                        is Result.Failure -> {
-                            _uiState.update {
-                                it.copy(
-                                    isLoading = false,
-                                    message = result.message,
-                                    candidateId = null
-                                )
+                            is Result.Failure -> {
+                                _uiState.update {
+                                    it.copy(
+                                        isLoading = false,
+                                        message = result.message,
+                                        candidateId = null,
+                                        candidate = null,
+                                    )
+                                }
                             }
                         }
                     }
-                }
+            }
         }
     }
 }
