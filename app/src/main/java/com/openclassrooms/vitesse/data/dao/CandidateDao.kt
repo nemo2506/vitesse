@@ -30,7 +30,6 @@ interface CandidateDao {
             id = candidateDtoId
             upsertDetail(candidateWithDetailDto.detailDto)
         }
-        Log.d("MARC", "Transaction/id: $id")
         return id
     }
 
