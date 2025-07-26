@@ -1,7 +1,6 @@
 package com.openclassrooms.vitesse.data.database
 
 import android.content.Context
-import android.util.Log
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -62,7 +61,7 @@ abstract class AppDatabase : RoomDatabase() {
         suspend fun populateDatabase(
             candidateDao: CandidateDao
         ) {
-            candidateDao.upsertCandidateWithDetail(
+            candidateDao.upsertCandidateAll(
                 CandidateWithDetailDto(
                     candidateDto = Candidate(
                         firstName = "Lucas",
@@ -81,7 +80,7 @@ abstract class AppDatabase : RoomDatabase() {
                 )
             )
 
-            candidateDao.upsertCandidateWithDetail(
+            candidateDao.upsertCandidateAll(
                 CandidateWithDetailDto(
                     candidateDto = Candidate(
                         firstName = "Chloé",
@@ -100,7 +99,7 @@ abstract class AppDatabase : RoomDatabase() {
                 )
             )
 
-            candidateDao.upsertCandidateWithDetail(
+            candidateDao.upsertCandidateAll(
                 CandidateWithDetailDto(
                     candidateDto = Candidate(
                         firstName = "Nathan",
@@ -119,7 +118,7 @@ abstract class AppDatabase : RoomDatabase() {
                 )
             )
 
-            candidateDao.upsertCandidateWithDetail(
+            candidateDao.upsertCandidateAll(
                 CandidateWithDetailDto(
                     candidateDto = Candidate(
                         firstName = "Léa",
@@ -138,7 +137,7 @@ abstract class AppDatabase : RoomDatabase() {
                 )
             )
 
-            candidateDao.upsertCandidateWithDetail(
+            candidateDao.upsertCandidateAll(
                 CandidateWithDetailDto(
                     candidateDto = Candidate(
                         firstName = "Hugo",
@@ -157,7 +156,7 @@ abstract class AppDatabase : RoomDatabase() {
                 )
             )
 
-            candidateDao.upsertCandidateWithDetail(
+            candidateDao.upsertCandidateAll(
                 CandidateWithDetailDto(
                     candidateDto = Candidate(
                         firstName = "Camille",
@@ -176,7 +175,7 @@ abstract class AppDatabase : RoomDatabase() {
                 )
             )
 
-            candidateDao.upsertCandidateWithDetail(
+            candidateDao.upsertCandidateAll(
                 CandidateWithDetailDto(
                     candidateDto = Candidate(
                         firstName = "Joe",
@@ -195,7 +194,7 @@ abstract class AppDatabase : RoomDatabase() {
                 )
             )
 
-            candidateDao.upsertCandidateWithDetail(
+            candidateDao.upsertCandidateAll(
                 CandidateWithDetailDto(
                     candidateDto = Candidate(
                         firstName = "Julien",
@@ -214,7 +213,7 @@ abstract class AppDatabase : RoomDatabase() {
                 )
             )
 
-            candidateDao.upsertCandidateWithDetail(
+            candidateDao.upsertCandidateAll(
                 CandidateWithDetailDto(
                     candidateDto = Candidate(
                         firstName = "Sophie",
