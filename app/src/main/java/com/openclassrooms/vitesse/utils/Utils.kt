@@ -84,8 +84,13 @@ fun Long?.toEmpty(): String {
     return this.toString()
 }
 
-fun showToastMessage(context: Context, message: String) {
-    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+fun String?.toZeroOrLong(): Long {
+    if (this.isNullOrBlank()) return 0L
+    return this.toLong()
+}
+
+fun String.showToastMessage(context: Context) {
+    Toast.makeText(context, this, Toast.LENGTH_SHORT).show()
 }
 
 fun ImageView.loadImage(url: String?) {
@@ -96,10 +101,9 @@ fun ImageView.loadImage(url: String?) {
         .into(this)
 }
 
-fun navigateToDetailScreen(context: Context, candidateId: Long, detailId: Long = 0L) {
+fun navigateToDetailScreen(context: Context, candidateId: Long) {
     val intent = Intent(context, DetailActivity::class.java).apply {
         putExtra(ConstantsApp.CANDIDATE_ID, candidateId)
-        putExtra(ConstantsApp.DETAIL_ID, detailId)
     }
     context.startActivity(intent)
 }
@@ -114,9 +118,10 @@ fun navigateToCandidateScreen(context: Context) {
     context.startActivity(intent)
 }
 
-fun navigateToEditScreen(context: Context, candidateId: Long) {
+fun navigateToEditScreen(context: Context, candidateId: Long, detailId: Long) {
     val intent = Intent(context, EditActivity::class.java).apply {
         putExtra(ConstantsApp.CANDIDATE_ID, candidateId)
+        putExtra(ConstantsApp.DETAIL_ID, detailId)
     }
     context.startActivity(intent)
 }
@@ -140,7 +145,7 @@ class MediaPickerHelper(
             if (isGranted) {
                 pickMediaLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             } else {
-                showToastMessage(activity, "Permission refusée")
+                "Permission refusée".showToastMessage(activity)
             }
         }
 
@@ -150,7 +155,7 @@ class MediaPickerHelper(
                 onImagePicked?.invoke(uri)
                 tvFace.loadImage(uri.toString())
             } else {
-                showToastMessage(activity, "Aucune image sélectionnée")
+                "Aucune image sélectionnée".showToastMessage(activity)
             }
         }
 
@@ -165,10 +170,7 @@ class MediaPickerHelper(
                 }
 
                 activity.shouldShowRequestPermissionRationale(READ_EXTERNAL_STORAGE) -> {
-                    showToastMessage(
-                        activity,
-                        "Cette permission est nécessaire pour sélectionner une image."
-                    )
+                    "Cette permission est nécessaire pour sélectionner une image.".showToastMessage(activity)
                     requestPermissionLauncher.launch(READ_EXTERNAL_STORAGE)
                 }
 
@@ -196,3 +198,7 @@ fun setDateUi(context: Context, etDate: TextView) {
     }
 }
 
+
+fun String.capitalizeFirstLetter(): String {
+    return this.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
+}
