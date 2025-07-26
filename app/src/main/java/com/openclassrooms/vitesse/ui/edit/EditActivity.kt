@@ -1,7 +1,7 @@
 package com.openclassrooms.vitesse.ui.edit
 
-import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -26,15 +26,17 @@ class EditActivity : AppCompatActivity() {
     private val viewModel: EditViewModel by viewModels()
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
     private lateinit var candidate: CandidateDetail
+    private var candidateId: Long = 0L
+    private var detailId: Long = 0L
     private lateinit var mediaPickerHelper: MediaPickerHelper
     private lateinit var tvFace: ImageView
-    private var currentUri: Uri? = null
+    private var currentUri: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setUi()
+        setGlobalUi()
         observeEdit()
     }
 
@@ -42,55 +44,27 @@ class EditActivity : AppCompatActivity() {
         lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
                 uiState.isLoading?.let { binding.loading.setVisible(it) }
-                uiState.candidate?.let { setUpUI(it) }
+                uiState.candidate?.let { setUp(it) }
                 uiState.candidateId?.let { navigateToDetailScreen(this@EditActivity, it) }
-                uiState.message?.let { showToastMessage(this@EditActivity, it) }
+                uiState.message?.showToastMessage(this@EditActivity)
             }
         }
     }
 
-    private fun setUi() {
+    private fun setGlobalUi() {
         toolbar = binding.toolbar
         toolbar.title = "Ajouter un candidat"
         tvFace = binding.tvFace
-        mediaPickerHelper = MediaPickerHelper(this, tvFace) { uri -> currentUri = uri }
+        mediaPickerHelper = MediaPickerHelper(this, tvFace) { uri -> currentUri = uri.toString() }
         mediaPickerHelper.setup()
         binding.saveButton.setOnClickListener { setSave() }
         setDateUi(this@EditActivity, binding.etDate)
         setToolbar()
     }
 
-    private fun setSave() {
-//        val etLastname = binding.etLastname
-//        val etEmail = binding.etEmail
-//
-//        if (etLastname.text?.toString().isNullOrBlank()) {
-//            etLastname.error = "Ce champ est obligatoire"
-//        } else {
-//            etLastname.error = null // pour retirer l’erreur
-//        }
-//        if (etEmail.text?.toString().isNullOrBlank()) {
-//            etEmail.error = "Ce champ est obligatoire"
-//        } else {
-//            etEmail.error = null // pour retirer l’erreur
-//        }
-
-        val tvFaceUrl = binding.tvFaceUrl.text.toString()
-        tvFace.loadImage(tvFaceUrl)
-
-        viewModel.upsertCandidate(
-            firstName = binding.etFirstname.text.toString(),
-            lastName = binding.etLastname.text.toString(),
-            phone = binding.etPhone.text.toString(),
-            email = binding.etEmail.text.toString(),
-            photoUri = currentUri.toString(),
-            note = binding.etNote.text.toString(),
-            date = binding.etDate.text.toString(),
-            salaryClaim = binding.etSalaryClaim.text.toString()
-        )
-    }
-
-    private fun setUpUI(candidate: CandidateDetail) {
+    private fun setUp(candidate: CandidateDetail) {
+        candidateId = candidate.candidateId!!
+        detailId = candidate.detailId!!
         this@EditActivity.candidate = candidate
         toolbar.title = "Modifier un candidat"
         candidate.photoUri?.let { binding.tvFace.loadImage(it) }
@@ -104,10 +78,26 @@ class EditActivity : AppCompatActivity() {
     }
 
     private fun setToolbar() {
-        toolbar = binding.toolbar
         setSupportActionBar(toolbar)
         toolbar.setNavigationOnClickListener {
             navigateToCandidateScreen(this)
         }
+    }
+
+    private fun setSave() {
+        val tvFaceUrl = binding.tvFaceUrl.text.toString()
+        tvFace.loadImage(tvFaceUrl)
+        viewModel.modifyCandidate(
+            candidateId = candidateId,
+            detailId = detailId,
+            firstName = binding.etFirstname.text.toString(),
+            lastName = binding.etLastname.text.toString(),
+            phone = binding.etPhone.text.toString(),
+            email = binding.etEmail.text.toString(),
+            photoUri = currentUri,
+            note = binding.etNote.text.toString(),
+            date = binding.etDate.text.toString(),
+            salaryClaim = binding.etSalaryClaim.text.toString()
+        )
     }
 }

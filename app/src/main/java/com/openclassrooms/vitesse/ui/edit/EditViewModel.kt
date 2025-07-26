@@ -1,6 +1,5 @@
 package com.openclassrooms.vitesse.ui.edit
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -24,14 +23,12 @@ class EditViewModel @Inject constructor(
     private val candidateUseCase: CandidateUseCase,
     appState: SavedStateHandle
 ) : ViewModel() {
-    val candidateId: Long? = appState.get<Long>(ConstantsApp.CANDIDATE_ID)
-    val detailId: Long? = appState.get<Long>(ConstantsApp.DETAIL_ID)
+    private val candidateId: Long? = appState.get<Long>(ConstantsApp.CANDIDATE_ID)
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
     init {
         if (candidateId != null) {
-            Log.d("MARC", "EditViewModel/$candidateId")
             observeCandidate(candidateId)
         }
     }
@@ -86,7 +83,9 @@ class EditViewModel @Inject constructor(
         }
     }
 
-    fun upsertCandidate(
+    fun modifyCandidate(
+        candidateId: Long,
+        detailId: Long,
         firstName: String? = null,
         lastName: String? = null,
         phone: String? = null,
@@ -98,9 +97,9 @@ class EditViewModel @Inject constructor(
         salaryClaim: String? = null
     ) {
         viewModelScope.launch {
-            if (candidateId != null) {
                 candidateUseCase.upsertCandidate(
                     candidateId = candidateId,
+                    detailId = detailId,
                     firstName = firstName,
                     lastName = lastName,
                     phone = phone,
@@ -110,8 +109,7 @@ class EditViewModel @Inject constructor(
                     note = note,
                     date = date,
                     salaryClaim = salaryClaim
-                )
-                    .collect { result ->
+                ).collect { result ->
                         when (result) {
                             is Result.Loading -> {
                                 _uiState.update {
@@ -149,7 +147,6 @@ class EditViewModel @Inject constructor(
                         }
                     }
             }
-        }
     }
 }
 
