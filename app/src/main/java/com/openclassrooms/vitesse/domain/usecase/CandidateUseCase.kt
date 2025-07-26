@@ -3,8 +3,8 @@ package com.openclassrooms.vitesse.domain.usecase
 import android.util.Log
 import com.openclassrooms.vitesse.data.repository.CandidateRepository
 import com.openclassrooms.vitesse.domain.model.Candidate
-import com.openclassrooms.vitesse.domain.model.Detail
-import com.openclassrooms.vitesse.domain.usecase.utils.toLocalDateTime
+import com.openclassrooms.vitesse.utils.toZeroOrLong
+import com.openclassrooms.vitesse.utils.capitalizeFirstLetter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -29,6 +29,8 @@ class CandidateUseCase @Inject constructor(
     }
 
     fun upsertCandidate(
+        candidateId: Long = 0L,
+        detailId: Long = 0L,
         firstName: String? = null,
         lastName: String? = null,
         phone: String? = null,
@@ -39,33 +41,28 @@ class CandidateUseCase @Inject constructor(
         date: String? = null,
         salaryClaim: String? = null
     ): Flow<Result<Long>> = flow {
-        val candidate = Candidate(
-            firstName = firstName?.capitalizeFirstLetter(),
-            lastName = lastName?.uppercase(),
-            isFavorite = isFavorite,
-            photoUri = photoUri,
-            note = note
-        )
-        val detail =
-            Detail(
-                date = date?.toLocalDateTime(),
-                salaryClaim = salaryClaim?.toLongOrNull(),
-                phone = phone,
-                email = email,
-                candidateId = 0
-            )
+
         emit(Result.Loading)
         try {
-            candidateRepository.upsertCandidate(candidate, detail).collect {
+            Log.d("MARC", "upsertCandidate/ID: $candidateId/$detailId")
+            candidateRepository.upsertCandidateAll(
+                candidateId = candidateId,
+                detailId = detailId,
+                firstName = firstName?.capitalizeFirstLetter(),
+                lastName = lastName?.uppercase(),
+                phone = phone,
+                email = email,
+                isFavorite = isFavorite,
+                photoUri = photoUri,
+                note = note,
+                date = date,
+                salaryClaim = salaryClaim.toZeroOrLong()
+            ).collect {
                 emit(Result.Success(it))
             }
         } catch (e: Throwable) {
-            Log.d("ERROR", "updateCandidate: $e")
+            Log.d("MARC", "updateCandidate: $e")
             emit(Result.Failure(e.message ?: "Unknown error"))
         }
-    }
-
-    private fun String.capitalizeFirstLetter(): String {
-        return this.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
     }
 }

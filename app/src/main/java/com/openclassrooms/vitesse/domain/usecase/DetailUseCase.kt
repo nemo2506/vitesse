@@ -6,10 +6,10 @@ import kotlinx.coroutines.flow.Flow
 import com.openclassrooms.vitesse.data.repository.DetailRepository
 import com.openclassrooms.vitesse.domain.model.CandidateDescription
 import com.openclassrooms.vitesse.domain.model.CandidateDetail
-import com.openclassrooms.vitesse.domain.usecase.utils.toFormatSalary
-import com.openclassrooms.vitesse.domain.usecase.utils.toDateDescription
-import com.openclassrooms.vitesse.domain.usecase.utils.toEmpty
-import com.openclassrooms.vitesse.domain.usecase.utils.toGbpDescription
+import com.openclassrooms.vitesse.utils.toFormatSalary
+import com.openclassrooms.vitesse.utils.toDateDescription
+import com.openclassrooms.vitesse.utils.toEmpty
+import com.openclassrooms.vitesse.utils.toGbpDescription
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
@@ -21,6 +21,7 @@ class DetailUseCase @Inject constructor(
         emit(Result.Loading)
         try {
             detailRepository.getCandidateById(id).collect {
+                Log.d("MARC", "getCandidateToDescription: $it")
                 if (it != null) {
                     emit(Result.Success(convertToDescription(it)))
                 } else {
@@ -28,7 +29,7 @@ class DetailUseCase @Inject constructor(
                 }
             }
         } catch (e: Throwable) {
-            Log.d("ERROR", "getCandidateByIdError: $e")
+            Log.d("MARC", "getCandidateByIdError: $e")
             emit(Result.Failure(e.message ?: "Unknown error"))
         }
     }
@@ -44,7 +45,7 @@ class DetailUseCase @Inject constructor(
                 }
             }
         } catch (e: Throwable) {
-            Log.d("ERROR", "getCandidateByIdError: $e")
+            Log.d("MARC", "getCandidateByIdError: $e")
             emit(Result.Failure(e.message ?: "Unknown error"))
         }
     }
@@ -56,7 +57,7 @@ class DetailUseCase @Inject constructor(
                 emit(Result.Success(it))
             }
         } catch (e: Throwable) {
-            Log.d("ERROR", "deleteCandidateError: $e")
+            Log.d("MARC", "deleteCandidateError: $e")
             emit(Result.Failure(e.message ?: "Unknown error"))
         }
     }
@@ -69,7 +70,7 @@ class DetailUseCase @Inject constructor(
                 !fav // INVERSE LA VALEUR FAV POUR LA MODIFIER
             ).collect { emit(Result.Success(it)) }
         } catch (e: Throwable) {
-            Log.d("ERROR", "updateFavoriteCandidateError: $e")
+            Log.d("MARC", "updateFavoriteCandidateError: $e")
             emit(Result.Failure(e.message ?: "Unknown error"))
         }
     }
