@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.databinding.ActivityCandidateBinding
-import com.openclassrooms.vitesse.ui.utils.navigateToAddScreen
-import com.openclassrooms.vitesse.ui.utils.navigateToDetailScreen
-import com.openclassrooms.vitesse.ui.utils.setVisible
-import com.openclassrooms.vitesse.ui.utils.showToastMessage
+import com.openclassrooms.vitesse.utils.navigateToAddScreen
+import com.openclassrooms.vitesse.utils.navigateToDetailScreen
+import com.openclassrooms.vitesse.utils.setVisible
+import com.openclassrooms.vitesse.utils.showToastMessage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -55,7 +55,7 @@ class CandidateActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         candidateAdapter = CandidateAdapter { candidate ->
-            candidate.id?.let { navigateToDetailScreen(this@CandidateActivity, it) }
+            candidate.id?.let { navigateToDetailScreen(this@CandidateActivity, it, 1L) }
         }
         binding.candidateRecyclerview.layoutManager = LinearLayoutManager(this)
         binding.candidateRecyclerview.adapter = candidateAdapter
