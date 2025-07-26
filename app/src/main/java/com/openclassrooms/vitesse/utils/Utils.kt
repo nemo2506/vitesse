@@ -1,4 +1,13 @@
-package com.openclassrooms.vitesse.ui.utils
+package com.openclassrooms.vitesse.utils
+
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.Period
+import java.time.format.DateTimeFormatter
+import java.util.Locale
+
 
 import android.content.Context
 import android.widget.Toast
@@ -12,8 +21,6 @@ import com.openclassrooms.vitesse.ui.edit.EditActivity
 import android.content.Intent
 import com.openclassrooms.vitesse.ui.add.AddActivity
 import android.view.View
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -24,6 +31,58 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.widget.TextView
 import androidx.activity.ComponentActivity
+
+fun Long?.toFormatSalary(
+    groupingSeparator: Char = ' ',
+    decimalSeparator: Char = ',',
+    currencySymbol: String = "€",
+    pattern: String = "#,### €",
+    maxFractionDigits: Int = 0
+): String? {
+    if (this == null) return null
+    val symbols = DecimalFormatSymbols(Locale.FRANCE).apply {
+        this.groupingSeparator = groupingSeparator
+        this.decimalSeparator = decimalSeparator
+        this.currencySymbol = currencySymbol
+    }
+    val decimalFormat = DecimalFormat(pattern, symbols)
+    decimalFormat.maximumFractionDigits = maxFractionDigits
+    return decimalFormat.format(this)
+}
+
+fun Long.toGbpDescription(): String? {
+    if (this == 0L) return null
+    val converted = this * 0.86705
+    return "soit £ $converted"
+}
+
+fun LocalDateTime.calculateAge(): Int {
+    val birthLocalDate: LocalDate = this.toLocalDate()
+    val today = LocalDate.now()
+    return Period.between(birthLocalDate, today).years
+}
+
+fun LocalDateTime?.toDateDescription(): String? {
+    if (this == null) return null
+    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+    val age = this.calculateAge()
+    val date = this.format(formatter)
+    return "$date ($age ans)"
+}
+
+fun String.toDate(format: String = "dd/MM/yyyy"): LocalDateTime? {
+    return try {
+        val formatter = DateTimeFormatter.ofPattern(format)
+        LocalDate.parse(this, formatter).atStartOfDay()
+    } catch (e: Exception) {
+        null
+    }
+}
+
+fun Long?.toEmpty(): String {
+    if (this == null) return ""
+    return this.toString()
+}
 
 fun showToastMessage(context: Context, message: String) {
     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
@@ -37,9 +96,10 @@ fun ImageView.loadImage(url: String?) {
         .into(this)
 }
 
-fun navigateToDetailScreen(context: Context, candidateId: Long) {
+fun navigateToDetailScreen(context: Context, candidateId: Long, detailId: Long = 0L) {
     val intent = Intent(context, DetailActivity::class.java).apply {
         putExtra(ConstantsApp.CANDIDATE_ID, candidateId)
+        putExtra(ConstantsApp.DETAIL_ID, detailId)
     }
     context.startActivity(intent)
 }
@@ -135,3 +195,4 @@ fun setDateUi(context: Context, etDate: TextView) {
         datePicker.show()
     }
 }
+
