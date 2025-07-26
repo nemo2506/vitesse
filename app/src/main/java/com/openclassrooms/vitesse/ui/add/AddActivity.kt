@@ -31,7 +31,7 @@ class AddActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAddBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setUi()
+        setGlobalUi()
         observeAdd()
     }
 
@@ -39,13 +39,13 @@ class AddActivity : AppCompatActivity() {
         lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
                 uiState.isLoading?.let { binding.loading.setVisible(it) }
-                uiState.message?.let { showToastMessage(this@AddActivity, it) }
+                uiState.message?.showToastMessage(this@AddActivity)
                 uiState.candidateId?.let { navigateToDetailScreen(this@AddActivity, it) }
             }
         }
     }
 
-    private fun setUi() {
+    private fun setGlobalUi() {
         toolbar = binding.toolbar
         toolbar.title = "Ajouter un candidat"
         tvFace = binding.tvFace
@@ -64,20 +64,6 @@ class AddActivity : AppCompatActivity() {
     }
 
     private fun setSave() {
-//        val etLastname = binding.etLastname
-//        val etEmail = binding.etEmail
-
-//        if (etLastname.text?.toString().isNullOrBlank()) {
-//            etLastname.error = "Ce champ est obligatoire"
-//        } else {
-//            etLastname.error = null // pour retirer l’erreur
-//        }
-//        if (etEmail.text?.toString().isNullOrBlank()) {
-//            etEmail.error = "Ce champ est obligatoire"
-//        } else {
-//            etEmail.error = null // pour retirer l’erreur
-//        }
-
         val tvFaceUrl = binding.tvFaceUrl.text.toString()
         tvFace.loadImage(tvFaceUrl)
 
