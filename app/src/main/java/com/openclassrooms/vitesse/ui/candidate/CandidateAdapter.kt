@@ -35,7 +35,6 @@ class CandidateAdapter(
         holder.tvLastName.text = candidate.lastName
         holder.tvNote.text = String.format("%s", candidate.note)
         holder.itemView.setOnClickListener {
-            Log.d("MARC", "onBindViewHolder: $candidate")
             toDetailScreen(candidate)
         }
     }
