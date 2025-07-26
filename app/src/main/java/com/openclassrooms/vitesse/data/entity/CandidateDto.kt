@@ -2,15 +2,13 @@ package com.openclassrooms.vitesse.data.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.Index
 
 @Entity(
-    tableName = "candidate",
-    indices = [Index(value = ["lastName"], unique = true)]
+    tableName = "candidate"
 )
 data class CandidateDto(
     @PrimaryKey(autoGenerate = true)
-    var id: Long = 0L,
+    var id: Long = 0,
     var firstName: String? = null,
     var lastName: String? = null,
     var isFavorite: Boolean,

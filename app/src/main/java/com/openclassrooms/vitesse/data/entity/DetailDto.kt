@@ -4,7 +4,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.time.LocalDateTime
 import androidx.room.ForeignKey
-import androidx.room.Index
 
 @Entity(
     tableName = "detail",
@@ -15,12 +14,11 @@ import androidx.room.Index
             childColumns = ["candidateId"],
             onDelete = ForeignKey.CASCADE
         )
-    ],
-    indices = [Index(value = ["candidateId"])]
+    ]
 )
 data class DetailDto(
     @PrimaryKey(autoGenerate = true)
-    var id: Long = 0L,
+    var id: Long = 0,
     var date: LocalDateTime? = null,
     var salaryClaim: Long? = null,
     var phone: String? = null,
