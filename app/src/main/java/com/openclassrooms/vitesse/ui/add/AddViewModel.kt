@@ -33,15 +33,15 @@ class AddViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             candidateUseCase.upsertCandidate(
-                firstName,
-                lastName,
-                phone,
-                email,
-                isFavorite,
-                photoUri,
-                note,
-                date,
-                salaryClaim
+                firstName = firstName,
+                lastName = lastName,
+                phone = phone,
+                email = email,
+                isFavorite = isFavorite,
+                photoUri = photoUri,
+                note = note,
+                date = date,
+                salaryClaim = salaryClaim
             )
                 .collect { result ->
                     when (result) {

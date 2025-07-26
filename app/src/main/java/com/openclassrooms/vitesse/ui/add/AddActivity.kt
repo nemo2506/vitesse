@@ -6,15 +6,14 @@ import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.databinding.ActivityAddBinding
-import com.openclassrooms.vitesse.ui.utils.MediaPickerHelper
-import com.openclassrooms.vitesse.ui.utils.loadImage
-import com.openclassrooms.vitesse.ui.utils.navigateToCandidateScreen
-import com.openclassrooms.vitesse.ui.utils.navigateToDetailScreen
-import com.openclassrooms.vitesse.ui.utils.setVisible
-import com.openclassrooms.vitesse.ui.utils.showToastMessage
-import com.openclassrooms.vitesse.ui.utils.setDateUi
+import com.openclassrooms.vitesse.utils.MediaPickerHelper
+import com.openclassrooms.vitesse.utils.loadImage
+import com.openclassrooms.vitesse.utils.navigateToCandidateScreen
+import com.openclassrooms.vitesse.utils.navigateToDetailScreen
+import com.openclassrooms.vitesse.utils.setVisible
+import com.openclassrooms.vitesse.utils.showToastMessage
+import com.openclassrooms.vitesse.utils.setDateUi
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -65,19 +64,19 @@ class AddActivity : AppCompatActivity() {
     }
 
     private fun setSave() {
-        val etLastname = binding.etLastname
-        val etEmail = binding.etEmail
+//        val etLastname = binding.etLastname
+//        val etEmail = binding.etEmail
 
-        if (etLastname.text?.toString().isNullOrBlank()) {
-            etLastname.error = "Ce champ est obligatoire"
-        } else {
-            etLastname.error = null // pour retirer l’erreur
-        }
-        if (etEmail.text?.toString().isNullOrBlank()) {
-            etEmail.error = "Ce champ est obligatoire"
-        } else {
-            etEmail.error = null // pour retirer l’erreur
-        }
+//        if (etLastname.text?.toString().isNullOrBlank()) {
+//            etLastname.error = "Ce champ est obligatoire"
+//        } else {
+//            etLastname.error = null // pour retirer l’erreur
+//        }
+//        if (etEmail.text?.toString().isNullOrBlank()) {
+//            etEmail.error = "Ce champ est obligatoire"
+//        } else {
+//            etEmail.error = null // pour retirer l’erreur
+//        }
 
         val tvFaceUrl = binding.tvFaceUrl.text.toString()
         tvFace.loadImage(tvFaceUrl)
