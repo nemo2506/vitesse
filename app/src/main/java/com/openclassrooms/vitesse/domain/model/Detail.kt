@@ -4,7 +4,7 @@ import com.openclassrooms.vitesse.data.entity.DetailDto
 import java.time.LocalDateTime
 
 data class Detail(
-    val id: Long? = null,
+    val id: Long? = 0,
     var date: LocalDateTime? = null,
     var salaryClaim: Long? = null,
     var phone: String? = null,

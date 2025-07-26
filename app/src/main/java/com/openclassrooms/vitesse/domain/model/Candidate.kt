@@ -4,7 +4,7 @@ import com.openclassrooms.vitesse.data.entity.CandidateDto
 import java.time.LocalDateTime
 
 data class Candidate(
-    val id: Long? = null,
+    val id: Long? = 0,
     var firstName: String? = null,
     var lastName: String? = null,
     var isFavorite: Boolean = false,
@@ -37,8 +37,8 @@ data class Candidate(
 }
 
 data class CandidateDescription(
-    val candidateId: Long? = null,
-    val detailId: Long? = null,
+    val candidateId: Long? = 0,
+    val detailId: Long? = 0,
     var firstName: String? = "",
     var lastName: String? = "",
     var phone: String? = "",
@@ -52,13 +52,13 @@ data class CandidateDescription(
 )
 
 data class CandidateDetail(
-    val candidateId: Long? = null,
+    val candidateId: Long? = 0,
+    val detailId: Long? = 0,
     var firstName: String? = "",
     var lastName: String? = "",
     var isFavorite: Boolean = false,
     var photoUri: String? = "",
     var note: String? = "",
-    val detailId: Long? = null,
     var date: LocalDateTime? = null,
     var salaryClaim: String? = "",
     var phone: String? = "",
