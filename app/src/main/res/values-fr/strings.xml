@@ -31,4 +31,5 @@
     <string name="phone">Téléphone</string>
     <string name="lastname">Nom</string>
     <string name="firstname">Prénom</string>
+    <string name="either">soit %s</string>
 </resources>
