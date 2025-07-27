@@ -1,5 +1,6 @@
 package com.openclassrooms.vitesse.data.network
 
+import com.openclassrooms.vitesse.data.response.GbpResponse
 import com.openclassrooms.vitesse.domain.model.GbpCurrency
 import retrofit2.Response
 import retrofit2.http.GET
@@ -9,7 +10,6 @@ import retrofit2.http.GET
  * authentication, balance inquiry, and money transfer.
  */
 interface ManageClient {
-
     @GET("/v1/currencies/eur.json")
-    suspend fun fetchGbp(): Response<GbpCurrency>
+    suspend fun fetchGbp(): Response<GbpResponse>
 }

@@ -3,7 +3,9 @@ package com.openclassrooms.vitesse.di
 import android.content.Context
 import com.openclassrooms.vitesse.data.dao.CandidateDao
 import com.openclassrooms.vitesse.data.database.AppDatabase
+import com.openclassrooms.vitesse.data.network.ManageClient
 import com.openclassrooms.vitesse.data.repository.CandidateRepository
+import com.openclassrooms.vitesse.data.repository.CurrencyRepository
 import com.openclassrooms.vitesse.data.repository.DetailRepository
 import com.openclassrooms.vitesse.domain.usecase.CandidateUseCase
 import com.openclassrooms.vitesse.domain.usecase.DetailUseCase
@@ -92,5 +94,19 @@ class AppModule {
         } catch (e: Exception) {
             throw RuntimeException("Failed to provide CandidateUseCase", e)
         }
+    }
+
+    /**
+     * Provides a singleton instance of [BankRepository] by injecting [ManageClient].
+     *
+     * @param dataClient The API client used for managing bank operations.
+     * @return A singleton [BankRepository] instance.
+     */
+    @Singleton
+    @Provides
+    fun provideGbpRepository(
+        dataClient: ManageClient
+    ): CurrencyRepository {
+        return CurrencyRepository(dataClient)
     }
 }
