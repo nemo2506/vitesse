@@ -42,7 +42,7 @@ interface CandidateDao {
     @Query(
         """
     SELECT * FROM candidate 
-    WHERE isFavorite = :fav 
+    WHERE (:fav = 0 OR isFavorite = :fav)
     AND (:term = '' OR
     firstName LIKE :term COLLATE NOCASE OR
     lastName LIKE :term COLLATE NOCASE
