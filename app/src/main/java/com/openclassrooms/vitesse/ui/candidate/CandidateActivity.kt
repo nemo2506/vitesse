@@ -52,7 +52,7 @@ class CandidateActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         candidateAdapter = CandidateAdapter { candidate ->
-            candidate.id?.let { navigateToDetailScreen(this@CandidateActivity, it ) }
+            candidate.id?.let { this@CandidateActivity.navigateToDetailScreen(it ) }
         }
         binding.candidateRecyclerview.layoutManager = LinearLayoutManager(this)
         binding.candidateRecyclerview.adapter = candidateAdapter
@@ -87,7 +87,7 @@ class CandidateActivity : AppCompatActivity() {
     private fun setAdd() {
         val fabAdd = binding.fabAdd
         fabAdd.setOnClickListener {
-            navigateToAddScreen(this@CandidateActivity)
+            this@CandidateActivity.navigateToAddScreen()
         }
     }
 }

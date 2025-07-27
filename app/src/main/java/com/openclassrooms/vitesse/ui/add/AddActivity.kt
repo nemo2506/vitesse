@@ -40,7 +40,7 @@ class AddActivity : AppCompatActivity() {
             viewModel.uiState.collect { uiState ->
                 uiState.isLoading?.let { binding.loading.setVisible(it) }
                 uiState.message?.showToastMessage(this@AddActivity)
-                uiState.candidateId?.let { navigateToDetailScreen(this@AddActivity, it) }
+                uiState.candidateId?.let { this@AddActivity.navigateToDetailScreen(it) }
             }
         }
     }
@@ -52,14 +52,14 @@ class AddActivity : AppCompatActivity() {
         mediaPickerHelper = MediaPickerHelper(this, tvFace) { uri -> currentUri = uri }
         mediaPickerHelper.setup()
         binding.saveButton.setOnClickListener { setSave() }
-        setDateUi(this@AddActivity, binding.etDate)
+        binding.etDate.setDateUi(this@AddActivity)
         setToolbar()
     }
 
     private fun setToolbar() {
         setSupportActionBar(toolbar)
         toolbar.setNavigationOnClickListener {
-            navigateToCandidateScreen(this)
+            this@AddActivity.navigateToCandidateScreen()
         }
     }
 

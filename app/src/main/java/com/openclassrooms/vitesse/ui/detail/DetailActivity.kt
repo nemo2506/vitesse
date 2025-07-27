@@ -49,7 +49,7 @@ class DetailActivity : AppCompatActivity() {
                 uiState.isLoading?.let { binding.loading.setVisible(it) }
                 uiState.candidate?.let { setUpUI(it) }
                 uiState.message?.showToastMessage(this@DetailActivity)
-                if (uiState.isDeleted == true) navigateToCandidateScreen(this@DetailActivity)
+                if (uiState.isDeleted == true) this@DetailActivity.navigateToCandidateScreen()
             }
         }
     }
@@ -131,7 +131,7 @@ class DetailActivity : AppCompatActivity() {
         toolbar = binding.toolbar
         setSupportActionBar(toolbar)
         toolbar.setNavigationOnClickListener {
-            navigateToCandidateScreen(this)
+            this@DetailActivity.navigateToCandidateScreen()
         }
     }
 
@@ -155,7 +155,7 @@ class DetailActivity : AppCompatActivity() {
                     }
 
                     R.id.fab_edit -> {
-                        navigateToEditScreen(this@DetailActivity, candidateId, detailId)
+                        this@DetailActivity.navigateToEditScreen(candidateId, detailId)
                         true
                     }
 

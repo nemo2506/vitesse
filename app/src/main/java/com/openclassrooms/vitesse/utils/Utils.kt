@@ -101,29 +101,29 @@ fun ImageView.loadImage(url: String?) {
         .into(this)
 }
 
-fun navigateToDetailScreen(context: Context, candidateId: Long) {
-    val intent = Intent(context, DetailActivity::class.java).apply {
+fun Context.navigateToDetailScreen(candidateId: Long) {
+    val intent = Intent(this, DetailActivity::class.java).apply {
         putExtra(ConstantsApp.CANDIDATE_ID, candidateId)
     }
-    context.startActivity(intent)
+    this.startActivity(intent)
 }
 
-fun navigateToAddScreen(context: Context) {
-    val intent = Intent(context, AddActivity::class.java)
-    context.startActivity(intent)
+fun Context.navigateToAddScreen() {
+    val intent = Intent(this, AddActivity::class.java)
+    this.startActivity(intent)
 }
 
-fun navigateToCandidateScreen(context: Context) {
-    val intent = Intent(context, CandidateActivity::class.java)
-    context.startActivity(intent)
+fun Context.navigateToCandidateScreen() {
+    val intent = Intent(this, CandidateActivity::class.java)
+    this.startActivity(intent)
 }
 
-fun navigateToEditScreen(context: Context, candidateId: Long, detailId: Long) {
-    val intent = Intent(context, EditActivity::class.java).apply {
+fun Context.navigateToEditScreen(candidateId: Long, detailId: Long) {
+    val intent = Intent(this, EditActivity::class.java).apply {
         putExtra(ConstantsApp.CANDIDATE_ID, candidateId)
         putExtra(ConstantsApp.DETAIL_ID, detailId)
     }
-    context.startActivity(intent)
+    this.startActivity(intent)
 }
 
 fun View.setVisible(visible: Boolean) {
@@ -183,8 +183,8 @@ class MediaPickerHelper(
 
 }
 
-fun setDateUi(context: Context, etDate: TextView) {
-    etDate.setOnClickListener {
+fun TextView.setDateUi(context: Context) {
+    this.setOnClickListener {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
@@ -192,7 +192,7 @@ fun setDateUi(context: Context, etDate: TextView) {
         val datePicker = DatePickerDialog(context, { _, selectedYear, selectedMonth, selectedDay ->
             val formattedDate =
                 "%02d/%02d/%04d".format(selectedDay, selectedMonth + 1, selectedYear)
-            etDate.setText(formattedDate)
+            this.text = formattedDate
         }, year, month, day)
         datePicker.show()
     }

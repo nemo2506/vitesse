@@ -45,7 +45,7 @@ class EditActivity : AppCompatActivity() {
             viewModel.uiState.collect { uiState ->
                 uiState.isLoading?.let { binding.loading.setVisible(it) }
                 uiState.candidate?.let { setUp(it) }
-                uiState.candidateId?.let { navigateToDetailScreen(this@EditActivity, it) }
+                uiState.candidateId?.let { this@EditActivity.navigateToDetailScreen(it) }
                 uiState.message?.showToastMessage(this@EditActivity)
             }
         }
@@ -58,13 +58,14 @@ class EditActivity : AppCompatActivity() {
         mediaPickerHelper = MediaPickerHelper(this, tvFace) { uri -> currentUri = uri.toString() }
         mediaPickerHelper.setup()
         binding.saveButton.setOnClickListener { setSave() }
-        setDateUi(this@EditActivity, binding.etDate)
+        binding.etDate.setDateUi(this@EditActivity)
         setToolbar()
     }
 
     private fun setUp(candidate: CandidateDetail) {
         candidateId = candidate.candidateId!!
         detailId = candidate.detailId!!
+        currentUri = candidate.photoUri.toString()
         this@EditActivity.candidate = candidate
         toolbar.title = "Modifier un candidat"
         candidate.photoUri?.let { binding.tvFace.loadImage(it) }
@@ -80,7 +81,7 @@ class EditActivity : AppCompatActivity() {
     private fun setToolbar() {
         setSupportActionBar(toolbar)
         toolbar.setNavigationOnClickListener {
-            navigateToCandidateScreen(this)
+            this@EditActivity.navigateToCandidateScreen()
         }
     }
 
