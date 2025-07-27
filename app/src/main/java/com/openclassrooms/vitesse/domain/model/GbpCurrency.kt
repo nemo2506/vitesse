@@ -1,9 +1,5 @@
 package com.openclassrooms.vitesse.domain.model
 
-data class GbpCurrency (
-    val gbp: Double? = 0.0
-)
-
 /**
  * Represents the balance report for a user account.
  *
