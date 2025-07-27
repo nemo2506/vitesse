@@ -55,6 +55,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setUpUI(candidate: CandidateDescription) {
+
         this@DetailActivity.candidate = candidate
         if(candidate.candidateId != null) candidateId = candidate.candidateId
         if(candidate.detailId != null) detailId = candidate.detailId
