@@ -25,13 +25,14 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import java.util.Calendar
-import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.app.DatePickerDialog
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 import java.text.NumberFormat
+import android.Manifest
 
 fun Long?.toFormatSalary(
     groupingSeparator: Char = ' ',
@@ -55,7 +56,7 @@ fun Long.toGbpDescription(currency: Double): String? {
     if (this == 0L) return null
     val converted = this * currency
     val formatter = NumberFormat.getCurrencyInstance(Locale.UK)
-    return "soit ${formatter.format(converted)}"
+    return formatter.format(converted)
 }
 
 fun LocalDateTime.calculateAge(): Int {
@@ -142,6 +143,12 @@ class MediaPickerHelper(
     private val tvFace: ImageView,
     private val onImagePicked: ((Uri) -> Unit)? = null
 ) {
+    private var currentPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        Manifest.permission.READ_MEDIA_IMAGES
+    } else {
+        Manifest.permission.READ_EXTERNAL_STORAGE
+    }
+
     private val requestPermissionLauncher =
         activity.registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
@@ -162,27 +169,28 @@ class MediaPickerHelper(
         }
 
     fun setup() {
+        // Met à jour la permission au cas où la fonction setup est appelée à nouveau.
+        currentPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            Manifest.permission.READ_MEDIA_IMAGES
+        } else {
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        }
+
         tvFace.setOnClickListener {
             when {
-                ContextCompat.checkSelfPermission(
-                    activity,
-                    READ_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_GRANTED -> {
+                ContextCompat.checkSelfPermission(activity, currentPermission) == PackageManager.PERMISSION_GRANTED -> {
                     pickMediaLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                 }
-
-                activity.shouldShowRequestPermissionRationale(READ_EXTERNAL_STORAGE) -> {
+                activity.shouldShowRequestPermissionRationale(currentPermission) -> {
                     "Cette permission est nécessaire pour sélectionner une image.".showToastMessage(activity)
-                    requestPermissionLauncher.launch(READ_EXTERNAL_STORAGE)
+                    requestPermissionLauncher.launch(currentPermission)
                 }
-
                 else -> {
-                    requestPermissionLauncher.launch(READ_EXTERNAL_STORAGE)
+                    requestPermissionLauncher.launch(currentPermission)
                 }
             }
         }
     }
-
 }
 
 fun TextView.setDateUi(context: Context) {
