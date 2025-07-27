@@ -1,7 +1,6 @@
 package com.openclassrooms.vitesse.data.repository
 
 import com.openclassrooms.vitesse.data.network.ManageClient
-import com.openclassrooms.vitesse.domain.model.GbpCurrency
 import com.openclassrooms.vitesse.domain.model.GbpReportModel
 import com.openclassrooms.vitesse.domain.usecase.Result
 import javax.inject.Inject

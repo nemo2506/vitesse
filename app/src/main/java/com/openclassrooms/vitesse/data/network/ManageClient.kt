@@ -1,7 +1,6 @@
 package com.openclassrooms.vitesse.data.network
 
 import com.openclassrooms.vitesse.data.response.GbpResponse
-import com.openclassrooms.vitesse.domain.model.GbpCurrency
 import retrofit2.Response
 import retrofit2.http.GET
 
