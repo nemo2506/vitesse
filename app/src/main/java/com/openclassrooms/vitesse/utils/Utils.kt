@@ -31,6 +31,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.widget.TextView
 import androidx.activity.ComponentActivity
+import java.text.NumberFormat
 
 fun Long?.toFormatSalary(
     groupingSeparator: Char = ' ',
@@ -50,10 +51,11 @@ fun Long?.toFormatSalary(
     return decimalFormat.format(this)
 }
 
-fun Long.toGbpDescription(): String? {
+fun Long.toGbpDescription(currency: Double): String? {
     if (this == 0L) return null
-    val converted = this * 0.86705
-    return "soit £ $converted"
+    val converted = this * currency
+    val formatter = NumberFormat.getCurrencyInstance(Locale.UK)
+    return "soit ${formatter.format(converted)}"
 }
 
 fun LocalDateTime.calculateAge(): Int {

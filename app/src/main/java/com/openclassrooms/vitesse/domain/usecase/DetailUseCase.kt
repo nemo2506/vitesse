@@ -82,7 +82,6 @@ class DetailUseCase @Inject constructor(
         val candidate = dto.candidateDto
         val detail = dto.detailDto
         val gbpCurrency = getCurrency()
-        Log.d("MARC", "convertToDescription/gbpCurrency: $gbpCurrency")
 
         return CandidateDescription(
             candidateId = candidate.id,
@@ -95,7 +94,7 @@ class DetailUseCase @Inject constructor(
             photoUri = candidate.photoUri,
             dateDescription = detail.date?.toDateDescription() ?: "",
             salaryClaimDescription = detail.salaryClaim?.toFormatSalary() ?: "",
-            salaryClaimGpb = detail.salaryClaim?.toGbpDescription() ?: "",
+            salaryClaimGpb = detail.salaryClaim?.toGbpDescription(gbpCurrency) ?: "",
             note = candidate.note
         )
     }
