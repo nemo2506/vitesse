@@ -2,11 +2,11 @@ package com.openclassrooms.vitesse.di
 
 import com.openclassrooms.vitesse.data.network.ManageClient
 import com.openclassrooms.vitesse.ui.ConstantsApp
+import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
@@ -18,6 +18,10 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
+
+    @Provides
+    @Singleton
+    fun provideMoshi(): Moshi = Moshi.Builder().build()
 
     /**
      * Provides a singleton instance of [Retrofit] configured with a base URL,

@@ -2,19 +2,22 @@ package com.openclassrooms.vitesse.domain.usecase
 
 import android.util.Log
 import com.openclassrooms.vitesse.data.entity.CandidateWithDetailDto
-import kotlinx.coroutines.flow.Flow
+import com.openclassrooms.vitesse.data.repository.CurrencyRepository
 import com.openclassrooms.vitesse.data.repository.DetailRepository
 import com.openclassrooms.vitesse.domain.model.CandidateDescription
 import com.openclassrooms.vitesse.domain.model.CandidateDetail
+import com.openclassrooms.vitesse.domain.model.GbpReportModel
 import com.openclassrooms.vitesse.utils.toFormatSalary
 import com.openclassrooms.vitesse.utils.toDateDescription
 import com.openclassrooms.vitesse.utils.toEmpty
 import com.openclassrooms.vitesse.utils.toGbpDescription
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class DetailUseCase @Inject constructor(
-    private val detailRepository: DetailRepository
+    private val detailRepository: DetailRepository,
+    private val currencyRepository: CurrencyRepository,
 ) {
 
     fun getCandidateToDescription(id: Long): Flow<Result<CandidateDescription>> = flow {
@@ -75,9 +78,11 @@ class DetailUseCase @Inject constructor(
         }
     }
 
-    private fun convertToDescription(dto: CandidateWithDetailDto): CandidateDescription {
+    private suspend fun convertToDescription(dto: CandidateWithDetailDto): CandidateDescription {
         val candidate = dto.candidateDto
         val detail = dto.detailDto
+        val gbpCurrency = getCurrency()
+        Log.d("MARC", "convertToDescription/gbpCurrency: $gbpCurrency")
 
         return CandidateDescription(
             candidateId = candidate.id,
@@ -93,6 +98,11 @@ class DetailUseCase @Inject constructor(
             salaryClaimGpb = detail.salaryClaim?.toGbpDescription() ?: "",
             note = candidate.note
         )
+    }
+
+    private suspend fun getCurrency(): Double {
+        val result: Result<GbpReportModel> = currencyRepository.getGbp()
+        return (result as? Result.Success)?.value?.gbp ?: 0.0
     }
 
     private fun convertToDetail(dto: CandidateWithDetailDto): CandidateDetail {

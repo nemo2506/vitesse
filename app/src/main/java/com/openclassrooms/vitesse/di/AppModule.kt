@@ -16,6 +16,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
+import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Module
@@ -72,6 +73,20 @@ class AppModule {
         }
     }
 
+    /**
+     * Provides a singleton instance of [CurrencyRepository] by injecting [ManageClient].
+     *
+     * @param dataClient The API client used for managing bank operations.
+     * @return A singleton [CurrencyRepository] instance.
+     */
+    @Provides
+    @Singleton
+    fun provideCurrencyRepository(
+        dataClient: ManageClient
+    ): CurrencyRepository {
+        return CurrencyRepository(dataClient)
+    }
+
     @Provides
     @Singleton
     fun provideDetailUseCase(
@@ -95,19 +110,5 @@ class AppModule {
         } catch (e: Exception) {
             throw RuntimeException("Failed to provide CandidateUseCase", e)
         }
-    }
-
-    /**
-     * Provides a singleton instance of [BankRepository] by injecting [ManageClient].
-     *
-     * @param dataClient The API client used for managing bank operations.
-     * @return A singleton [BankRepository] instance.
-     */
-    @Singleton
-    @Provides
-    fun provideGbpRepository(
-        dataClient: ManageClient
-    ): CurrencyRepository {
-        return CurrencyRepository(dataClient)
     }
 }
