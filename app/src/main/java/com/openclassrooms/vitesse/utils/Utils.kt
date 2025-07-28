@@ -34,22 +34,13 @@ import androidx.activity.ComponentActivity
 import java.text.NumberFormat
 import android.Manifest
 
-fun Long?.toFormatSalary(
-    groupingSeparator: Char = ' ',
-    decimalSeparator: Char = ',',
-    currencySymbol: String = "€",
-    pattern: String = "#,### €",
-    maxFractionDigits: Int = 0
-): String? {
-    if (this == null) return null
-    val symbols = DecimalFormatSymbols(Locale.FRANCE).apply {
-        this.groupingSeparator = groupingSeparator
-        this.decimalSeparator = decimalSeparator
-        this.currencySymbol = currencySymbol
+fun Long.toFrDescription(): String?{
+    if (this == 0L) return null
+    val formatter = NumberFormat.getCurrencyInstance(Locale.FRANCE).apply {
+        minimumFractionDigits = 0
+        maximumFractionDigits = 0
     }
-    val decimalFormat = DecimalFormat(pattern, symbols)
-    decimalFormat.maximumFractionDigits = maxFractionDigits
-    return decimalFormat.format(this)
+    return formatter.format(this)
 }
 
 fun Long.toGbpDescription(currency: Double): String? {
@@ -138,6 +129,25 @@ fun LocalDateTime.toLocalDateString(): String {
     return this.format(formatter)
 }
 
+fun TextView.setDateUi(context: Context) {
+    this.setOnClickListener {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val datePicker = DatePickerDialog(context, { _, selectedYear, selectedMonth, selectedDay ->
+            val formattedDate =
+                "%02d/%02d/%04d".format(selectedDay, selectedMonth + 1, selectedYear)
+            this.text = formattedDate
+        }, year, month, day)
+        datePicker.show()
+    }
+}
+
+fun String.capitalizeFirstLetter(): String {
+    return this.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
+}
+
 class MediaPickerHelper(
     private val activity: ComponentActivity,
     private val tvFace: ImageView,
@@ -169,7 +179,6 @@ class MediaPickerHelper(
         }
 
     fun setup() {
-        // Met à jour la permission au cas où la fonction setup est appelée à nouveau.
         currentPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             Manifest.permission.READ_MEDIA_IMAGES
         } else {
@@ -191,24 +200,4 @@ class MediaPickerHelper(
             }
         }
     }
-}
-
-fun TextView.setDateUi(context: Context) {
-    this.setOnClickListener {
-        val calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
-        val datePicker = DatePickerDialog(context, { _, selectedYear, selectedMonth, selectedDay ->
-            val formattedDate =
-                "%02d/%02d/%04d".format(selectedDay, selectedMonth + 1, selectedYear)
-            this.text = formattedDate
-        }, year, month, day)
-        datePicker.show()
-    }
-}
-
-
-fun String.capitalizeFirstLetter(): String {
-    return this.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
 }

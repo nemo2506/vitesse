@@ -7,9 +7,9 @@ import com.openclassrooms.vitesse.data.repository.DetailRepository
 import com.openclassrooms.vitesse.domain.model.CandidateDescription
 import com.openclassrooms.vitesse.domain.model.CandidateDetail
 import com.openclassrooms.vitesse.domain.model.GbpReportModel
-import com.openclassrooms.vitesse.utils.toFormatSalary
 import com.openclassrooms.vitesse.utils.toDateDescription
 import com.openclassrooms.vitesse.utils.toEmpty
+import com.openclassrooms.vitesse.utils.toFrDescription
 import com.openclassrooms.vitesse.utils.toGbpDescription
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.Flow
@@ -93,7 +93,7 @@ class DetailUseCase @Inject constructor(
             isFavorite = candidate.isFavorite,
             photoUri = candidate.photoUri,
             dateDescription = detail.date?.toDateDescription() ?: "",
-            salaryClaimDescription = detail.salaryClaim?.toFormatSalary() ?: "",
+            salaryClaimDescription = detail.salaryClaim?.toFrDescription() ?: "",
             salaryClaimGpb = detail.salaryClaim?.toGbpDescription(gbpCurrency) ?: "",
             note = candidate.note
         )
