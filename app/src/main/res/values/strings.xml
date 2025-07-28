@@ -37,5 +37,7 @@
     <string name="email_message">Good morning %s,\nHere is a pre-filled message.</string>
     <string name="add_candidate">Add candidate</string>
     <string name="messaging_missing">MESSAGING MISSING</string>
-    <string name="necesary_permission">This permission is required to select an image.</string>
+    <string name="authorization_required">This permission is required to select an image.</string>
+    <string name="no_image_selected">No images selected</string>
+    <string name="permission_denied">Permission denied</string>
 </resources>

@@ -164,7 +164,7 @@ class MediaPickerHelper(
             if (isGranted) {
                 pickMediaLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             } else {
-                "Permission refusée".showToastMessage(activity)
+                activity.getString(R.string.permission_denied).showToastMessage(activity)
             }
         }
 
@@ -174,7 +174,7 @@ class MediaPickerHelper(
                 onImagePicked?.invoke(uri)
                 tvFace.loadImage(uri.toString())
             } else {
-                "Aucune image sélectionnée".showToastMessage(activity)
+                activity.getString(R.string.no_image_selected).showToastMessage(activity)
             }
         }
 
@@ -191,7 +191,7 @@ class MediaPickerHelper(
                     pickMediaLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                 }
                 activity.shouldShowRequestPermissionRationale(currentPermission) -> {
-                    context.getString(R.string.necesary_permission).showToastMessage(activity)
+                    context.getString(R.string.authorization_required).showToastMessage(activity)
                     requestPermissionLauncher.launch(currentPermission)
                 }
                 else -> {

@@ -37,5 +37,7 @@
     <string name="email_message">Bonjour %s,\nVoici un message pré-rempli.</string>
     <string name="add_candidate">Ajouter un candidat</string>
     <string name="messaging_missing">MESSAGERIE ABSENTE</string>
-    <string name="necesary_permission">Cette permission est nécessaire pour sélectionner une image.</string>
+    <string name="authorization_required">Cette permission est nécessaire pour sélectionner une image.</string>
+    <string name="no_image_selected">Aucune image sélectionnée</string>
+    <string name="permission_denied">Permission refusée</string>
 </resources>
