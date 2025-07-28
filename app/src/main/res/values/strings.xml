@@ -6,7 +6,7 @@
     <string name="candidate_not_deleted">No deleting candidate</string>
     <string name="sleep_not_ready">No sleep</string>
     <string name="candidate_favorites">Favorites</string>
-    <string name="candidate_all">ALL</string>
+    <string name="candidate_all">All</string>
     <string name="candidate_face">Candidate face</string>
     <string name="about">About</string>
     <string name="salary_claim">Salary claim</string>
@@ -40,4 +40,5 @@
     <string name="authorization_required">This permission is required to select an image.</string>
     <string name="no_image_selected">No images selected</string>
     <string name="permission_denied">Permission denied</string>
+    <string name="search">Search</string>
 </resources>

@@ -40,4 +40,5 @@
     <string name="authorization_required">Cette permission est nécessaire pour sélectionner une image.</string>
     <string name="no_image_selected">Aucune image sélectionnée</string>
     <string name="permission_denied">Permission refusée</string>
+    <string name="search">Rechercher un candidat</string>
 </resources>
