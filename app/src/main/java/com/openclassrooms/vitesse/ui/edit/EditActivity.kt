@@ -46,7 +46,7 @@ class EditActivity : AppCompatActivity() {
             viewModel.uiState.collect { uiState ->
                 uiState.isLoading?.let { binding.loading.setVisible(it) }
                 uiState.candidate?.let { setUp(it) }
-                uiState.candidateId?.let { this@EditActivity.navigateToDetailScreen(it) }
+                uiState.isUpdated?.let { this@EditActivity.navigateToCandidateScreen() }
                 uiState.message?.showToastMessage(this@EditActivity)
             }
         }

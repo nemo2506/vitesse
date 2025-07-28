@@ -50,7 +50,7 @@ class AddViewModel @Inject constructor(
                                 it.copy(
                                     isLoading = true,
                                     message = null,
-                                    candidateId = null
+                                    isUpdated = null
                                 )
                             }
                             delay(1000)
@@ -61,7 +61,7 @@ class AddViewModel @Inject constructor(
                                 it.copy(
                                     isLoading = false,
                                     message = null,
-                                    candidateId = result.value
+                                    isUpdated = result.value
                                 )
                             }
                         }
@@ -71,7 +71,7 @@ class AddViewModel @Inject constructor(
                                 it.copy(
                                     isLoading = false,
                                     message = result.message,
-                                    candidateId = null
+                                    isUpdated = null
                                 )
                             }
                         }
@@ -83,6 +83,6 @@ class AddViewModel @Inject constructor(
 
 data class UiState(
     var isLoading: Boolean? = false,
-    var candidateId: Long? = null,
+    var isUpdated: Boolean? = null,
     var message: String? = null
 )

@@ -148,6 +148,8 @@ fun String.capitalizeFirstLetter(): String {
     return this.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
 }
 
+fun Long?.isPositive(): Boolean = this != null && this > 0
+
 class MediaPickerHelper(
     private val activity: ComponentActivity,
     private val tvFace: ImageView,

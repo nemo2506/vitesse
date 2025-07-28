@@ -5,6 +5,7 @@ import com.openclassrooms.vitesse.data.repository.CandidateRepository
 import com.openclassrooms.vitesse.domain.model.Candidate
 import com.openclassrooms.vitesse.utils.toZeroOrLong
 import com.openclassrooms.vitesse.utils.capitalizeFirstLetter
+import com.openclassrooms.vitesse.utils.isPositive
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -40,11 +41,10 @@ class CandidateUseCase @Inject constructor(
         note: String? = null,
         date: String? = null,
         salaryClaim: String? = null
-    ): Flow<Result<Long>> = flow {
+    ): Flow<Result<Boolean>> = flow {
 
         emit(Result.Loading)
         try {
-            Log.d("MARC", "upsertCandidate/ID: $candidateId/$detailId")
             candidateRepository.upsertCandidateAll(
                 candidateId = candidateId,
                 detailId = detailId,
@@ -58,7 +58,7 @@ class CandidateUseCase @Inject constructor(
                 date = date,
                 salaryClaim = salaryClaim.toZeroOrLong()
             ).collect {
-                emit(Result.Success(it))
+                emit(Result.Success(it.isPositive()))
             }
         } catch (e: Throwable) {
             Log.d("MARC", "updateCandidate: $e")

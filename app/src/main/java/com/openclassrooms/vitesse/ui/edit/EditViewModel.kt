@@ -43,7 +43,7 @@ class EditViewModel @Inject constructor(
                                 it.copy(
                                     isLoading = true,
                                     candidate = null,
-                                    candidateId = null,
+                                    isUpdated = null,
                                     isFavoriteUpdated = false,
                                     isDeleted = false,
                                     message = null
@@ -57,7 +57,7 @@ class EditViewModel @Inject constructor(
                             _uiState.update {
                                 it.copy(
                                     candidate = result.value,
-                                    candidateId = null,
+                                    isUpdated = null,
                                     isLoading = false,
                                     isFavoriteUpdated = false,
                                     isDeleted = false,
@@ -73,7 +73,7 @@ class EditViewModel @Inject constructor(
                                     isFavoriteUpdated = false,
                                     isDeleted = false,
                                     candidate = null,
-                                    candidateId = null,
+                                    isUpdated = null,
                                     message = result.message
                                 )
                             }
@@ -116,7 +116,7 @@ class EditViewModel @Inject constructor(
                                     it.copy(
                                         isLoading = true,
                                         message = null,
-                                        candidateId = null,
+                                        isUpdated = null,
                                         candidate = null,
                                     )
                                 }
@@ -128,7 +128,7 @@ class EditViewModel @Inject constructor(
                                     it.copy(
                                         isLoading = false,
                                         message = null,
-                                        candidateId = result.value,
+                                        isUpdated = result.value,
                                         candidate = null,
                                     )
                                 }
@@ -139,7 +139,7 @@ class EditViewModel @Inject constructor(
                                     it.copy(
                                         isLoading = false,
                                         message = result.message,
-                                        candidateId = null,
+                                        isUpdated = null,
                                         candidate = null,
                                     )
                                 }
@@ -157,7 +157,7 @@ class EditViewModel @Inject constructor(
  */
 data class UiState(
     var candidate: CandidateDetail? = null,
-    var candidateId: Long? = null,
+    var isUpdated: Boolean? = null,
     var isFavoriteUpdated: Boolean? = null,
     var isDeleted: Boolean? = null,
     var isLoading: Boolean? = null,

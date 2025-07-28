@@ -41,7 +41,7 @@ class AddActivity : AppCompatActivity() {
             viewModel.uiState.collect { uiState ->
                 uiState.isLoading?.let { binding.loading.setVisible(it) }
                 uiState.message?.showToastMessage(this@AddActivity)
-                uiState.candidateId?.let { this@AddActivity.navigateToDetailScreen(it) }
+                uiState.isUpdated?.let { this@AddActivity.navigateToCandidateScreen() }
             }
         }
     }
