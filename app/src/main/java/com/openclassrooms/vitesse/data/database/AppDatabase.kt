@@ -67,7 +67,7 @@ abstract class AppDatabase : RoomDatabase() {
                         firstName = "Lucie",
                         lastName = "Dupont",
                         isFavorite = true,
-                        note = "Très proactive, propose souvent des améliorations pertinentes.",
+                        note = "Apprend vite, curieuse et autonome. Bonne capacité d’analyse. Travaille bien en équipe. Solide éthique professionnelle. Très bon potentiel évolutif.",
                         photoUri = "https://miseservice.ovh/media/lucie.jpg"
                     ).toDto(),
                     detailDto = Detail(
