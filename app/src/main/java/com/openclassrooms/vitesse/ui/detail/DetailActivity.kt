@@ -93,7 +93,7 @@ class DetailActivity : AppCompatActivity() {
     private fun setSms(phone: String, title: String) {
         val intent = Intent(Intent.ACTION_SENDTO).apply {
             data = Uri.parse("smsto:$phone")
-            putExtra("sms_body", "Bonjour , $title")
+            putExtra("sms_body", getString(R.string.good_morning).format(title))
         }
         if (intent.resolveActivity(packageManager) != null) {
             startActivity(intent)
@@ -113,7 +113,7 @@ class DetailActivity : AppCompatActivity() {
     private fun setEmail(address: String, title: String) {
         "EMAIL".showToastMessage(this@DetailActivity )
         val subject = "VITESSE"
-        val body = "Bonjour $title,\nVoici un message pré-rempli."
+        val body = getString(R.string.email_message).format(title)
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = "message/rfc822"
             putExtra(Intent.EXTRA_EMAIL, arrayOf(address))
@@ -123,7 +123,7 @@ class DetailActivity : AppCompatActivity() {
         if (intent.resolveActivity(packageManager) != null) {
             startActivity(intent)
         } else {
-            "MESSAGERIE ABSENTE".showToastMessage(this@DetailActivity)
+            getString(R.string.messaging_missing).showToastMessage(this@DetailActivity)
         }
     }
 

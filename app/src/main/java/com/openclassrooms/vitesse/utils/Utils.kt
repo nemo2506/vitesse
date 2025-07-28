@@ -178,7 +178,7 @@ class MediaPickerHelper(
             }
         }
 
-    fun setup() {
+    fun setup(context: Context) {
         currentPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             Manifest.permission.READ_MEDIA_IMAGES
         } else {
@@ -191,7 +191,7 @@ class MediaPickerHelper(
                     pickMediaLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                 }
                 activity.shouldShowRequestPermissionRationale(currentPermission) -> {
-                    "Cette permission est nécessaire pour sélectionner une image.".showToastMessage(activity)
+                    context.getString(R.string.necesary_permission).showToastMessage(activity)
                     requestPermissionLauncher.launch(currentPermission)
                 }
                 else -> {

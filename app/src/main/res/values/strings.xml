@@ -25,11 +25,17 @@
     <string name="salary_description">Salary Icon</string>
     <string name="date">Date</string>
     <string name="enter_date">Enter a date</string>
-    <string name="select_date">Sélectionner une date</string>
+    <string name="select_date">Select date</string>
     <string name="icon_birth">Birth Icon</string>
     <string name="icon_email">EMAIL ICON</string>
     <string name="phone">Phone</string>
     <string name="lastname">Last name</string>
     <string name="firstname">First name</string>
     <string name="either">either %s</string>
+    <string name="edit_candidate">Modifier un candidat</string>
+    <string name="good_morning">"Good morning %s, "</string>
+    <string name="email_message">Good morning %s,\nHere is a pre-filled message.</string>
+    <string name="add_candidate">Add candidate</string>
+    <string name="messaging_missing">MESSAGING MISSING</string>
+    <string name="necesary_permission">This permission is required to select an image.</string>
 </resources>

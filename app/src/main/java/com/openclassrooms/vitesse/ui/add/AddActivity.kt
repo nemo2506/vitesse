@@ -6,6 +6,7 @@ import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.databinding.ActivityAddBinding
 import com.openclassrooms.vitesse.utils.MediaPickerHelper
 import com.openclassrooms.vitesse.utils.loadImage
@@ -47,10 +48,10 @@ class AddActivity : AppCompatActivity() {
 
     private fun setGlobalUi() {
         toolbar = binding.toolbar
-        toolbar.title = "Ajouter un candidat"
+        toolbar.title = getString(R.string.add_candidate)
         tvFace = binding.tvFace
         mediaPickerHelper = MediaPickerHelper(this, tvFace) { uri -> currentUri = uri }
-        mediaPickerHelper.setup()
+        mediaPickerHelper.setup(this@AddActivity)
         binding.saveButton.setOnClickListener { setSave() }
         binding.etDate.setDateUi(this@AddActivity)
         setToolbar()

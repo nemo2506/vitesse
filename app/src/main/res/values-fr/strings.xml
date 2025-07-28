@@ -32,4 +32,10 @@
     <string name="lastname">Nom</string>
     <string name="firstname">Prénom</string>
     <string name="either">soit %s</string>
+    <string name="edit_candidate">Modifier un candidat</string>
+    <string name="good_morning">"Bonjour %s, "</string>
+    <string name="email_message">Bonjour %s,\nVoici un message pré-rempli.</string>
+    <string name="add_candidate">Ajouter un candidat</string>
+    <string name="messaging_missing">MESSAGERIE ABSENTE</string>
+    <string name="necesary_permission">Cette permission est nécessaire pour sélectionner une image.</string>
 </resources>
