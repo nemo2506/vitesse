@@ -67,6 +67,7 @@ dependencies {
     implementation(libs.activity.ktx)
     implementation(libs.fragment.ktx)
     implementation(libs.androidx.fragment.ktx)
+    implementation(libs.core.splashscreen)
 
 
     coreLibraryDesugaring(libs.desugar)
