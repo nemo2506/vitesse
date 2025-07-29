@@ -14,7 +14,7 @@
     <string name="appel">Appel</string>
     <string name="appel_description">Appel Icone</string>
     <string name="sms">SMS</string>
-    <string name="email">E-mail</string>
+    <string name="email">Email</string>
     <string name="favorite">FAVORITE</string>
     <string name="edit">EDIT</string>
     <string name="delete">DELETE</string>
@@ -41,4 +41,6 @@
     <string name="no_image_selected">No images selected</string>
     <string name="permission_denied">Permission denied</string>
     <string name="search">Search</string>
+    <string name="mandatory_field">Mandatory field</string>
+    <string name="invalide_format">Invalid format</string>
 </resources>

@@ -14,7 +14,7 @@
     <string name="appel">Appel</string>
     <string name="appel_description">Icone Appel</string>
     <string name="sms">SMS</string>
-    <string name="email">E-mail</string>
+    <string name="email">Email</string>
     <string name="favorite">FAVORIS</string>
     <string name="edit">MODIFIER</string>
     <string name="delete">SUPPRIMER</string>
@@ -41,4 +41,6 @@
     <string name="no_image_selected">Aucune image sélectionnée</string>
     <string name="permission_denied">Permission refusée</string>
     <string name="search">Rechercher un candidat</string>
+    <string name="mandatory_field">Champ obligatoire</string>
+    <string name="invalide_format">Format invalide</string>
 </resources>

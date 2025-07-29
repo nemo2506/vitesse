@@ -64,18 +64,47 @@ class AddActivity : AppCompatActivity() {
         }
     }
 
+    private fun isValidEmail(email: String): Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+
     private fun setSave() {
         val tvFaceUrl = binding.tvFaceUrl.text.toString()
         tvFace.loadImage(tvFaceUrl)
 
+        val etFirstname = binding.etFirstname.text.toString()
+        val etLastname = binding.etLastname.text.toString()
+        val etPhone = binding.etPhone.text.toString()
+        val tvEmail = binding.tvEmail
+        val etEmail = binding.etEmail.text.toString()
+        val etDate = binding.etDate.text.toString()
+
+        if (etEmail.isBlank()) {
+            tvEmail.error = "L'email est requis"
+            return
+        } else if (!isValidEmail(etEmail)) {
+            tvEmail.error = "Email invalide"
+            return
+        } else {
+            binding.tvEmail.error = null
+        }
+
+        val etFields = listOf(
+            etFirstname,
+            etLastname,
+            etPhone,
+            etEmail,
+            etDate
+        )
+
         viewModel.addCandidate(
-            firstName = binding.etFirstname.text.toString(),
-            lastName = binding.etLastname.text.toString(),
-            phone = binding.etPhone.text.toString(),
-            email = binding.etEmail.text.toString(),
+            firstName = etFirstname,
+            lastName = etLastname,
+            phone = etPhone,
+            email = etEmail,
+            date = etDate,
             photoUri = currentUri.toString(),
             note = binding.etNote.text.toString(),
-            date = binding.etDate.text.toString(),
             salaryClaim = binding.etSalaryClaim.text.toString()
         )
     }
