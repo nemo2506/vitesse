@@ -175,7 +175,7 @@ class DetailActivity : AppCompatActivity() {
             setTitle(getString(R.string.deletion))
             setMessage(getString(R.string.confirm_delete))
             setPositiveButton(getString(R.string.confirm)) { dialog, which ->
-                this@DetailActivity.navigateToEditScreen(candidateId, detailId)
+                this@DetailActivity.navigateToCandidateScreen()
                 dialog.dismiss()
             }
             setNegativeButton("Annuler") { dialog, which ->
