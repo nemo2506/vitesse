@@ -1,6 +1,5 @@
 package com.openclassrooms.vitesse.ui.add
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.openclassrooms.vitesse.domain.usecase.CandidateUseCase
@@ -92,7 +91,6 @@ class AddViewModel @Inject constructor(
             _uiState.update {
                 it.copy(
                     isValidInfo = result,
-//                    isValidEmail = null,
                     isLoading = false,
                     isUpdated = null,
                     message = null,
@@ -106,7 +104,6 @@ class AddViewModel @Inject constructor(
             _uiState.update {
                 it.copy(
                     isValidEmail = result,
-//                    isValidInfo = null,
                     isLoading = false,
                     isUpdated = null,
                     message = null

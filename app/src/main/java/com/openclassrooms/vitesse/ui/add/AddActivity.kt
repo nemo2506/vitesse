@@ -2,8 +2,6 @@ package com.openclassrooms.vitesse.ui.add
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-import android.widget.EditText
 import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -81,8 +79,6 @@ class AddActivity : AppCompatActivity() {
         etDate = binding.etDate.text.toString()
         etEmail = binding.etEmail.text.toString()
         tvEmail = binding.tvEmail
- //        val tvFaceUrl = binding.tvFaceUrl.text.toString()
-//        tvFace.loadImage(tvFaceUrl)
         val etFields: List<String> = listOf(
             etFirstname,
             etLastname,

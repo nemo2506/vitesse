@@ -14,7 +14,6 @@ import com.openclassrooms.vitesse.utils.setVisible
 import com.openclassrooms.vitesse.utils.showToastMessage
 import com.openclassrooms.vitesse.utils.loadImage
 import com.openclassrooms.vitesse.utils.navigateToCandidateScreen
-import com.openclassrooms.vitesse.utils.navigateToDetailScreen
 import com.openclassrooms.vitesse.utils.setDateUi
 import com.openclassrooms.vitesse.utils.toLocalDateString
 import dagger.hilt.android.AndroidEntryPoint
