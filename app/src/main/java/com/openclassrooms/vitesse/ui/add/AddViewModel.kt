@@ -1,5 +1,6 @@
 package com.openclassrooms.vitesse.ui.add
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.openclassrooms.vitesse.domain.usecase.CandidateUseCase
@@ -50,7 +51,9 @@ class AddViewModel @Inject constructor(
                                 it.copy(
                                     isLoading = true,
                                     message = null,
-                                    isUpdated = null
+                                    isUpdated = null,
+                                    isValidEmail = null,
+                                    isValidInfo = null
                                 )
                             }
                             delay(1000)
@@ -61,7 +64,9 @@ class AddViewModel @Inject constructor(
                                 it.copy(
                                     isLoading = false,
                                     message = null,
-                                    isUpdated = result.value
+                                    isUpdated = result.value,
+                                    isValidEmail = null,
+                                    isValidInfo = null
                                 )
                             }
                         }
@@ -71,7 +76,9 @@ class AddViewModel @Inject constructor(
                                 it.copy(
                                     isLoading = false,
                                     message = result.message,
-                                    isUpdated = null
+                                    isUpdated = null,
+                                    isValidEmail = null,
+                                    isValidInfo = null
                                 )
                             }
                         }
@@ -85,10 +92,10 @@ class AddViewModel @Inject constructor(
             _uiState.update {
                 it.copy(
                     isValidInfo = result,
+//                    isValidEmail = null,
                     isLoading = false,
                     isUpdated = null,
-                    isValidEmail = null,
-                    message = null
+                    message = null,
                 )
             }
         }
@@ -99,9 +106,9 @@ class AddViewModel @Inject constructor(
             _uiState.update {
                 it.copy(
                     isValidEmail = result,
+//                    isValidInfo = null,
                     isLoading = false,
                     isUpdated = null,
-                    isValidInfo = null,
                     message = null
                 )
             }

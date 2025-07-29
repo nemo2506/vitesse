@@ -2,6 +2,7 @@ package com.openclassrooms.vitesse.ui.add
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.activity.viewModels
@@ -31,7 +32,7 @@ class AddActivity : AppCompatActivity() {
     private var etLastname: String? = null
     private var etPhone: String? = null
     private var etEmail: String? = null
-    private var tvEmail: TextInputLayout? = null
+    private lateinit var tvEmail: TextInputLayout
     private var etDate: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +49,7 @@ class AddActivity : AppCompatActivity() {
                 uiState.isLoading?.let { binding.loading.setVisible(it) }
                 uiState.message?.showToastMessage(this@AddActivity)
                 if (uiState.isValidInfo == false ) setInfoErrorNotify()
-                if (uiState.isValidEmail == false ) setEmailErrorNotify(true)
+                if (uiState.isValidEmail == false ) setEmailErrorNotify()
                 if (uiState.isValidInfo == true && uiState.isValidEmail == true) setSave()
                 uiState.isUpdated?.let { this@AddActivity.navigateToCandidateScreen() }
             }
@@ -58,12 +59,6 @@ class AddActivity : AppCompatActivity() {
     private fun setGlobalUi() {
         toolbar = binding.toolbar
         toolbar.title = getString(R.string.add_candidate)
-        etFirstname = binding.etFirstname.text.toString()
-        etLastname = binding.etLastname.text.toString()
-        etPhone = binding.etPhone.text.toString()
-        etDate = binding.etDate.text.toString()
-        etEmail = binding.etEmail.text.toString()
-        tvEmail = binding.tvEmail
         tvFace = binding.tvFace
         mediaPickerHelper = MediaPickerHelper(this@AddActivity, tvFace) { uri -> currentUri = uri }
         mediaPickerHelper.setup(this@AddActivity)
@@ -80,7 +75,13 @@ class AddActivity : AppCompatActivity() {
     }
 
     private fun setVerify() {
-//        val tvFaceUrl = binding.tvFaceUrl.text.toString()
+        etFirstname = binding.etFirstname.text.toString()
+        etLastname = binding.etLastname.text.toString()
+        etPhone = binding.etPhone.text.toString()
+        etDate = binding.etDate.text.toString()
+        etEmail = binding.etEmail.text.toString()
+        tvEmail = binding.tvEmail
+ //        val tvFaceUrl = binding.tvFaceUrl.text.toString()
 //        tvFace.loadImage(tvFaceUrl)
         val etFields: List<String> = listOf(
             etFirstname,
@@ -98,9 +99,12 @@ class AddActivity : AppCompatActivity() {
         getString(R.string.mandatory_field).showToastMessage(this@AddActivity)
     }
 
-    private fun setEmailErrorNotify(validate: Boolean){
-        validate.let{ tvEmail?.error = getString(R.string.invalide_format)}
-        tvEmail?.error = null
+    private fun setEmailErrorNotify(error: Boolean = true) {
+        if (error) {
+            tvEmail.error = getString(R.string.invalide_format)
+        } else {
+            tvEmail.error = null
+        }
     }
 
     private fun setSave() {

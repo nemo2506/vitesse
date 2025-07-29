@@ -62,7 +62,6 @@ class CandidateUseCase @Inject constructor(
                 emit(Result.Success(it.isPositive()))
             }
         } catch (e: Throwable) {
-            Log.d("MARC", "updateCandidate: $e")
             emit(Result.Failure(e.message ?: "Unknown error"))
         }
     }
