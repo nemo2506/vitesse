@@ -142,7 +142,6 @@ class DetailActivity : AppCompatActivity() {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.toolbar_menu, menu)
             }
-
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.fab_favorite -> {
@@ -156,24 +155,12 @@ class DetailActivity : AppCompatActivity() {
                     }
 
                     R.id.fab_edit -> {
-                        AlertDialog.Builder(this@DetailActivity).apply {
-                            setTitle(getString(R.string.deletion))
-                            setMessage(getString(R.string.confirm_delete))
-                            setPositiveButton(getString(R.string.confirm)) { dialog, which ->
-                                this@DetailActivity.navigateToEditScreen(candidateId, detailId)
-                                dialog.dismiss()
-                            }
-                            setNegativeButton("Annuler") { dialog, which ->
-                                dialog.dismiss()
-                            }
-                            create()
-                            show()
-                        }
+                        candidate.candidateId?.let { viewModel.deleteCandidate(it) }
                         true
                     }
 
                     R.id.fab_delete -> {
-                        candidate.candidateId?.let { viewModel.deleteCandidate(it) }
+                        setDeletion()
                         true
                     }
 
@@ -181,5 +168,21 @@ class DetailActivity : AppCompatActivity() {
                 }
             }
         }, this, Lifecycle.State.RESUMED)
+    }
+
+    fun setDeletion() {
+        AlertDialog.Builder(this@DetailActivity).apply {
+            setTitle(getString(R.string.deletion))
+            setMessage(getString(R.string.confirm_delete))
+            setPositiveButton(getString(R.string.confirm)) { dialog, which ->
+                this@DetailActivity.navigateToEditScreen(candidateId, detailId)
+                dialog.dismiss()
+            }
+            setNegativeButton("Annuler") { dialog, which ->
+                dialog.dismiss()
+            }
+            create()
+            show()
+        }
     }
 }
