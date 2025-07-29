@@ -142,6 +142,7 @@ class DetailActivity : AppCompatActivity() {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.toolbar_menu, menu)
             }
+
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.fab_favorite -> {
@@ -155,7 +156,7 @@ class DetailActivity : AppCompatActivity() {
                     }
 
                     R.id.fab_edit -> {
-                        candidate.candidateId?.let { viewModel.deleteCandidate(it) }
+                        this@DetailActivity.navigateToEditScreen(candidateId, detailId)
                         true
                     }
 
@@ -175,7 +176,7 @@ class DetailActivity : AppCompatActivity() {
             setTitle(getString(R.string.deletion))
             setMessage(getString(R.string.confirm_delete))
             setPositiveButton(getString(R.string.confirm)) { dialog, which ->
-                this@DetailActivity.navigateToCandidateScreen()
+                candidate.candidateId?.let { viewModel.deleteCandidate(it) }
                 dialog.dismiss()
             }
             setNegativeButton("Annuler") { dialog, which ->
