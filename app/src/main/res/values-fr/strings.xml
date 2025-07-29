@@ -15,9 +15,9 @@
     <string name="appel_description">Icone Appel</string>
     <string name="sms">SMS</string>
     <string name="email">Email</string>
-    <string name="favorite">FAVORIS</string>
-    <string name="edit">MODIFIER</string>
-    <string name="delete">SUPPRIMER</string>
+    <string name="favorite">Favoris</string>
+    <string name="edit">Modifier</string>
+    <string name="delete">Supprimmer</string>
     <string name="add">AJOUTER</string>
     <string name="anniversary">Anniversaire</string>
     <string name="save">Sauvegarder</string>
