@@ -1,7 +1,5 @@
 package com.openclassrooms.vitesse.utils
 
-import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.Period

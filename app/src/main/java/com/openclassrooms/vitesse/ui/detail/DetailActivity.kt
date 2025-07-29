@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
@@ -32,7 +33,7 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var candidate: CandidateDescription
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
     private var candidateId: Long = 0
-    private var detailId : Long = 0
+    private var detailId: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,8 +57,8 @@ class DetailActivity : AppCompatActivity() {
 
     private fun setUpUI(candidate: CandidateDescription) {
         this@DetailActivity.candidate = candidate
-        if(candidate.candidateId != null) candidateId = candidate.candidateId
-        if(candidate.detailId != null) detailId = candidate.detailId
+        if (candidate.candidateId != null) candidateId = candidate.candidateId
+        if (candidate.detailId != null) detailId = candidate.detailId
         val title = "%s %s".format(candidate.firstName, candidate.lastName)
         toolbar.title = title
         setFavoriteUi(candidate.isFavorite)
@@ -111,7 +112,7 @@ class DetailActivity : AppCompatActivity() {
 
 
     private fun setEmail(address: String, title: String) {
-        "EMAIL".showToastMessage(this@DetailActivity )
+        "EMAIL".showToastMessage(this@DetailActivity)
         val subject = "VITESSE"
         val body = getString(R.string.email_message).format(title)
         val intent = Intent(Intent.ACTION_SEND).apply {
@@ -155,7 +156,19 @@ class DetailActivity : AppCompatActivity() {
                     }
 
                     R.id.fab_edit -> {
-                        this@DetailActivity.navigateToEditScreen(candidateId, detailId)
+                        AlertDialog.Builder(this@DetailActivity).apply {
+                            setTitle(getString(R.string.deletion))
+                            setMessage(getString(R.string.confirm_delete))
+                            setPositiveButton(getString(R.string.confirm)) { dialog, which ->
+                                this@DetailActivity.navigateToEditScreen(candidateId, detailId)
+                                dialog.dismiss()
+                            }
+                            setNegativeButton("Annuler") { dialog, which ->
+                                dialog.dismiss()
+                            }
+                            create()
+                            show()
+                        }
                         true
                     }
 
