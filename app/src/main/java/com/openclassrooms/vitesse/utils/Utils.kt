@@ -34,7 +34,7 @@ import androidx.activity.ComponentActivity
 import java.text.NumberFormat
 import android.Manifest
 
-fun Long.toFrDescription(): String?{
+fun Long.toFrDescription(): String? {
     if (this == 0L) return null
     val formatter = NumberFormat.getCurrencyInstance(Locale.FRANCE).apply {
         minimumFractionDigits = 0
@@ -150,6 +150,11 @@ fun String.capitalizeFirstLetter(): String {
 
 fun Long?.isPositive(): Boolean = this != null && this > 0
 
+
+fun String.isValidEmail(): Boolean {
+    return android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
+}
+
 class MediaPickerHelper(
     private val activity: ComponentActivity,
     private val tvFace: ImageView,
@@ -189,13 +194,18 @@ class MediaPickerHelper(
 
         tvFace.setOnClickListener {
             when {
-                ContextCompat.checkSelfPermission(activity, currentPermission) == PackageManager.PERMISSION_GRANTED -> {
+                ContextCompat.checkSelfPermission(
+                    activity,
+                    currentPermission
+                ) == PackageManager.PERMISSION_GRANTED -> {
                     pickMediaLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                 }
+
                 activity.shouldShowRequestPermissionRationale(currentPermission) -> {
                     context.getString(R.string.authorization_required).showToastMessage(activity)
                     requestPermissionLauncher.launch(currentPermission)
                 }
+
                 else -> {
                     requestPermissionLauncher.launch(currentPermission)
                 }

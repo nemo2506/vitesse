@@ -6,6 +6,7 @@ import com.openclassrooms.vitesse.domain.model.Candidate
 import com.openclassrooms.vitesse.utils.toZeroOrLong
 import com.openclassrooms.vitesse.utils.capitalizeFirstLetter
 import com.openclassrooms.vitesse.utils.isPositive
+import com.openclassrooms.vitesse.utils.isValidEmail
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -64,5 +65,13 @@ class CandidateUseCase @Inject constructor(
             Log.d("MARC", "updateCandidate: $e")
             emit(Result.Failure(e.message ?: "Unknown error"))
         }
+    }
+
+    fun validateInfo(list: List<String>): Boolean {
+        return list.all { it.isNotEmpty() }
+    }
+
+    fun validateEmail(email: String): Boolean {
+        return email.isValidEmail()
     }
 }

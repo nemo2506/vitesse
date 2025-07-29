@@ -79,10 +79,40 @@ class AddViewModel @Inject constructor(
                 }
         }
     }
+
+    fun validateInfo(etFields: List<String>) {
+        candidateUseCase.validateInfo(etFields).let { result ->
+            _uiState.update {
+                it.copy(
+                    isValidInfo = result,
+                    isLoading = false,
+                    isUpdated = null,
+                    isValidEmail = null,
+                    message = null
+                )
+            }
+        }
+    }
+
+    fun validateEmail(etEmail: String) {
+        candidateUseCase.validateEmail(etEmail).let { result ->
+            _uiState.update {
+                it.copy(
+                    isValidEmail = result,
+                    isLoading = false,
+                    isUpdated = null,
+                    isValidInfo = null,
+                    message = null
+                )
+            }
+        }
+    }
 }
 
 data class UiState(
     var isLoading: Boolean? = false,
     var isUpdated: Boolean? = null,
+    var isValidInfo: Boolean? = null,
+    var isValidEmail: Boolean? = null,
     var message: String? = null
 )
