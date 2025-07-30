@@ -24,7 +24,6 @@ class DetailUseCase @Inject constructor(
         emit(Result.Loading)
         try {
             detailRepository.getCandidateById(id).collect {
-                Log.d("MARC", "getCandidateToDescription: $it")
                 if (it != null) {
                     emit(Result.Success(convertToDescription(it)))
                 } else {

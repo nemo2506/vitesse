@@ -31,6 +31,7 @@ import android.widget.TextView
 import androidx.activity.ComponentActivity
 import java.text.NumberFormat
 import android.Manifest
+import android.util.Log
 
 fun Long.toFrDescription(): String? {
     if (this == 0L) return null
@@ -56,15 +57,25 @@ fun LocalDateTime.calculateAge(): Int {
 
 fun LocalDateTime?.toDateDescription(): String? {
     if (this == null) return null
-    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+    val localeLang = Locale.getDefault().language
+    val formatter = if (localeLang == "fr") {
+        DateTimeFormatter.ofPattern("dd/MM/yyyy")
+    } else {
+        DateTimeFormatter.ofPattern("MM/d/yyyy")
+    }
     val age = this.calculateAge()
     val date = this.format(formatter)
     return "$date ($age ans)"
 }
 
-fun String.toDate(format: String = "dd/MM/yyyy"): LocalDateTime? {
+fun String.toDate(): LocalDateTime? {
+    val localeLang = Locale.getDefault().language
+    val formatter = if (localeLang == "fr") {
+        DateTimeFormatter.ofPattern("dd/MM/yyyy")
+    } else {
+        DateTimeFormatter.ofPattern("MM/d/yyyy")
+    }
     return try {
-        val formatter = DateTimeFormatter.ofPattern(format)
         LocalDate.parse(this, formatter).atStartOfDay()
     } catch (e: Exception) {
         null
@@ -123,7 +134,12 @@ fun View.setVisible(visible: Boolean) {
 }
 
 fun LocalDateTime.toLocalDateString(): String {
-    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+    val localeLang = Locale.getDefault().language
+    val formatter = if (localeLang == "fr") {
+        DateTimeFormatter.ofPattern("dd/MM/yyyy")
+    } else {
+        DateTimeFormatter.ofPattern("MM/d/yyyy")
+    }
     return this.format(formatter)
 }
 
@@ -134,8 +150,13 @@ fun TextView.setDateUi(context: Context) {
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         val datePicker = DatePickerDialog(context, { _, selectedYear, selectedMonth, selectedDay ->
-            val formattedDate =
+            val localeLang = context.resources.configuration.locales.get(0).language
+            Log.d("MARC", "setDateUi: localeLang/$localeLang")
+            val formattedDate = if (localeLang == "fr") {
                 "%02d/%02d/%04d".format(selectedDay, selectedMonth + 1, selectedYear)
+            } else {
+                "%02d/%d/%04d".format(selectedMonth + 1, selectedDay, selectedYear)
+            }
             this.text = formattedDate
         }, year, month, day)
         datePicker.show()
