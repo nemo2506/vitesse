@@ -2,7 +2,6 @@ package com.openclassrooms.vitesse.ui.add
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback

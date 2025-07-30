@@ -7,6 +7,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.textfield.TextInputLayout
 import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.databinding.ActivityAddBinding
 import com.openclassrooms.vitesse.domain.model.CandidateDetail
@@ -32,6 +33,12 @@ class EditActivity : AppCompatActivity() {
     private lateinit var mediaPickerHelper: MediaPickerHelper
     private lateinit var tvFace: ImageView
     private var currentUri: String? = null
+    private var etFirstname: String? = null
+    private var etLastname: String? = null
+    private var etPhone: String? = null
+    private var etEmail: String? = null
+    private lateinit var tvEmail: TextInputLayout
+    private var etDate: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +53,12 @@ class EditActivity : AppCompatActivity() {
             viewModel.uiState.collect { uiState ->
                 uiState.isLoading?.let { binding.loading.setVisible(it) }
                 uiState.candidate?.let { setUp(it) }
+                uiState.isFirstNameCheck?.let { setInfoErrorNotify(binding.tvFirstname, it) }
+                uiState.isLastNameCheck?.let { setInfoErrorNotify(binding.tvLastname, it) }
+                uiState.isPhoneCheck?.let { setInfoErrorNotify(binding.tvPhone, it) }
+                uiState.isDateCheck?.let { setInfoErrorNotify(binding.tvDate, it) }
+                setEmailNotify(uiState.isValidEmail)
+                if (uiState.isCandidateFull == true) candidateSave()
                 uiState.isUpdated?.let { this@EditActivity.navigateToCandidateScreen() }
                 uiState.message?.showToastMessage(this@EditActivity)
             }
@@ -58,7 +71,8 @@ class EditActivity : AppCompatActivity() {
         tvFace = binding.tvFace
         mediaPickerHelper = MediaPickerHelper(this, tvFace) { uri -> currentUri = uri.toString() }
         mediaPickerHelper.setup()
-        binding.saveButton.setOnClickListener { setSave() }
+//        binding.saveButton.setOnClickListener { setSave() }
+        binding.saveButton.setOnClickListener { setValAndVerify() }
         binding.etDate.setDateUi(this@EditActivity)
         setToolbar()
     }
@@ -94,23 +108,57 @@ class EditActivity : AppCompatActivity() {
                 onBackPressedDispatcher.onBackPressed()
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    private fun setSave() {
-        val tvFaceUrl = binding.tvFaceUrl.text.toString()
-        tvFace.loadImage(tvFaceUrl)
+    private fun setInfoErrorNotify(
+        tv: TextInputLayout,
+        valid: Boolean,
+        message: String = getString(R.string.mandatory_field)
+    ) {
+        if (valid) tv.error = null
+        else tv.error = message
+    }
+
+    private fun setEmailNotify(state: EmailState) {
+        binding.tvEmail.error = when (state) {
+            EmailState.MandatoryField -> getString(R.string.mandatory_field)
+            EmailState.InvalidFormat -> getString(R.string.invalide_format)
+            EmailState.Valid -> null
+        }
+    }
+
+    private fun setValAndVerify() {
+        etFirstname = binding.etFirstname.text.toString()
+        etLastname = binding.etLastname.text.toString()
+        etPhone = binding.etPhone.text.toString()
+        etDate = binding.etDate.text.toString()
+        etEmail = binding.etEmail.text.toString()
+        tvEmail = binding.tvEmail
+        tvFace.loadImage(binding.tvFaceUrl.text.toString())
+        viewModel.checkFirstName(etFirstname)
+        viewModel.checkLastName(etLastname)
+        viewModel.checkPhone(etPhone)
+        viewModel.checkDate(etDate)
+        etEmail?.let { viewModel.validateEmail(it) }
+        viewModel.isCandidateReadyToSave()
+    }
+
+    private fun candidateSave() {
         viewModel.modifyCandidate(
             candidateId = candidateId,
             detailId = detailId,
-            firstName = binding.etFirstname.text.toString(),
-            lastName = binding.etLastname.text.toString(),
-            phone = binding.etPhone.text.toString(),
-            email = binding.etEmail.text.toString(),
+
+            firstName = etFirstname,
+            lastName = etLastname,
+            phone = etPhone,
+            email = etEmail,
+            date = etDate,
+
             photoUri = currentUri,
             note = binding.etNote.text.toString(),
-            date = binding.etDate.text.toString(),
             salaryClaim = binding.etSalaryClaim.text.toString()
         )
     }

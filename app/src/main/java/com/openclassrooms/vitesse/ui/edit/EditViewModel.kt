@@ -83,6 +83,73 @@ class EditViewModel @Inject constructor(
         }
     }
 
+    fun checkFirstName(etField: String?) {
+        candidateUseCase.validateInfo(etField).let { result ->
+            _uiState.update {
+                it.copy(
+                    isFirstNameCheck = result
+                )
+            }
+        }
+    }
+
+    fun checkLastName(etField: String?) {
+        candidateUseCase.validateInfo(etField).let { result ->
+            _uiState.update {
+                it.copy(
+                    isLastNameCheck = result
+                )
+            }
+        }
+    }
+
+    fun checkPhone(etField: String?) {
+        candidateUseCase.validateInfo(etField).let { result ->
+            _uiState.update {
+                it.copy(
+                    isPhoneCheck = result
+                )
+            }
+        }
+    }
+
+    fun checkDate(etField: String?) {
+        candidateUseCase.validateInfo(etField).let { result ->
+            _uiState.update {
+                it.copy(
+                    isDateCheck = result
+                )
+            }
+        }
+    }
+
+    fun validateEmail(etEmail: String) {
+        val isReady = candidateUseCase.validateInfo(etEmail)
+        val isFormatValid = if (isReady) candidateUseCase.validateEmail(etEmail) else false
+
+        val newState = when {
+            !isReady -> EmailState.MandatoryField
+            !isFormatValid -> EmailState.InvalidFormat
+            else -> EmailState.Valid
+        }
+
+        _uiState.update {
+            it.copy(isValidEmail = newState)
+        }
+    }
+
+    fun isCandidateReadyToSave() {
+        val full = _uiState.value.isFirstNameCheck == true &&
+                _uiState.value.isLastNameCheck == true &&
+                _uiState.value.isPhoneCheck == true &&
+                _uiState.value.isDateCheck == true &&
+                _uiState.value.isValidEmail == EmailState.Valid
+
+        _uiState.update {
+            it.copy(isCandidateFull = full)
+        }
+    }
+
     fun modifyCandidate(
         candidateId: Long,
         detailId: Long,
@@ -97,56 +164,59 @@ class EditViewModel @Inject constructor(
         salaryClaim: String? = null
     ) {
         viewModelScope.launch {
-                candidateUseCase.upsertCandidate(
-                    candidateId = candidateId,
-                    detailId = detailId,
-                    firstName = firstName,
-                    lastName = lastName,
-                    phone = phone,
-                    email = email,
-                    isFavorite = isFavorite,
-                    photoUri = photoUri,
-                    note = note,
-                    date = date,
-                    salaryClaim = salaryClaim
-                ).collect { result ->
-                        when (result) {
-                            is Result.Loading -> {
-                                _uiState.update {
-                                    it.copy(
-                                        isLoading = true,
-                                        message = null,
-                                        isUpdated = null,
-                                        candidate = null,
-                                    )
-                                }
-                                delay(1000)
-                            }
+            candidateUseCase.upsertCandidate(
+                candidateId = candidateId,
+                detailId = detailId,
+                firstName = firstName,
+                lastName = lastName,
+                phone = phone,
+                email = email,
+                isFavorite = isFavorite,
+                photoUri = photoUri,
+                note = note,
+                date = date,
+                salaryClaim = salaryClaim
+            ).collect { result ->
+                when (result) {
+                    is Result.Loading -> {
+                        _uiState.update {
+                            it.copy(
+                                isLoading = true,
+                                message = null,
+                                isUpdated = null,
+                                candidate = null,
+                                isCandidateFull = null
+                            )
+                        }
+                        delay(1000)
+                    }
 
-                            is Result.Success -> {
-                                _uiState.update {
-                                    it.copy(
-                                        isLoading = false,
-                                        message = null,
-                                        isUpdated = result.value,
-                                        candidate = null,
-                                    )
-                                }
-                            }
-
-                            is Result.Failure -> {
-                                _uiState.update {
-                                    it.copy(
-                                        isLoading = false,
-                                        message = result.message,
-                                        isUpdated = null,
-                                        candidate = null,
-                                    )
-                                }
-                            }
+                    is Result.Success -> {
+                        _uiState.update {
+                            it.copy(
+                                isLoading = false,
+                                message = null,
+                                isUpdated = result.value,
+                                candidate = null,
+                                isCandidateFull = null
+                            )
                         }
                     }
+
+                    is Result.Failure -> {
+                        _uiState.update {
+                            it.copy(
+                                isLoading = false,
+                                message = result.message,
+                                isUpdated = null,
+                                candidate = null,
+                                isCandidateFull = null
+                            )
+                        }
+                    }
+                }
             }
+        }
     }
 }
 
@@ -161,5 +231,17 @@ data class UiState(
     var isFavoriteUpdated: Boolean? = null,
     var isDeleted: Boolean? = null,
     var isLoading: Boolean? = null,
-    var message: String? = null,
+    var isFirstNameCheck: Boolean? = null,
+    var isLastNameCheck: Boolean? = null,
+    var isPhoneCheck: Boolean? = null,
+    var isDateCheck: Boolean? = null,
+    var isValidEmail: EmailState = EmailState.Valid,
+    var isCandidateFull: Boolean? = null,
+    var message: String? = null
 )
+
+sealed class EmailState {
+    data object MandatoryField : EmailState()
+    data object InvalidFormat : EmailState()
+    data object Valid : EmailState()
+}
