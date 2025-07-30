@@ -31,6 +31,7 @@ import android.widget.TextView
 import androidx.activity.ComponentActivity
 import java.text.NumberFormat
 import android.Manifest
+import android.provider.Settings.Global.getString
 import android.util.Log
 
 fun Long.toFrDescription(): String? {
@@ -58,14 +59,18 @@ fun LocalDateTime.calculateAge(): Int {
 fun LocalDateTime?.toDateDescription(): String? {
     if (this == null) return null
     val localeLang = Locale.getDefault().language
-    val formatter = if (localeLang == "fr") {
-        DateTimeFormatter.ofPattern("dd/MM/yyyy")
+    val formatter: DateTimeFormatter
+    val message: String
+    if (localeLang == "fr") {
+        formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        message = "%s (%d ans)"
     } else {
-        DateTimeFormatter.ofPattern("MM/d/yyyy")
+        formatter = DateTimeFormatter.ofPattern("MM/d/yyyy")
+        message = "%s (%d years old)"
     }
     val age = this.calculateAge()
     val date = this.format(formatter)
-    return "$date ($age ans)"
+    return message.format(date, age)
 }
 
 fun String.toDate(): LocalDateTime? {

@@ -1,5 +1,6 @@
 package com.openclassrooms.vitesse.domain.usecase
 
+import android.content.Context
 import android.util.Log
 import com.openclassrooms.vitesse.data.entity.CandidateWithDetailDto
 import com.openclassrooms.vitesse.data.repository.CurrencyRepository
