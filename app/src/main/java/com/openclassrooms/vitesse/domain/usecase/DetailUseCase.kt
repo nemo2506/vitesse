@@ -7,7 +7,6 @@ import com.openclassrooms.vitesse.data.repository.CurrencyRepository
 import com.openclassrooms.vitesse.data.repository.DetailRepository
 import com.openclassrooms.vitesse.domain.model.CandidateDescription
 import com.openclassrooms.vitesse.domain.model.CandidateDetail
-import com.openclassrooms.vitesse.domain.model.GbpReportModel
 import com.openclassrooms.vitesse.utils.toDateDescription
 import com.openclassrooms.vitesse.utils.toEmpty
 import com.openclassrooms.vitesse.utils.toFrDescription
@@ -100,8 +99,8 @@ class DetailUseCase @Inject constructor(
     }
 
     private suspend fun getCurrency(): Double {
-        val result: Result<GbpReportModel> = currencyRepository.getGbp()
-        return (result as? Result.Success)?.value?.gbp ?: 0.0
+        val result: Result<Double> = currencyRepository.getGbp()
+        return (result as? Result.Success)?.value ?: 0.0
     }
 
     private fun convertToDetail(dto: CandidateWithDetailDto): CandidateDetail {

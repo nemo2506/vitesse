@@ -1,9 +1,10 @@
 package com.openclassrooms.vitesse.data.repository
 
-import android.util.Log
 import com.openclassrooms.vitesse.data.network.ManageClient
+import com.openclassrooms.vitesse.data.response.GbpResponse
 import com.openclassrooms.vitesse.domain.model.GbpReportModel
 import com.openclassrooms.vitesse.domain.usecase.Result
+import retrofit2.Response
 import javax.inject.Inject
 
 /**
@@ -21,10 +22,10 @@ class CurrencyRepository @Inject constructor(
     /**
      *
      */
-    suspend fun getGbp(): Result<GbpReportModel> {
+    suspend fun getGbp(): Result<Double> {
         return try {
-            val result = dataService.fetchGbp()
-            val model = result.body()?.toDomainModel() ?: throw Exception("Invalid data")
+            val result: Response<GbpResponse> = dataService.fetchGbp()
+            val model = result.body()?.eur?.gbp ?: throw Exception("Invalid data")
             Result.Success(model)
         } catch (error: Exception) {
             Result.Failure(error.message)

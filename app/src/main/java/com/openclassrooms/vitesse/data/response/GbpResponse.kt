@@ -9,15 +9,27 @@ import com.squareup.moshi.JsonClass
  *
  * @property gbp Indicates whether the login was successful.
  */
+//@JsonClass(generateAdapter = true)
+//data class GbpResponse(
+//    @Json(name = "date")
+//    val date: String,
+//    @Json(name = "eur")
+//    val eur: Map<String, Double>
+//) {
+//    fun toDomainModel(): GbpReportModel {
+//        val gbp = eur["gbp"] ?: 0.0
+//        return GbpReportModel(gbp)
+//    }
+//}
+
 @JsonClass(generateAdapter = true)
 data class GbpResponse(
-    @Json(name = "date")
-    val date: String,
     @Json(name = "eur")
-    val eur: Map<String, Double>
+    val eur: EurResponse
 ) {
-    fun toDomainModel(): GbpReportModel {
-        val gbp = eur["gbp"] ?: 0.0
-        return GbpReportModel(gbp)
-    }
+    @JsonClass(generateAdapter = true)
+    data class EurResponse(
+        @Json(name = "gbp")
+        val gbp: Double
+    )
 }
