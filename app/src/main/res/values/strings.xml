@@ -9,7 +9,7 @@
     <string name="candidate_all">All</string>
     <string name="candidate_face">Candidate face</string>
     <string name="about">About</string>
-    <string name="salary_claim">Salary claim</string>
+    <string name="salary_claim">Expected Salary</string>
     <string name="notes">Notes</string>
     <string name="appel">Appel</string>
     <string name="appel_description">Appel Icone</string>
@@ -31,8 +31,8 @@
     <string name="phone">Phone</string>
     <string name="lastname">Last name</string>
     <string name="firstname">First name</string>
-    <string name="either">either %s</string>
-    <string name="edit_candidate">Modifier un candidat</string>
+    <string name="either">or %s</string>
+    <string name="edit_candidate">Edit a candidate</string>
     <string name="good_morning">"Good morning %s, "</string>
     <string name="email_message">Good morning %s,\nHere is a pre-filled message.</string>
     <string name="add_candidate">Add candidate</string>

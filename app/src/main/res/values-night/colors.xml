@@ -6,5 +6,7 @@
     <color name="colorSecondary">#E8B952</color>
     <color name="colorSecondaryVariant">#E8B952</color>
     <color name="colorOnSecondary">#000000</color>
-    <color name="customIcon">#FFFFFF</color>
+    <color name="colorInverseCustom">#FFFFFF</color>
+    <color name="colorPrimaryCustom">@color/colorSecondary</color>
+    <color name="colorPrimaryVariantCustom">@color/colorPrimary</color>
 </resources>

@@ -81,6 +81,7 @@ class EditActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         toolbar.setNavigationOnClickListener {
             this@EditActivity.navigateToCandidateScreen()
+//            onSupportNavigateUp()
         }
     }
 
@@ -99,5 +100,9 @@ class EditActivity : AppCompatActivity() {
             date = binding.etDate.text.toString(),
             salaryClaim = binding.etSalaryClaim.text.toString()
         )
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return super.onSupportNavigateUp()
     }
 }

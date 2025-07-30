@@ -4,21 +4,21 @@
     <item
         android:id="@+id/fab_favorite"
         android:icon="@drawable/ic_star"
-        android:tint="?attr/colorOnPrimary"
+        android:tint="@color/colorInverseCustom"
         android:title="@string/favorite"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/fab_edit"
         android:icon="@drawable/ic_edit"
-        android:tint="?attr/colorOnPrimary"
+        android:tint="@color/colorInverseCustom"
         android:title="@string/edit"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/fab_delete"
         android:icon="@drawable/ic_delete"
-        android:tint="?attr/colorOnPrimary"
+        android:tint="@color/colorInverseCustom"
         android:title="@string/delete"
         app:showAsAction="always" />
 </menu>

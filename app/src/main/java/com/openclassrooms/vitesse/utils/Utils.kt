@@ -5,8 +5,6 @@ import java.time.LocalDateTime
 import java.time.Period
 import java.time.format.DateTimeFormatter
 import java.util.Locale
-
-
 import android.content.Context
 import android.widget.Toast
 import android.widget.ImageView
@@ -31,7 +29,6 @@ import android.widget.TextView
 import androidx.activity.ComponentActivity
 import java.text.NumberFormat
 import android.Manifest
-import android.provider.Settings.Global.getString
 import android.util.Log
 
 fun Long.toFrDescription(): String? {
