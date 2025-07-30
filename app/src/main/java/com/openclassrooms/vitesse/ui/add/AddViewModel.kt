@@ -2,6 +2,7 @@ package com.openclassrooms.vitesse.ui.add
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.material.textfield.TextInputLayout
 import com.openclassrooms.vitesse.domain.usecase.CandidateUseCase
 import com.openclassrooms.vitesse.domain.usecase.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -50,9 +51,7 @@ class AddViewModel @Inject constructor(
                                 it.copy(
                                     isLoading = true,
                                     message = null,
-                                    isUpdated = null,
-                                    isValidEmail = null,
-                                    isValidInfo = null
+                                    isUpdated = null
                                 )
                             }
                             delay(1000)
@@ -63,9 +62,7 @@ class AddViewModel @Inject constructor(
                                 it.copy(
                                     isLoading = false,
                                     message = null,
-                                    isUpdated = result.value,
-                                    isValidEmail = null,
-                                    isValidInfo = null
+                                    isUpdated = result.value
                                 )
                             }
                         }
@@ -75,9 +72,7 @@ class AddViewModel @Inject constructor(
                                 it.copy(
                                     isLoading = false,
                                     message = result.message,
-                                    isUpdated = null,
-                                    isValidEmail = null,
-                                    isValidInfo = null
+                                    isUpdated = null
                                 )
                             }
                         }
@@ -86,29 +81,58 @@ class AddViewModel @Inject constructor(
         }
     }
 
-    fun validateInfo(etFields: List<String>) {
-        candidateUseCase.validateInfo(etFields).let { result ->
+    fun checkFirstName(etField: String?) {
+        candidateUseCase.validateInfo(etField).let { result ->
             _uiState.update {
                 it.copy(
-                    isValidInfo = result,
-                    isLoading = false,
-                    isUpdated = null,
-                    message = null,
+                    isFirstNameCheck = result
+                )
+            }
+        }
+    }
+
+    fun checkLastName(etField: String?) {
+        candidateUseCase.validateInfo(etField).let { result ->
+            _uiState.update {
+                it.copy(
+                    isLastNameCheck = result
+                )
+            }
+        }
+    }
+
+    fun checkPhone(etField: String?) {
+        candidateUseCase.validateInfo(etField).let { result ->
+            _uiState.update {
+                it.copy(
+                    isPhoneCheck = result
+                )
+            }
+        }
+    }
+
+    fun checkDate(etField: String?) {
+        candidateUseCase.validateInfo(etField).let { result ->
+            _uiState.update {
+                it.copy(
+                    isDateCheck = result
                 )
             }
         }
     }
 
     fun validateEmail(etEmail: String) {
-        candidateUseCase.validateEmail(etEmail).let { result ->
-            _uiState.update {
-                it.copy(
-                    isValidEmail = result,
-                    isLoading = false,
-                    isUpdated = null,
-                    message = null
-                )
-            }
+        val isEmpty = candidateUseCase.validateInfo(etEmail)
+        val isFormatValid = if (!isEmpty) candidateUseCase.validateEmail(etEmail) else false
+
+        val newState = when {
+            isEmpty -> EmailState.MandatoryField
+            !isFormatValid -> EmailState.InvalidFormat
+            else -> EmailState.Valid
+        }
+
+        _uiState.update {
+            it.copy(isValidEmail = newState)
         }
     }
 }
@@ -116,7 +140,16 @@ class AddViewModel @Inject constructor(
 data class UiState(
     var isLoading: Boolean? = false,
     var isUpdated: Boolean? = null,
-    var isValidInfo: Boolean? = null,
-    var isValidEmail: Boolean? = null,
+    var isFirstNameCheck: Boolean? = null,
+    var isLastNameCheck: Boolean? = null,
+    var isPhoneCheck: Boolean? = null,
+    var isDateCheck: Boolean? = null,
+    var isValidEmail: EmailState = EmailState.Valid,
     var message: String? = null
 )
+
+sealed class EmailState {
+    data object MandatoryField : EmailState()
+    data object InvalidFormat : EmailState()
+    data object Valid : EmailState()
+}

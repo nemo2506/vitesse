@@ -2,6 +2,8 @@ package com.openclassrooms.vitesse.ui.add
 
 import android.net.Uri
 import android.os.Bundle
+import android.os.Message
+import android.util.Log
 import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -46,9 +48,11 @@ class AddActivity : AppCompatActivity() {
             viewModel.uiState.collect { uiState ->
                 uiState.isLoading?.let { binding.loading.setVisible(it) }
                 uiState.message?.showToastMessage(this@AddActivity)
-                if (uiState.isValidInfo == false ) setInfoErrorNotify()
-                if (uiState.isValidEmail == false ) setEmailErrorNotify()
-                if (uiState.isValidInfo == true && uiState.isValidEmail == true) setSave()
+                uiState.isFirstNameCheck?.let { setInfoErrorNotify(binding.tvFirstname, it) }
+                uiState.isLastNameCheck?.let { setInfoErrorNotify(binding.tvLastname, it) }
+                uiState.isPhoneCheck?.let { setInfoErrorNotify(binding.tvPhone, it) }
+                uiState.isDateCheck?.let { setInfoErrorNotify(binding.tvDate, it) }
+                setEmailNotify(uiState.isValidEmail)
                 uiState.isUpdated?.let { this@AddActivity.navigateToCandidateScreen() }
             }
         }
@@ -60,7 +64,7 @@ class AddActivity : AppCompatActivity() {
         tvFace = binding.tvFace
         mediaPickerHelper = MediaPickerHelper(this@AddActivity, tvFace) { uri -> currentUri = uri }
         mediaPickerHelper.setup(this@AddActivity)
-        binding.saveButton.setOnClickListener { setVerify() }
+        binding.saveButton.setOnClickListener { setValAndVerify() }
         binding.etDate.setDateUi(this@AddActivity)
         setToolbar()
     }
@@ -72,39 +76,38 @@ class AddActivity : AppCompatActivity() {
         }
     }
 
-    private fun setVerify() {
+    private fun setValAndVerify() {
         etFirstname = binding.etFirstname.text.toString()
         etLastname = binding.etLastname.text.toString()
         etPhone = binding.etPhone.text.toString()
         etDate = binding.etDate.text.toString()
         etEmail = binding.etEmail.text.toString()
         tvEmail = binding.tvEmail
-        val etFields: List<String> = listOf(
-            etFirstname,
-            etLastname,
-            etPhone,
-            etEmail,
-            etDate
-        ).map { it ?: "" }
-        viewModel.validateInfo(etFields)
+        viewModel.checkFirstName(etFirstname)
+        viewModel.checkLastName(etLastname)
+        viewModel.checkPhone(etPhone)
+        viewModel.checkDate(etDate)
         etEmail?.let { viewModel.validateEmail(it) }
     }
 
-    private fun setInfoErrorNotify(){
-//        "First Name, Last Name, Phone, E-mail, Birth Date is required"
-        getString(R.string.mandatory_field).showToastMessage(this@AddActivity)
+    private fun setInfoErrorNotify(
+        tv: TextInputLayout,
+        error: Boolean,
+        message: String = getString(R.string.mandatory_field)
+    ) {
+        if (!error) tv.error = null
+        else tv.error = message
     }
 
-    private fun setEmailErrorNotify(error: Boolean = true) {
-        if (error) {
-            tvEmail.error = getString(R.string.invalide_format)
-        } else {
-            tvEmail.error = null
+    private fun setEmailNotify(state: EmailState) {
+        binding.tvEmail.error = when (state) {
+            EmailState.MandatoryField -> getString(R.string.mandatory_field)
+            EmailState.InvalidFormat -> getString(R.string.invalide_format)
+            EmailState.Valid -> null
         }
     }
 
     private fun setSave() {
-        setEmailErrorNotify(false)
         viewModel.addCandidate(
             firstName = etFirstname,
             lastName = etLastname,

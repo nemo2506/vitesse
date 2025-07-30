@@ -66,8 +66,8 @@ class CandidateUseCase @Inject constructor(
         }
     }
 
-    fun validateInfo(list: List<String>): Boolean {
-        return list.all { it.isNotEmpty() }
+    fun validateInfo(etText: String?): Boolean {
+        return etText.isNullOrBlank()
     }
 
     fun validateEmail(email: String): Boolean {
