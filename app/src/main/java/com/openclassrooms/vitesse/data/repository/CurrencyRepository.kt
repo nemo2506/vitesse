@@ -2,7 +2,6 @@ package com.openclassrooms.vitesse.data.repository
 
 import com.openclassrooms.vitesse.data.network.ManageClient
 import com.openclassrooms.vitesse.data.response.GbpResponse
-import com.openclassrooms.vitesse.domain.model.GbpReportModel
 import com.openclassrooms.vitesse.domain.usecase.Result
 import retrofit2.Response
 import javax.inject.Inject

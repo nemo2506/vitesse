@@ -1,6 +1,5 @@
 package com.openclassrooms.vitesse.data.response
 
-import com.openclassrooms.vitesse.domain.model.GbpReportModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
