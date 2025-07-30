@@ -1,8 +1,9 @@
 package com.openclassrooms.vitesse.ui.edit
 
 import android.os.Bundle
-import android.util.Log
+import android.view.MenuItem
 import android.widget.ImageView
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -78,10 +79,22 @@ class EditActivity : AppCompatActivity() {
     }
 
     private fun setToolbar() {
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finish()
+            }
+        })
         setSupportActionBar(toolbar)
-        toolbar.setNavigationOnClickListener {
-            this@EditActivity.navigateToCandidateScreen()
-//            onSupportNavigateUp()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressedDispatcher.onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -100,9 +113,5 @@ class EditActivity : AppCompatActivity() {
             date = binding.etDate.text.toString(),
             salaryClaim = binding.etSalaryClaim.text.toString()
         )
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        return super.onSupportNavigateUp()
     }
 }

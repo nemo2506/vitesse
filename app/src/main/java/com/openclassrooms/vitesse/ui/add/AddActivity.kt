@@ -3,7 +3,9 @@ package com.openclassrooms.vitesse.ui.add
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.widget.ImageView
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -45,7 +47,6 @@ class AddActivity : AppCompatActivity() {
     private fun observeAdd() {
         lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
-                Log.d("MARC", "observeAdd: $uiState")
                 uiState.isLoading?.let { binding.loading.setVisible(it) }
                 uiState.message?.showToastMessage(this@AddActivity)
                 uiState.isFirstNameCheck?.let { setInfoErrorNotify(binding.tvFirstname, it) }
@@ -71,9 +72,22 @@ class AddActivity : AppCompatActivity() {
     }
 
     private fun setToolbar() {
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finish()
+            }
+        })
         setSupportActionBar(toolbar)
-        toolbar.setNavigationOnClickListener {
-            this@AddActivity.navigateToCandidateScreen()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressedDispatcher.onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

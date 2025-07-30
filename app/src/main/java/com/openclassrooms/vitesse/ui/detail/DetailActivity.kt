@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -40,7 +41,6 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setToolbar()
-        setMenu()
         observeDetail()
     }
 
@@ -68,7 +68,7 @@ class DetailActivity : AppCompatActivity() {
         binding.tvSalary.text = candidate.salaryClaimDescription
         binding.tvSalaryGbp.text = getString(R.string.either).format(candidate.salaryClaimGpb)
         binding.tvNotes.text = candidate.note
-
+        setMenu()
     }
 
     private fun setFavoriteUi(fav: Boolean) {
@@ -130,9 +130,22 @@ class DetailActivity : AppCompatActivity() {
 
     private fun setToolbar() {
         toolbar = binding.toolbar
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finish()
+            }
+        })
         setSupportActionBar(toolbar)
-        toolbar.setNavigationOnClickListener {
-            this@DetailActivity.navigateToCandidateScreen()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressedDispatcher.onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
