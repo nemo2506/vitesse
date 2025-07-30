@@ -176,25 +176,70 @@ fun String.isValidEmail(): Boolean {
     return android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
 }
 
+//class MediaPickerHelper(
+//    private val activity: ComponentActivity,
+//    private val tvFace: ImageView,
+//    private val onImagePicked: ((Uri) -> Unit)? = null
+//) {
+//    private var currentPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//        Manifest.permission.READ_MEDIA_IMAGES
+//    } else {
+//        Manifest.permission.READ_EXTERNAL_STORAGE
+//    }
+//
+//    private val requestPermissionLauncher =
+//        activity.registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+//            if (isGranted) {
+//                pickMediaLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+//            } else {
+//                activity.getString(R.string.permission_denied).showToastMessage(activity)
+//            }
+//        }
+//
+//    private val pickMediaLauncher =
+//        activity.registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+//            if (uri != null) {
+//                onImagePicked?.invoke(uri)
+//                tvFace.loadImage(uri.toString())
+//            } else {
+//                activity.getString(R.string.no_image_selected).showToastMessage(activity)
+//            }
+//        }
+//
+//    fun setup(context: Context) {
+//        currentPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//            Manifest.permission.READ_MEDIA_IMAGES
+//        } else {
+//            Manifest.permission.READ_EXTERNAL_STORAGE
+//        }
+//
+//        tvFace.setOnClickListener {
+//            when {
+//                ContextCompat.checkSelfPermission(
+//                    activity,
+//                    currentPermission
+//                ) == PackageManager.PERMISSION_GRANTED -> {
+//                    pickMediaLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+//                }
+//
+//                activity.shouldShowRequestPermissionRationale(currentPermission) -> {
+//                    context.getString(R.string.authorization_required).showToastMessage(activity)
+//                    requestPermissionLauncher.launch(currentPermission)
+//                }
+//
+//                else -> {
+//                    requestPermissionLauncher.launch(currentPermission)
+//                }
+//            }
+//        }
+//    }
+//}
+
 class MediaPickerHelper(
     private val activity: ComponentActivity,
     private val tvFace: ImageView,
     private val onImagePicked: ((Uri) -> Unit)? = null
 ) {
-    private var currentPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        Manifest.permission.READ_MEDIA_IMAGES
-    } else {
-        Manifest.permission.READ_EXTERNAL_STORAGE
-    }
-
-    private val requestPermissionLauncher =
-        activity.registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (isGranted) {
-                pickMediaLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-            } else {
-                activity.getString(R.string.permission_denied).showToastMessage(activity)
-            }
-        }
 
     private val pickMediaLauncher =
         activity.registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
@@ -206,31 +251,9 @@ class MediaPickerHelper(
             }
         }
 
-    fun setup(context: Context) {
-        currentPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            Manifest.permission.READ_MEDIA_IMAGES
-        } else {
-            Manifest.permission.READ_EXTERNAL_STORAGE
-        }
-
+    fun setup() {
         tvFace.setOnClickListener {
-            when {
-                ContextCompat.checkSelfPermission(
-                    activity,
-                    currentPermission
-                ) == PackageManager.PERMISSION_GRANTED -> {
-                    pickMediaLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-                }
-
-                activity.shouldShowRequestPermissionRationale(currentPermission) -> {
-                    context.getString(R.string.authorization_required).showToastMessage(activity)
-                    requestPermissionLauncher.launch(currentPermission)
-                }
-
-                else -> {
-                    requestPermissionLauncher.launch(currentPermission)
-                }
-            }
+            pickMediaLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
     }
 }

@@ -65,7 +65,7 @@ class AddActivity : AppCompatActivity() {
         toolbar.title = getString(R.string.add_candidate)
         tvFace = binding.tvFace
         mediaPickerHelper = MediaPickerHelper(this@AddActivity, tvFace) { uri -> currentUri = uri }
-        mediaPickerHelper.setup(this@AddActivity)
+        mediaPickerHelper.setup()
         binding.saveButton.setOnClickListener { setValAndVerify() }
         binding.etDate.setDateUi(this@AddActivity)
         setToolbar()

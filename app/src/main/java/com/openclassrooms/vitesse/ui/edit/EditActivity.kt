@@ -57,7 +57,7 @@ class EditActivity : AppCompatActivity() {
         toolbar.title = getString(R.string.edit_candidate)
         tvFace = binding.tvFace
         mediaPickerHelper = MediaPickerHelper(this, tvFace) { uri -> currentUri = uri.toString() }
-        mediaPickerHelper.setup(this@EditActivity)
+        mediaPickerHelper.setup()
         binding.saveButton.setOnClickListener { setSave() }
         binding.etDate.setDateUi(this@EditActivity)
         setToolbar()
