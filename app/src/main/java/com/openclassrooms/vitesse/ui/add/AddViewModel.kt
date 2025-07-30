@@ -2,7 +2,6 @@ package com.openclassrooms.vitesse.ui.add
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.material.textfield.TextInputLayout
 import com.openclassrooms.vitesse.domain.usecase.CandidateUseCase
 import com.openclassrooms.vitesse.domain.usecase.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -51,7 +50,8 @@ class AddViewModel @Inject constructor(
                                 it.copy(
                                     isLoading = true,
                                     message = null,
-                                    isUpdated = null
+                                    isUpdated = null,
+                                    isCandidateFull = null
                                 )
                             }
                             delay(1000)
@@ -62,7 +62,8 @@ class AddViewModel @Inject constructor(
                                 it.copy(
                                     isLoading = false,
                                     message = null,
-                                    isUpdated = result.value
+                                    isUpdated = result.value,
+                                    isCandidateFull = null
                                 )
                             }
                         }
@@ -72,7 +73,8 @@ class AddViewModel @Inject constructor(
                                 it.copy(
                                     isLoading = false,
                                     message = result.message,
-                                    isUpdated = null
+                                    isUpdated = null,
+                                    isCandidateFull = null
                                 )
                             }
                         }
@@ -122,17 +124,29 @@ class AddViewModel @Inject constructor(
     }
 
     fun validateEmail(etEmail: String) {
-        val isEmpty = candidateUseCase.validateInfo(etEmail)
-        val isFormatValid = if (!isEmpty) candidateUseCase.validateEmail(etEmail) else false
+        val isReady = candidateUseCase.validateInfo(etEmail)
+        val isFormatValid = if (isReady) candidateUseCase.validateEmail(etEmail) else false
 
         val newState = when {
-            isEmpty -> EmailState.MandatoryField
+            !isReady -> EmailState.MandatoryField
             !isFormatValid -> EmailState.InvalidFormat
             else -> EmailState.Valid
         }
 
         _uiState.update {
             it.copy(isValidEmail = newState)
+        }
+    }
+
+    fun isCandidateReadyToSave(){
+        val full = _uiState.value.isFirstNameCheck == true &&
+                _uiState.value.isLastNameCheck == true &&
+                _uiState.value.isPhoneCheck == true &&
+                _uiState.value.isDateCheck == true &&
+                _uiState.value.isValidEmail == EmailState.Valid
+
+        _uiState.update {
+            it.copy(isCandidateFull = full)
         }
     }
 }
@@ -145,6 +159,7 @@ data class UiState(
     var isPhoneCheck: Boolean? = null,
     var isDateCheck: Boolean? = null,
     var isValidEmail: EmailState = EmailState.Valid,
+    var isCandidateFull: Boolean? = null,
     var message: String? = null
 )
 

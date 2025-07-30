@@ -67,7 +67,7 @@ class CandidateUseCase @Inject constructor(
     }
 
     fun validateInfo(etText: String?): Boolean {
-        return etText.isNullOrBlank()
+        return !etText.isNullOrBlank()
     }
 
     fun validateEmail(email: String): Boolean {

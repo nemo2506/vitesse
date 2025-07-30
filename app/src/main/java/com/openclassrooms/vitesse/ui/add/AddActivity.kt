@@ -2,7 +2,6 @@ package com.openclassrooms.vitesse.ui.add
 
 import android.net.Uri
 import android.os.Bundle
-import android.os.Message
 import android.util.Log
 import android.widget.ImageView
 import androidx.activity.viewModels
@@ -46,6 +45,7 @@ class AddActivity : AppCompatActivity() {
     private fun observeAdd() {
         lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
+                Log.d("MARC", "observeAdd: $uiState")
                 uiState.isLoading?.let { binding.loading.setVisible(it) }
                 uiState.message?.showToastMessage(this@AddActivity)
                 uiState.isFirstNameCheck?.let { setInfoErrorNotify(binding.tvFirstname, it) }
@@ -53,6 +53,7 @@ class AddActivity : AppCompatActivity() {
                 uiState.isPhoneCheck?.let { setInfoErrorNotify(binding.tvPhone, it) }
                 uiState.isDateCheck?.let { setInfoErrorNotify(binding.tvDate, it) }
                 setEmailNotify(uiState.isValidEmail)
+                if( uiState.isCandidateFull == true ) candidateSave()
                 uiState.isUpdated?.let { this@AddActivity.navigateToCandidateScreen() }
             }
         }
@@ -88,14 +89,15 @@ class AddActivity : AppCompatActivity() {
         viewModel.checkPhone(etPhone)
         viewModel.checkDate(etDate)
         etEmail?.let { viewModel.validateEmail(it) }
+        viewModel.isCandidateReadyToSave()
     }
 
     private fun setInfoErrorNotify(
         tv: TextInputLayout,
-        error: Boolean,
+        valid: Boolean,
         message: String = getString(R.string.mandatory_field)
     ) {
-        if (!error) tv.error = null
+        if (valid) tv.error = null
         else tv.error = message
     }
 
@@ -107,7 +109,7 @@ class AddActivity : AppCompatActivity() {
         }
     }
 
-    private fun setSave() {
+    private fun candidateSave() {
         viewModel.addCandidate(
             firstName = etFirstname,
             lastName = etLastname,
