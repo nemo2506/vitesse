@@ -1,12 +1,15 @@
 package com.openclassrooms.vitesse.ui.edit
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
+import android.widget.EditText
 import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.openclassrooms.vitesse.R
 import com.openclassrooms.vitesse.databinding.ActivityAddBinding
@@ -31,13 +34,21 @@ class EditActivity : AppCompatActivity() {
     private var detailId: Long = 0L
     private lateinit var mediaPickerHelper: MediaPickerHelper
     private lateinit var tvFace: ImageView
-    private var currentUri: String? = null
-    private var etFirstname: String? = null
-    private var etLastname: String? = null
-    private var etPhone: String? = null
-    private var etEmail: String? = null
-    private var etDate: String? = null
+    private lateinit var tvFaceUrl: EditText
+    private lateinit var etFirstname: TextInputEditText
+    private lateinit var etLastName: TextInputEditText
+    private lateinit var etPhone: TextInputEditText
     private lateinit var tvEmail: TextInputLayout
+    private lateinit var etEmail: TextInputEditText
+    private lateinit var etDate: TextInputEditText
+    private lateinit var etSalaryClaim: TextInputEditText
+    private lateinit var etNote: TextInputEditText
+    private var currentUri: String? = null
+    private var currentFirstname: String? = null
+    private var currentLastname: String? = null
+    private var currentPhone: String? = null
+    private var currentEmail: String? = null
+    private var currentDate: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +61,7 @@ class EditActivity : AppCompatActivity() {
     private fun observeEdit() {
         lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
+                Log.d("MARC", "observeEdit: $uiState")
                 uiState.isLoading?.let { binding.loading.setVisible(it) }
                 uiState.candidate?.let { setCandidate(it) }
                 uiState.isFirstNameCheck?.let { setInfoErrorNotify(binding.tvFirstname, it) }
@@ -68,33 +80,54 @@ class EditActivity : AppCompatActivity() {
         toolbar = binding.toolbar
         toolbar.title = getString(R.string.edit_candidate)
         tvFace = binding.tvFace
+        tvFaceUrl = binding.tvFaceUrl
+        etFirstname = binding.etFirstname
+        etLastName = binding.etLastname
+        etPhone = binding.etPhone
+        tvEmail = binding.tvEmail
+        etEmail = binding.etEmail
+        etDate = binding.etDate
+        etSalaryClaim = binding.etSalaryClaim
+        etNote = binding.etNote
         mediaPickerHelper = MediaPickerHelper(this, tvFace) { uri -> currentUri = uri.toString() }
         mediaPickerHelper.setup()
+
+//        tvFace.loadImage(tvFaceUrl.text.toString())
         binding.saveButton.setOnClickListener { setVerify() }
         binding.etDate.setDateUi(this@EditActivity)
         setToolbar()
     }
 
     private fun setCandidate(candidate: CandidateDetail) {
-
         candidateId = candidate.candidateId!!
         detailId = candidate.detailId!!
+
         currentUri = candidate.photoUri.toString()
-        candidate.photoUri?.let { binding.tvFace.loadImage(it) }
+        candidate.photoUri?.let { tvFace.loadImage(it) }
 
-        if (etFirstname == null)
-            binding.etFirstname.setText(candidate.firstName)
-        if (etLastname == null)
-            binding.etLastname.setText(candidate.lastName)
-        if (etPhone == null)
-            binding.etPhone.setText(candidate.phone)
-        if (etEmail == null)
-            binding.etEmail.setText(candidate.email)
-        if (etDate == null)
-            binding.etDate.setText(candidate.date?.toLocalDateString())
+        if (currentFirstname != candidate.firstName)
+            etFirstname.setText(candidate.firstName)
 
-        binding.etSalaryClaim.setText(candidate.salaryClaim.toString())
-        binding.etNote.setText(candidate.note)
+        if (currentLastname != candidate.lastName)
+            etLastName.setText(candidate.lastName)
+
+        if (currentPhone != candidate.phone)
+            etPhone.setText(candidate.phone)
+
+        if (currentEmail != candidate.email)
+            etEmail.setText(candidate.email)
+
+        if (currentDate != candidate.date?.toLocalDateString())
+            etDate.setText(candidate.date?.toLocalDateString())
+
+        etSalaryClaim.setText(candidate.salaryClaim)
+        etNote.setText(candidate.note)
+
+        currentFirstname = candidate.firstName
+        currentLastname = candidate.lastName
+        currentPhone = candidate.phone
+        currentEmail = candidate.email
+        currentDate = candidate.date?.toLocalDateString()
     }
 
     private fun setToolbar() {
@@ -127,7 +160,7 @@ class EditActivity : AppCompatActivity() {
     }
 
     private fun setEmailNotify(state: EmailState) {
-        binding.tvEmail.error = when (state) {
+        tvEmail.error = when (state) {
             EmailState.MandatoryField -> getString(R.string.mandatory_field)
             EmailState.InvalidFormat -> getString(R.string.invalide_format)
             EmailState.Valid -> null
@@ -135,19 +168,11 @@ class EditActivity : AppCompatActivity() {
     }
 
     private fun setVerify() {
-        etFirstname = binding.etFirstname.text.toString()
-        etLastname = binding.etLastname.text.toString()
-        etPhone = binding.etPhone.text.toString()
-        etDate = binding.etDate.text.toString()
-        etEmail = binding.etEmail.text.toString()
-        tvEmail = binding.tvEmail
-        tvFace.loadImage(binding.tvFaceUrl.text.toString())
-
-        viewModel.checkFirstName(etFirstname)
-        viewModel.checkLastName(etLastname)
-        viewModel.checkPhone(etPhone)
-        viewModel.checkDate(etDate)
-        etEmail?.let { viewModel.validateEmail(it) }
+        viewModel.checkFirstName(etFirstname.text.toString())
+        viewModel.checkLastName(etLastName.text.toString())
+        viewModel.checkPhone(etPhone.text.toString())
+        viewModel.checkDate(etDate.text.toString())
+        viewModel.validateEmail(etEmail.text.toString())
         viewModel.isCandidateReadyToSave()
     }
 
@@ -156,15 +181,15 @@ class EditActivity : AppCompatActivity() {
             candidateId = candidateId,
             detailId = detailId,
 
-            firstName = etFirstname,
-            lastName = etLastname,
-            phone = etPhone,
-            email = etEmail,
-            date = etDate,
+            firstName = etFirstname.text.toString(),
+            lastName = etLastName.text.toString(),
+            phone = etPhone.text.toString(),
+            email = etEmail.text.toString(),
+            date = etDate.text.toString(),
 
             photoUri = currentUri,
-            note = binding.etNote.text.toString(),
-            salaryClaim = binding.etSalaryClaim.text.toString()
+            note = etNote.text.toString(),
+            salaryClaim = etSalaryClaim.text.toString()
         )
     }
 }
