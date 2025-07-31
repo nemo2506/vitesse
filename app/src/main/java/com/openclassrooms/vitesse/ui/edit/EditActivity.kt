@@ -27,7 +27,6 @@ class EditActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddBinding
     private val viewModel: EditViewModel by viewModels()
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
-    private lateinit var candidate: CandidateDetail
     private var candidateId: Long = 0L
     private var detailId: Long = 0L
     private lateinit var mediaPickerHelper: MediaPickerHelper
@@ -37,8 +36,8 @@ class EditActivity : AppCompatActivity() {
     private var etLastname: String? = null
     private var etPhone: String? = null
     private var etEmail: String? = null
-    private lateinit var tvEmail: TextInputLayout
     private var etDate: String? = null
+    private lateinit var tvEmail: TextInputLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +51,7 @@ class EditActivity : AppCompatActivity() {
         lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
                 uiState.isLoading?.let { binding.loading.setVisible(it) }
-                uiState.candidate?.let { setUp(it) }
+                uiState.candidate?.let { setCandidate(it) }
                 uiState.isFirstNameCheck?.let { setInfoErrorNotify(binding.tvFirstname, it) }
                 uiState.isLastNameCheck?.let { setInfoErrorNotify(binding.tvLastname, it) }
                 uiState.isPhoneCheck?.let { setInfoErrorNotify(binding.tvPhone, it) }
@@ -71,23 +70,29 @@ class EditActivity : AppCompatActivity() {
         tvFace = binding.tvFace
         mediaPickerHelper = MediaPickerHelper(this, tvFace) { uri -> currentUri = uri.toString() }
         mediaPickerHelper.setup()
-//        binding.saveButton.setOnClickListener { setSave() }
-        binding.saveButton.setOnClickListener { setValAndVerify() }
+        binding.saveButton.setOnClickListener { setVerify() }
         binding.etDate.setDateUi(this@EditActivity)
         setToolbar()
     }
 
-    private fun setUp(candidate: CandidateDetail) {
+    private fun setCandidate(candidate: CandidateDetail) {
+
         candidateId = candidate.candidateId!!
         detailId = candidate.detailId!!
         currentUri = candidate.photoUri.toString()
-        this@EditActivity.candidate = candidate
         candidate.photoUri?.let { binding.tvFace.loadImage(it) }
-        binding.etFirstname.setText(candidate.firstName)
-        binding.etLastname.setText(candidate.lastName)
-        binding.etPhone.setText(candidate.phone)
-        binding.etEmail.setText(candidate.email)
-        binding.etDate.setText(candidate.date?.toLocalDateString())
+
+        if (etFirstname == null)
+            binding.etFirstname.setText(candidate.firstName)
+        if (etLastname == null)
+            binding.etLastname.setText(candidate.lastName)
+        if (etPhone == null)
+            binding.etPhone.setText(candidate.phone)
+        if (etEmail == null)
+            binding.etEmail.setText(candidate.email)
+        if (etDate == null)
+            binding.etDate.setText(candidate.date?.toLocalDateString())
+
         binding.etSalaryClaim.setText(candidate.salaryClaim.toString())
         binding.etNote.setText(candidate.note)
     }
@@ -108,7 +113,6 @@ class EditActivity : AppCompatActivity() {
                 onBackPressedDispatcher.onBackPressed()
                 true
             }
-
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -130,7 +134,7 @@ class EditActivity : AppCompatActivity() {
         }
     }
 
-    private fun setValAndVerify() {
+    private fun setVerify() {
         etFirstname = binding.etFirstname.text.toString()
         etLastname = binding.etLastname.text.toString()
         etPhone = binding.etPhone.text.toString()
@@ -138,6 +142,7 @@ class EditActivity : AppCompatActivity() {
         etEmail = binding.etEmail.text.toString()
         tvEmail = binding.tvEmail
         tvFace.loadImage(binding.tvFaceUrl.text.toString())
+
         viewModel.checkFirstName(etFirstname)
         viewModel.checkLastName(etLastname)
         viewModel.checkPhone(etPhone)

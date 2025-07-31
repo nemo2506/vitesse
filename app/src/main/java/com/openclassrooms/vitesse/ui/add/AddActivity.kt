@@ -65,7 +65,7 @@ class AddActivity : AppCompatActivity() {
         tvFace = binding.tvFace
         mediaPickerHelper = MediaPickerHelper(this@AddActivity, tvFace) { uri -> currentUri = uri }
         mediaPickerHelper.setup()
-        binding.saveButton.setOnClickListener { setValAndVerify() }
+        binding.saveButton.setOnClickListener { setVerify() }
         binding.etDate.setDateUi(this@AddActivity)
         setToolbar()
     }
@@ -90,7 +90,7 @@ class AddActivity : AppCompatActivity() {
         }
     }
 
-    private fun setValAndVerify() {
+    private fun setVerify() {
         etFirstname = binding.etFirstname.text.toString()
         etLastname = binding.etLastname.text.toString()
         etPhone = binding.etPhone.text.toString()
