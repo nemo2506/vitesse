@@ -34,7 +34,7 @@ class CandidateViewModel @Inject constructor(
                         is Result.Loading -> {
                             _uiState.update { it.copy(isLoading = true,  candidate = emptyList(), message = null) }
 
-                            delay(1000) // TO TEST
+                            delay(500) // TO TEST
                         }
                         is Result.Success -> {
                             _uiState.update { it.copy(isLoading = false, candidate = result.value, message = null) }

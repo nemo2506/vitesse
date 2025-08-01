@@ -50,7 +50,7 @@ class EditViewModel @Inject constructor(
 
                                 )
                             }
-                            delay(1000)  // TO TEST
+                            delay(500)  // TO TEST
                         }
 
                         is Result.Success -> {
@@ -188,7 +188,7 @@ class EditViewModel @Inject constructor(
                                 isCandidateFull = null
                             )
                         }
-                        delay(1000)
+                        delay(500)
                     }
 
                     is Result.Success -> {

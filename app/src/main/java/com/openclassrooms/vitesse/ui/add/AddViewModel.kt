@@ -54,7 +54,7 @@ class AddViewModel @Inject constructor(
                                     isCandidateFull = null
                                 )
                             }
-                            delay(1000)
+                            delay(500)
                         }
 
                         is Result.Success -> {

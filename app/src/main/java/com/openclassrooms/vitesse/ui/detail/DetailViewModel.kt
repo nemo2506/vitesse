@@ -47,7 +47,7 @@ class DetailViewModel @Inject constructor(
                                     message = null
                                 )
                             }
-                            delay(1000)  // TO TEST
+                            delay(500)  // TO TEST
                         }
 
                         is Result.Success -> {
@@ -93,7 +93,7 @@ class DetailViewModel @Inject constructor(
                                     message = null
                                 )
                             }
-                            delay(1000)  // TO TEST
+                            delay(500)  // TO TEST
                         }
 
                         is Result.Success -> {
@@ -139,7 +139,7 @@ class DetailViewModel @Inject constructor(
                                     message = null
                                 )
                             }
-                            delay(1000)  // TO TEST
+                            delay(500)  // TO TEST
                         }
 
                         is Result.Success -> {
