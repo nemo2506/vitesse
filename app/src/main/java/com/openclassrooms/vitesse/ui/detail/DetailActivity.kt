@@ -3,6 +3,7 @@ package com.openclassrooms.vitesse.ui.detail
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -31,16 +32,17 @@ class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
     private val viewModel: DetailViewModel by viewModels()
-    private lateinit var candidate: CandidateDescription
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
     private var candidateId: Long = 0
     private var detailId: Long = 0
+    private var isFavorite: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setToolbar()
+        setMenu()
         observeDetail()
     }
 
@@ -56,9 +58,9 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setUpUI(candidate: CandidateDescription) {
-        this@DetailActivity.candidate = candidate
         if (candidate.candidateId != null) candidateId = candidate.candidateId
         if (candidate.detailId != null) detailId = candidate.detailId
+        isFavorite = candidate.isFavorite
         val title = "%s %s".format(candidate.firstName, candidate.lastName)
         toolbar.title = title
         setFavoriteUi(candidate.isFavorite)
@@ -68,7 +70,6 @@ class DetailActivity : AppCompatActivity() {
         binding.tvSalary.text = candidate.salaryClaimDescription
         binding.tvSalaryGbp.text = getString(R.string.either).format(candidate.salaryClaimGpb)
         binding.tvNotes.text = candidate.note
-        setMenu()
     }
 
     private fun setFavoriteUi(fav: Boolean) {
@@ -112,7 +113,6 @@ class DetailActivity : AppCompatActivity() {
 
 
     private fun setEmail(address: String, title: String) {
-        "EMAIL".showToastMessage(this@DetailActivity)
         val subject = "VITESSE"
         val body = getString(R.string.email_message).format(title)
         val intent = Intent(Intent.ACTION_SEND).apply {
@@ -159,10 +159,10 @@ class DetailActivity : AppCompatActivity() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.fab_favorite -> {
-                        candidate.candidateId?.let {
+                        candidateId.let {
                             viewModel.updateFavorite(
                                 it,
-                                candidate.isFavorite
+                                isFavorite
                             )
                         }
                         true
@@ -189,7 +189,7 @@ class DetailActivity : AppCompatActivity() {
             setTitle(getString(R.string.deletion))
             setMessage(getString(R.string.confirm_delete))
             setPositiveButton(getString(R.string.confirm)) { dialog, which ->
-                candidate.candidateId?.let { viewModel.deleteCandidate(it) }
+                candidateId.let { viewModel.deleteCandidate(it) }
                 dialog.dismiss()
             }
             setNegativeButton("Annuler") { dialog, which ->

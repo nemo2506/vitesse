@@ -63,7 +63,6 @@ class EditActivity : AppCompatActivity() {
     private fun observeEdit() {
         lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
-                Log.d("MARC", "observeEdit: $uiState")
                 uiState.isLoading?.let { binding.loading.setVisible(it) }
                 uiState.candidate?.let { setCandidate(it) }
                 uiState.isFirstNameCheck?.let { setInfoErrorNotify(binding.tvFirstname, it) }

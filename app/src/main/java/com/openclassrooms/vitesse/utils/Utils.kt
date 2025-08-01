@@ -19,17 +19,14 @@ import com.openclassrooms.vitesse.ui.add.AddActivity
 import android.view.View
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import java.util.Calendar
 import android.app.DatePickerDialog
-import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 import java.text.NumberFormat
-import android.Manifest
 import android.util.Log
+import androidx.activity.addCallback
 
 fun Long.toFrDescription(): String? {
     if (this == 0L) return null
@@ -174,6 +171,13 @@ fun Long?.isPositive(): Boolean = this != null && this > 0
 
 fun String.isValidEmail(): Boolean {
     return android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
+}
+
+fun ComponentActivity.comeBack() {
+    onBackPressedDispatcher.addCallback(this) {
+        Log.d("comeBack", "Button retour pressé")
+        finish()
+    }
 }
 
 class MediaPickerHelper(
