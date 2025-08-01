@@ -49,6 +49,8 @@ class EditActivity : AppCompatActivity() {
     private var currentPhone: String? = null
     private var currentEmail: String? = null
     private var currentDate: String? = null
+    private var currentSalaryClaim: String? = null
+    private var currentNote: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,7 +94,6 @@ class EditActivity : AppCompatActivity() {
         mediaPickerHelper = MediaPickerHelper(this, tvFace) { uri -> currentUri = uri.toString() }
         mediaPickerHelper.setup()
 
-//        tvFace.loadImage(tvFaceUrl.text.toString())
         binding.saveButton.setOnClickListener { setVerify() }
         binding.etDate.setDateUi(this@EditActivity)
         setToolbar()
@@ -120,14 +121,20 @@ class EditActivity : AppCompatActivity() {
         if (currentDate != candidate.date?.toLocalDateString())
             etDate.setText(candidate.date?.toLocalDateString())
 
-        etSalaryClaim.setText(candidate.salaryClaim)
-        etNote.setText(candidate.note)
+        if (currentSalaryClaim != candidate.salaryClaim)
+            etSalaryClaim.setText(candidate.salaryClaim)
+
+        if (currentNote != candidate.note)
+            etNote.setText(candidate.note)
 
         currentFirstname = candidate.firstName
         currentLastname = candidate.lastName
         currentPhone = candidate.phone
         currentEmail = candidate.email
         currentDate = candidate.date?.toLocalDateString()
+        currentEmail = candidate.email
+        currentSalaryClaim = candidate.salaryClaim
+        currentNote = candidate.note
     }
 
     private fun setToolbar() {
