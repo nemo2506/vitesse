@@ -44,26 +44,23 @@ class ConvertersTest {
 
     @Test
     fun testConversionWithDaylightSaving() {
-        // Fixer la zone par défaut pour le test
         TimeZone.setDefault(TimeZone.getTimeZone("Europe/Paris"))
 
-        // Date avant changement d'heure d'été 2023 (26 mars à 2h)
+        // SUMMER HOURS
         val dateBefore = LocalDateTime.of(2023, 3, 26, 1, 59, 59)
         val timestampBefore = converters.dateToTimestamp(dateBefore)
         val convertedDateBefore = converters.fromTimestamp(timestampBefore)
 
-        // Date après changement (26 mars à 3h, heure sautée)
+        // WINTER HOURS
         val dateAfter = LocalDateTime.of(2023, 3, 26, 3, 0, 0)
         val timestampAfter = converters.dateToTimestamp(dateAfter)
         val convertedDateAfter = converters.fromTimestamp(timestampAfter)
 
-        // Vérifier que les conversions sont cohérentes
         assertEquals(dateBefore, convertedDateBefore)
         assertEquals(dateAfter, convertedDateAfter)
 
-        // Vérifier que la différence des timestamps correspond au saut d'heure (60 min)
         val diffMillis = timestampAfter!! - timestampBefore!!
-        assertEquals(60 * 60 * 1000, diffMillis)
+        assertEquals(1000, diffMillis)
     }
 
 }
