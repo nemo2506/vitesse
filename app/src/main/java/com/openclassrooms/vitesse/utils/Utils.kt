@@ -106,9 +106,15 @@ fun String.capitalizeFirstLetter(): String {
 
 fun Long?.isPositive(): Boolean = this != null && this > 0
 
-
+// REMPLACED TO TEST POSSIBLE IN UNIT TEST
+//fun String.isValidEmail(): Boolean {
+//    return android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
+//}
 fun String.isValidEmail(): Boolean {
-    return android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
+    val emailRegex = Regex(
+        "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+    )
+    return this.matches(emailRegex)
 }
 
 fun String.showToastMessage(context: Context) {
