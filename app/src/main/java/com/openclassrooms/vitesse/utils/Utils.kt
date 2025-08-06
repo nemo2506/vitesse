@@ -26,7 +26,6 @@ import android.widget.TextView
 import androidx.activity.ComponentActivity
 import java.text.NumberFormat
 import android.util.Log
-import androidx.activity.addCallback
 
 fun Long.toFrDescription(): String? {
     if (this == 0L) return null
@@ -81,6 +80,16 @@ fun String.toDate(): LocalDateTime? {
     }
 }
 
+fun LocalDateTime.toLocalDateString(): String {
+    val localeLang = Locale.getDefault().language
+    val formatter = if (localeLang == "fr") {
+        DateTimeFormatter.ofPattern("dd/MM/yyyy")
+    } else {
+        DateTimeFormatter.ofPattern("MM/d/yyyy")
+    }
+    return this.format(formatter)
+}
+
 fun Long?.toEmpty(): String {
     if (this == null) return ""
     return this.toString()
@@ -89,6 +98,17 @@ fun Long?.toEmpty(): String {
 fun String?.toZeroOrLong(): Long {
     if (this.isNullOrBlank()) return 0L
     return this.toLong()
+}
+
+fun String.capitalizeFirstLetter(): String {
+    return this.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
+}
+
+fun Long?.isPositive(): Boolean = this != null && this > 0
+
+
+fun String.isValidEmail(): Boolean {
+    return android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
 }
 
 fun String.showToastMessage(context: Context) {
@@ -132,16 +152,6 @@ fun View.setVisible(visible: Boolean) {
     this.visibility = if (visible) View.VISIBLE else View.GONE
 }
 
-fun LocalDateTime.toLocalDateString(): String {
-    val localeLang = Locale.getDefault().language
-    val formatter = if (localeLang == "fr") {
-        DateTimeFormatter.ofPattern("dd/MM/yyyy")
-    } else {
-        DateTimeFormatter.ofPattern("MM/d/yyyy")
-    }
-    return this.format(formatter)
-}
-
 fun TextView.setDateUi(context: Context) {
     this.setOnClickListener {
         val calendar = Calendar.getInstance()
@@ -159,24 +169,6 @@ fun TextView.setDateUi(context: Context) {
             this.text = formattedDate
         }, year, month, day)
         datePicker.show()
-    }
-}
-
-fun String.capitalizeFirstLetter(): String {
-    return this.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
-}
-
-fun Long?.isPositive(): Boolean = this != null && this > 0
-
-
-fun String.isValidEmail(): Boolean {
-    return android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
-}
-
-fun ComponentActivity.comeBack() {
-    onBackPressedDispatcher.addCallback(this) {
-        Log.d("comeBack", "Button retour pressé")
-        finish()
     }
 }
 
