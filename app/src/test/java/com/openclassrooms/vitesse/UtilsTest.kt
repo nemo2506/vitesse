@@ -104,29 +104,33 @@ class UtilsTest {
      */
     @Test
     fun toDateDescription_returns_correct_string_in_French_locale() {
+        // WHEN
         val testDate = LocalDateTime.of(2000, 1, 1, 0, 0)
         Locale.setDefault(Locale.FRENCH)
         val description = testDate.toDateDescription()
         val expectedAge = LocalDateTime.now().year - 2000
         val expected = "01/01/2000 ($expectedAge ans)"
-
+        // THEN
         assertEquals(expected, description)
     }
 
     @Test
     fun toDateDescription_returns_correct_string_in_English_locale() {
+        // WHEN
         val testDate = LocalDateTime.of(2000, 1, 1, 0, 0)
         Locale.setDefault(Locale.ENGLISH)
         val description = testDate.toDateDescription()
         val expectedAge = LocalDateTime.now().year - 2000
         val expected = "01/1/2000 ($expectedAge years old)"
-
+        // THEN
         assertEquals(expected, description)
     }
 
     @Test
     fun toDateDescription_returns_null_when_receiver_is_null() {
+        // WHEN
         val description = (null as LocalDateTime?).toDateDescription()
+        // THEN
         assertEquals(null, description)
     }
 
@@ -136,27 +140,33 @@ class UtilsTest {
      */
     @Test
     fun toDate_returns_LocalDateTime_for_valid_French_date() {
+        // WHEN
         Locale.setDefault(Locale.FRENCH)
         val dateString = "31/12/2020"
         val result = dateString.toDate()
         val expected = LocalDateTime.of(2020, 12, 31, 0, 0)
+        // THEN
         assertEquals(expected, result)
     }
 
     @Test
     fun toDate_returns_LocalDateTime_for_valid_English_date() {
+        // WHEN
         Locale.setDefault(Locale.ENGLISH)
         val dateString = "12/31/2020"
         val result = dateString.toDate()
         val expected = LocalDateTime.of(2020, 12, 31, 0, 0)
+        // THEN
         assertEquals(expected, result)
     }
 
     @Test
     fun toDate_returns_null_for_invalid_date_string() {
+        // WHEN
         Locale.setDefault(Locale.ENGLISH)
         val dateString = "invalid-date"
         val result = dateString.toDate()
+        // THEN
         assertNull(result)
     }
 
@@ -166,15 +176,19 @@ class UtilsTest {
      */
     @Test
     fun toEmpty_returns_empty_string_when_Long_is_null() {
+        // WHEN
         val value: Long? = null
         val result = value.toEmpty()
+        // THEN
         assertEquals("", result)
     }
 
     @Test
     fun toEmpty_returns_string_representation_when_Long_is_not_null() {
+        // WHEN
         val value = 12345L
         val result = value.toEmpty()
+        // THEN
         assertEquals("12345", result)
     }
 
@@ -183,22 +197,28 @@ class UtilsTest {
      */
     @Test
     fun toZeroOrLong_returns_0_when_string_is_null() {
+        // WHEN
         val value: String? = null
         val result = value.toZeroOrLong()
+        // THEN
         assertEquals(0L, result)
     }
 
     @Test
     fun toZeroOrLong_returns_0_when_string_is_blank() {
+        // WHEN
         val value = "   "
         val result = value.toZeroOrLong()
+        // THEN
         assertEquals(0L, result)
     }
 
     @Test
     fun toZeroOrLong_converts_valid_number_string_to_Long() {
+        // WHEN
         val value = "12345"
         val result = value.toZeroOrLong()
+        // THEN
         assertEquals(12345L, result)
     }
 
@@ -207,19 +227,21 @@ class UtilsTest {
      */
     @Test
     fun toLocalDateString_returns_date_formatted_in_French_locale() {
+        // WHEN
         Locale.setDefault(Locale.FRENCH)
         val dateTime = LocalDateTime.of(2023, 6, 15, 10, 0)
         val formatted = dateTime.toLocalDateString()
-
+        // THEN
         assertEquals("15/06/2023", formatted)
     }
 
     @Test
     fun toLocalDateString_returns_date_formatted_in_English_locale() {
+        // WHEN
         Locale.setDefault(Locale.ENGLISH)
         val dateTime = LocalDateTime.of(2023, 6, 15, 10, 0)
         val formatted = dateTime.toLocalDateString()
-
+        // THEN
         assertEquals("06/15/2023", formatted)
     }
 
@@ -228,37 +250,41 @@ class UtilsTest {
      */
     @Test
     fun capitalizeFirstLetter_capitalizes_first_letter_if_lowercase() {
+        // WHEN
         val input = "bonjour"
         val expected = "Bonjour"
         val result = input.capitalizeFirstLetter()
-
+        // THEN
         assertEquals(expected, result)
     }
 
     @Test
     fun capitalizeFirstLetter_does_not_change_first_letter_if_already_uppercase() {
+        // WHEN
         val input = "Bonjour"
         val expected = "Bonjour"
         val result = input.capitalizeFirstLetter()
-
+        // THEN
         assertEquals(expected, result)
     }
 
     @Test
     fun capitalizeFirstLetter_handles_empty_string() {
+        // WHEN
         val input = ""
         val expected = ""
         val result = input.capitalizeFirstLetter()
-
+        // THEN
         assertEquals(expected, result)
     }
 
     @Test
     fun capitalizeFirstLetter_does_not_modify_strings_starting_with_non_letter() {
+        // WHEN
         val input = "123abc"
         val expected = "123abc"
         val result = input.capitalizeFirstLetter()
-
+        // THEN
         assertEquals(expected, result)
     }
 
@@ -267,25 +293,33 @@ class UtilsTest {
      */
     @Test
     fun isPositive_returns_false_for_null() {
+        // WHEN
         val value: Long? = null
+        // THEN
         assertFalse(value.isPositive())
     }
 
     @Test
     fun isPositive_returns_false_for_zero() {
+        // WHEN
         val value = 0L
+        // THEN
         assertFalse(value.isPositive())
     }
 
     @Test
     fun isPositive_returns_false_for_negative_number() {
+        // WHEN
         val value = -10L
+        // THEN
         assertFalse(value.isPositive())
     }
 
     @Test
     fun isPositive_returns_true_for_positive_number() {
+        // WHEN
         val value = 15L
+        // THEN
         assertTrue(value.isPositive())
     }
 
@@ -294,12 +328,15 @@ class UtilsTest {
      */
     @Test
     fun isValidEmail_returns_true_for_a_valid_email() {
+        // WHEN
         val email = "test@example.com"
+        // THEN
         assertTrue(email.isValidEmail())
     }
 
     @Test
     fun isValidEmail_returns_false_for_invalid_emails() {
+        // WHEN
         val invalidEmails = listOf(
             "plainaddress",
             "@no-local-part.com",
@@ -307,6 +344,7 @@ class UtilsTest {
             "name@domain@domain.com",
             "name@.com"
         )
+        // THEN
         invalidEmails.forEach {
             assertFalse(it.isValidEmail())
         }

@@ -1,20 +1,21 @@
+import org.gradle.api.JavaVersion
+
 plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.android.application)
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
     alias(libs.plugins.hilt)
+
 }
 
 android {
     namespace = "com.openclassrooms.vitesse"
-    compileSdk = libs.versions.compileSdk.get().toInt()
-
+    compileSdk = 35
+    val defaultTargetSdkVersion: Int by rootProject.extra
     defaultConfig {
         applicationId = "com.openclassrooms.vitesse"
-        minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 1
+        minSdk = 26
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -30,12 +31,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
 
     buildFeatures {
@@ -97,9 +98,13 @@ dependencies {
     implementation(libs.arch.core.runtime)
     testImplementation(libs.arch.core.testing)
 
-    testImplementation(libs.mockito.kotlin)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit.jupiter)
     testImplementation(libs.turbine)
     testImplementation(libs.kotlin.test)
+    implementation(kotlin("test"))
+
+    testImplementation(libs.mockito.inline)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
 }

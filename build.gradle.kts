@@ -6,4 +6,10 @@ plugins {
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.room) apply false
     alias(libs.plugins.hilt) apply false
+    kotlin("jvm") version "1.9.0"
 }
+val defaultTargetSdkVersion by extra(libs.versions.targetSdk.get().toInt())
+val defaultMinSdkVersion by extra(libs.versions.minSdk.get().toInt())
+
+extra["defaultMinSdkVersion"] = libs.versions.minSdk.get().toInt()
+extra["defaultTargetSdkVersion"] = libs.versions.targetSdk.get().toInt()

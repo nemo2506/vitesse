@@ -26,7 +26,6 @@ import java.time.LocalDateTime
 abstract class AppDatabase : RoomDatabase() {
     abstract fun candidateDao(): CandidateDao
 
-
     private class AppDatabaseCallback(
         private val scope: CoroutineScope
     ) : Callback() {
