@@ -1,9 +1,7 @@
 package com.openclassrooms.vitesse.ui.edit
 
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
-import android.widget.EditText
 import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
@@ -101,17 +99,13 @@ class EditActivity : AppCompatActivity() {
         detailId = candidate.detailId!!
 
         if (currentUri == null) {
-            Log.d("MARC", "setCandidate: currentUri == null")
             currentUri = candidate.photoUri
             tvFace.loadImage(candidate.photoUri)
         } else if (currentUri != candidate.photoUri) {
-            Log.d("MARC", "setCandidate: currentUri != candidate.photoUri")
             tvFace.loadImage(currentUri)
         } else {
-            Log.d("MARC", "setCandidate: else")
             tvFace.loadImage(candidate.photoUri)
         }
-        Log.d("MARC", "setCandidate: currentUri/$currentUri photoUri/${candidate.photoUri}")
 
         if (currentFirstname != candidate.firstName)
             etFirstname.setText(candidate.firstName)

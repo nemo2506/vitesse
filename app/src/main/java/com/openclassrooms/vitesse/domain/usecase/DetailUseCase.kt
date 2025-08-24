@@ -2,7 +2,6 @@ package com.openclassrooms.vitesse.domain.usecase
 
 import android.util.Log
 import com.openclassrooms.vitesse.data.entity.CandidateWithDetailDto
-import com.openclassrooms.vitesse.data.network.ManageClient
 import com.openclassrooms.vitesse.data.repository.CurrencyRepository
 import com.openclassrooms.vitesse.data.repository.DetailRepository
 import com.openclassrooms.vitesse.domain.model.CandidateDescription

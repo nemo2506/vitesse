@@ -25,7 +25,6 @@ import android.net.Uri
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 import java.text.NumberFormat
-import android.util.Log
 
 fun Long.toFrDescription(): String? {
     if (this == 0L) return null
@@ -106,10 +105,6 @@ fun String.capitalizeFirstLetter(): String {
 
 fun Long?.isPositive(): Boolean = this != null && this > 0
 
-// REMPLACED TO TEST POSSIBLE IN UNIT TEST
-//fun String.isValidEmail(): Boolean {
-//    return android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
-//}
 fun String.isValidEmail(): Boolean {
     val emailRegex = Regex(
         "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
@@ -166,7 +161,6 @@ fun TextView.setDateUi(context: Context) {
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         val datePicker = DatePickerDialog(context, { _, selectedYear, selectedMonth, selectedDay ->
             val localeLang = context.resources.configuration.locales.get(0).language
-            Log.d("MARC", "setDateUi: localeLang/$localeLang")
             val formattedDate = if (localeLang == "fr") {
                 "%02d/%02d/%04d".format(selectedDay, selectedMonth + 1, selectedYear)
             } else {
