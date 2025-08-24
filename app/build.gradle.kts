@@ -6,16 +6,16 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
     alias(libs.plugins.hilt)
-
 }
 
 android {
     namespace = "com.openclassrooms.vitesse"
     compileSdk = 35
-    val defaultTargetSdkVersion: Int by rootProject.extra
+
     defaultConfig {
         applicationId = "com.openclassrooms.vitesse"
-        minSdk = 26
+        minSdk = 27          // conforme à toml (27 au lieu de 26)
+        targetSdk = 35       // explicite ici, bonne pratique
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -43,6 +43,7 @@ android {
         viewBinding = true
     }
 
+    // Config Room pour générer le schéma dans le dossier schemas
     room {
         schemaDirectory("$projectDir/schemas")
     }
@@ -59,8 +60,7 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.navigation.ui.ktx)
-
-    ksp(libs.room.compiler)
+    implementation(libs.kotlin.reflect)
 
     implementation(libs.core.ktx)
     implementation(libs.material)
@@ -70,41 +70,38 @@ dependencies {
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.core.splashscreen)
 
-
     coreLibraryDesugaring(libs.desugar)
 
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.espresso)
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.turbine)
+    testImplementation(libs.kotlin.test)
+    testImplementation(libs.mockito.inline)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
 
+    // Room
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
 
+    // Retrofit + Moshi
     implementation(libs.retrofit)
     implementation(libs.converter.moshi)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.moshi)
     implementation(libs.moshi.kotlin)
     ksp(libs.moshi.kotlin.codegen)
+
+    // Play Services
     implementation(libs.play.services.maps)
 
-    androidTestImplementation(libs.turbine)
-
-    implementation(libs.hilt.android)
+    // Hilt compiler (KSP)
     ksp(libs.hilt.compiler)
 
+    // Architecture Components
     implementation(libs.arch.core.common)
     implementation(libs.arch.core.runtime)
     testImplementation(libs.arch.core.testing)
-
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.junit.jupiter)
-    testImplementation(libs.turbine)
-    testImplementation(libs.kotlin.test)
-    implementation(kotlin("test"))
-
-    testImplementation(libs.mockito.inline)
-    testImplementation(libs.mockito.core)
-    testImplementation(libs.mockito.kotlin)
 }

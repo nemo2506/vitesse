@@ -46,5 +46,5 @@
     <string name="deletion">Suppression</string>
     <string name="confirm_delete">Etes-vous sûr de vouloir supprimer ce candidat? Cette action est irréversible.</string>
     <string name="confirm">Confirmer</string>
-    <string name="years_old">%s (%d ans)</string>
+    <string name="years_old">%1$s (%2$d ans)</string>
 </resources>

@@ -187,11 +187,11 @@ class DetailActivity : AppCompatActivity() {
         AlertDialog.Builder(this@DetailActivity).apply {
             setTitle(getString(R.string.deletion))
             setMessage(getString(R.string.confirm_delete))
-            setPositiveButton(getString(R.string.confirm)) { dialog, which ->
+            setPositiveButton(getString(R.string.confirm)) { dialog, _ ->
                 candidateId.let { viewModel.deleteCandidate(it) }
                 dialog.dismiss()
             }
-            setNegativeButton("Annuler") { dialog, which ->
+            setNegativeButton("Annuler") { dialog, _ ->
                 dialog.dismiss()
             }
             create()

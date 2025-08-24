@@ -46,5 +46,5 @@
     <string name="deletion">Deletion</string>
     <string name="confirm_delete">Are you sure you want to delete this candidate? This action cannot be undone.</string>
     <string name="confirm">Confirm</string>
-    <string name="years_old">%s (%d years old)</string>
+    <string name="years_old">%1$s (%2$d years old)</string>
 </resources>

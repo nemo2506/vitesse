@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "69ab3f38c1896be75cb04b6604509a37",
+    "identityHash": "3b00a369bd3028fe2dfdebe677e45b42",
     "entities": [
       {
         "tableName": "detail",
@@ -51,7 +51,17 @@
             "id"
           ]
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_detail_candidateId",
+            "unique": false,
+            "columnNames": [
+              "candidateId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_detail_candidateId` ON `${TABLE_NAME}` (`candidateId`)"
+          }
+        ],
         "foreignKeys": [
           {
             "table": "candidate",
@@ -120,7 +130,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '69ab3f38c1896be75cb04b6604509a37')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3b00a369bd3028fe2dfdebe677e45b42')"
     ]
   }
 }
