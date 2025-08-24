@@ -31,12 +31,12 @@ class DetailDtoTest {
             candidateId = 1
         )
 
-        assertEquals(10, detail.id)
+        assertEquals(10L, detail.id)
         assertEquals(date, detail.date)
         assertEquals(60000L, detail.salaryClaim)
         assertEquals("0123456789", detail.phone)
         assertEquals("example@test.com", detail.email)
-        assertEquals(1, detail.candidateId)
+        assertEquals(1L, detail.candidateId)
     }
 
     @Test
@@ -50,7 +50,7 @@ class DetailDtoTest {
             candidateId = 2
         )
 
-        val copy = original.copy(id = 6, salaryClaim = 55000)
+        val copy = original.copy(id = 6, salaryClaim = 55000L)
 
         assertNotEquals(original.id, copy.id)
         assertEquals(55000L, copy.salaryClaim)

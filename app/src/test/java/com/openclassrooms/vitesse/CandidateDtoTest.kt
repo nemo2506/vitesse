@@ -25,7 +25,7 @@ class CandidateDtoTest {
     @Test
     fun create_candidate_with_custom_values() {
         val candidate = CandidateDto(
-            id = 1,
+            id = 1L,
             firstName = "John",
             lastName = "Doe",
             isFavorite = true,
@@ -33,7 +33,7 @@ class CandidateDtoTest {
             note = "Top candidate"
         )
 
-        assertEquals(1, candidate.id)
+        assertEquals(1L, candidate.id)
         assertEquals("John", candidate.firstName)
         assertEquals("Doe", candidate.lastName)
         assertTrue(candidate.isFavorite)
@@ -44,7 +44,7 @@ class CandidateDtoTest {
     @Test
     fun copy_candidate() {
         val original = CandidateDto(
-            id = 5,
+            id = 5L,
             firstName = "Alice",
             lastName = "Smith",
             isFavorite = true
@@ -61,8 +61,8 @@ class CandidateDtoTest {
 
     @Test
     fun equality_check() {
-        val candidate1 = CandidateDto(id = 1, firstName = "Bob", lastName = "Lee", isFavorite = false)
-        val candidate2 = CandidateDto(id = 1, firstName = "Bob", lastName = "Lee", isFavorite = false)
+        val candidate1 = CandidateDto(id = 1L, firstName = "Bob", lastName = "Lee", isFavorite = false)
+        val candidate2 = CandidateDto(id = 1L, firstName = "Bob", lastName = "Lee", isFavorite = false)
 
         assertEquals(candidate1, candidate2)
         assertEquals(candidate1.hashCode(), candidate2.hashCode())

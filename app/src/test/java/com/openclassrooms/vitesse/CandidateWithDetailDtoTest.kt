@@ -45,7 +45,7 @@ class CandidateWithDetailDtoTest {
         val detail = DetailDto(
             id = 10,
             date = LocalDateTime.of(2025, 8, 24, 12, 0),
-            salaryClaim = 50000,
+            salaryClaim = 50000L,
             phone = "0123456789",
             email = "john.doe@example.com",
             candidateId = candidate.id
@@ -63,7 +63,7 @@ class CandidateWithDetailDtoTest {
         // Vérifie detailDto
         assertEquals(10, candidateWithDetail.detailDto.id)
         assertEquals(LocalDateTime.of(2025, 8, 24, 12, 0), candidateWithDetail.detailDto.date)
-        assertEquals(50000, candidateWithDetail.detailDto.salaryClaim)
+        assertEquals(50000L, candidateWithDetail.detailDto.salaryClaim)
         assertEquals("0123456789", candidateWithDetail.detailDto.phone)
         assertEquals("john.doe@example.com", candidateWithDetail.detailDto.email)
         assertEquals(1, candidateWithDetail.detailDto.candidateId)
