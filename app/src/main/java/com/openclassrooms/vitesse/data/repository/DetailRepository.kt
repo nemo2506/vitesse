@@ -14,7 +14,7 @@ class DetailRepository(
     fun getCandidateById(id: Long): Flow<CandidateWithDetailDto?> {
         return candidateDao.getCandidateById(id)
             .catch { e ->
-                Log.d("MARC", "getCandidateById error: $e")
+//                Log.d("MARC", "getCandidateById error: $e")
                 emit(null)
             }
     }
