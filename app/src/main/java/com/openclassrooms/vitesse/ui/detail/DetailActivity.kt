@@ -65,7 +65,7 @@ class DetailActivity : AppCompatActivity() {
         toolbar.title = title
         setFavoriteUi(candidate.isFavorite)
         setCom(candidate, title)
-        candidate.photoUri?.let { binding.tvFace.loadImage(it) }
+        binding.tvFace.loadImage(candidate.photoUri.toString())
         binding.tvBirth.text = candidate.dateDescription
         binding.tvSalary.text = candidate.salaryClaimDescription
         binding.tvSalaryGbp.text = getString(R.string.either).format(candidate.salaryClaimGpb)
