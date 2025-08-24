@@ -1,6 +1,7 @@
 package com.openclassrooms.vitesse.ui.edit
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.EditText
 import android.widget.ImageView
@@ -33,7 +34,6 @@ class EditActivity : AppCompatActivity() {
     private var detailId: Long = 0L
     private lateinit var mediaPickerHelper: MediaPickerHelper
     private lateinit var tvFace: ImageView
-    private lateinit var tvFaceUrl: EditText
     private lateinit var etFirstname: TextInputEditText
     private lateinit var etLastName: TextInputEditText
     private lateinit var etPhone: TextInputEditText
@@ -80,7 +80,6 @@ class EditActivity : AppCompatActivity() {
         toolbar = binding.toolbar
         toolbar.title = getString(R.string.edit_candidate)
         tvFace = binding.tvFace
-        tvFaceUrl = binding.tvFaceUrl
         etFirstname = binding.etFirstname
         etLastName = binding.etLastname
         etPhone = binding.etPhone
@@ -101,8 +100,18 @@ class EditActivity : AppCompatActivity() {
         candidateId = candidate.candidateId!!
         detailId = candidate.detailId!!
 
-        currentUri = candidate.photoUri.toString()
-        candidate.photoUri?.let { tvFace.loadImage(it) }
+        if (currentUri == null) {
+            Log.d("MARC", "setCandidate: currentUri == null")
+            currentUri = candidate.photoUri
+            tvFace.loadImage(candidate.photoUri)
+        } else if (currentUri != candidate.photoUri) {
+            Log.d("MARC", "setCandidate: currentUri != candidate.photoUri")
+            tvFace.loadImage(currentUri)
+        } else {
+            Log.d("MARC", "setCandidate: else")
+            tvFace.loadImage(candidate.photoUri)
+        }
+        Log.d("MARC", "setCandidate: currentUri/$currentUri photoUri/${candidate.photoUri}")
 
         if (currentFirstname != candidate.firstName)
             etFirstname.setText(candidate.firstName)
@@ -151,6 +160,7 @@ class EditActivity : AppCompatActivity() {
                 onBackPressedDispatcher.onBackPressed()
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
