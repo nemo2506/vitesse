@@ -9,6 +9,7 @@ class DetailDtoTest {
 
     @Test
     fun create_detail_with_default_values() {
+        // WHEN
         val detail = DetailDto(candidateId = 0)
 
         assertEquals(0, detail.id)
@@ -21,6 +22,7 @@ class DetailDtoTest {
 
     @Test
     fun create_detail_with_custom_values() {
+        // WHEN
         val date = LocalDateTime.of(2025, 8, 24, 15, 30)
         val detail = DetailDto(
             id = 10,
@@ -30,7 +32,7 @@ class DetailDtoTest {
             email = "example@test.com",
             candidateId = 1
         )
-
+        // THEN
         assertEquals(10L, detail.id)
         assertEquals(date, detail.date)
         assertEquals(60000L, detail.salaryClaim)
@@ -41,6 +43,7 @@ class DetailDtoTest {
 
     @Test
     fun copy_detail_and_modify_values() {
+        // WHEN
         val original = DetailDto(
             id = 5,
             date = LocalDateTime.of(2025, 8, 24, 12, 0),
@@ -49,9 +52,8 @@ class DetailDtoTest {
             email = "original@test.com",
             candidateId = 2
         )
-
         val copy = original.copy(id = 6, salaryClaim = 55000L)
-
+        // THEN
         assertNotEquals(original.id, copy.id)
         assertEquals(55000L, copy.salaryClaim)
         assertEquals(original.date, copy.date)
@@ -62,9 +64,10 @@ class DetailDtoTest {
 
     @Test
     fun equality_check() {
+        // WHEN
         val detail1 = DetailDto(id = 1, candidateId = 1, salaryClaim = 40000)
         val detail2 = DetailDto(id = 1, candidateId = 1, salaryClaim = 40000)
-
+        // THEN
         assertEquals(detail1, detail2)
         assertEquals(detail1.hashCode(), detail2.hashCode())
     }

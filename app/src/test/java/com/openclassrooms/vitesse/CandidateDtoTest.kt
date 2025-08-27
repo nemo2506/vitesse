@@ -14,7 +14,6 @@ class CandidateDtoTest {
     fun create_candidate_with_default_values() {
         // WHEN
         val candidate = CandidateDto(isFavorite = false)
-
         // THEN
         assertEquals(0L, candidate.id)
         assertNull(candidate.firstName)
@@ -35,7 +34,6 @@ class CandidateDtoTest {
             photoUri = "content://photo.jpg",
             note = "Top candidate"
         )
-
         // THEN
         assertEquals(1L, candidate.id)
         assertEquals("John", candidate.firstName)
@@ -54,9 +52,7 @@ class CandidateDtoTest {
             lastName = "Smith",
             isFavorite = true
         )
-
         val copy = original.copy(id = 6L, note = "Updated")
-
         // THEN
         assertNotEquals(original.id, copy.id)
         assertEquals("Alice", copy.firstName)
@@ -70,7 +66,6 @@ class CandidateDtoTest {
         // WHEN
         val candidate1 = CandidateDto(id = 1L, firstName = "Bob", lastName = "Lee", isFavorite = false)
         val candidate2 = CandidateDto(id = 1L, firstName = "Bob", lastName = "Lee", isFavorite = false)
-
         // THEN
         assertEquals(candidate1, candidate2)
         assertEquals(candidate1.hashCode(), candidate2.hashCode())

@@ -29,14 +29,12 @@ class DetailRepositoryTest {
 
     @Test
     fun getCandidateById_returns_candidate() = runTest {
-        // GIVEN
+        // WHEN
         val candidateId = 42L
         val expected = mock(CandidateWithDetailDto::class.java)
         whenever(candidateDao.getCandidateById(candidateId)).thenReturn(flowOf(expected))
-
         // WHEN
         val result = repository.getCandidateById(candidateId).toList()
-
         // THEN
         assertEquals(expected, result[0])
         verify(candidateDao).getCandidateById(candidateId)
@@ -44,15 +42,13 @@ class DetailRepositoryTest {
 
     @Test
     fun getCandidateById_returns_null_on_exception() = runTest {
-        // GIVEN
+        // WHEN
         val candidateId = 42L
         whenever(candidateDao.getCandidateById(candidateId)).thenReturn(
             flow { throw RuntimeException("Test error") }
         )
-
         // WHEN
         val result = repository.getCandidateById(candidateId).toList()
-
         // THEN
         assertEquals(null, result[0])
         verify(candidateDao).getCandidateById(candidateId)
@@ -60,13 +56,11 @@ class DetailRepositoryTest {
 
     @Test
     fun deleteCandidate_returns_rows_deleted() = runTest {
-        // GIVEN
+        // WHEN
         val candidateId = 99L
         whenever(candidateDao.deleteCandidate(candidateId)).thenReturn(1)
-
         // WHEN
         val result = repository.deleteCandidate(candidateId).toList()
-
         // THEN
         assertEquals(1, result[0])
         verify(candidateDao).deleteCandidate(candidateId)
@@ -74,13 +68,11 @@ class DetailRepositoryTest {
 
     @Test
     fun deleteCandidate_returns_zero_on_exception() = runTest {
-        // GIVEN
+        // WHEN
         val candidateId = 99L
         whenever(candidateDao.deleteCandidate(candidateId)).thenThrow(RuntimeException("DB error"))
-
         // WHEN
         val result = repository.deleteCandidate(candidateId).toList()
-
         // THEN
         assertEquals(0, result[0])
         verify(candidateDao).deleteCandidate(candidateId)
@@ -88,13 +80,11 @@ class DetailRepositoryTest {
 
     @Test
     fun updateFavoriteCandidate_returns_rows_updated() = runTest {
-        // GIVEN
+        // WHEN
         val candidateId = 123L
         whenever(candidateDao.updateCandidateFavorite(candidateId, true)).thenReturn(1)
-
         // WHEN
         val result = repository.updateFavoriteCandidate(candidateId, true).toList()
-
         // THEN
         assertEquals(1, result[0])
         verify(candidateDao).updateCandidateFavorite(candidateId, true)
@@ -102,14 +92,12 @@ class DetailRepositoryTest {
 
     @Test
     fun updateFavoriteCandidate_returns_zero_on_exception() = runTest {
-        // GIVEN
+        // WHEN
         val candidateId = 123L
         whenever(candidateDao.updateCandidateFavorite(candidateId, true))
             .thenThrow(RuntimeException("DB error"))
-
         // WHEN
         val result = repository.updateFavoriteCandidate(candidateId, true).toList()
-
         // THEN
         assertEquals(0, result[0])
         verify(candidateDao).updateCandidateFavorite(candidateId, true)

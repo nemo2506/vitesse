@@ -11,8 +11,9 @@ class CandidateTest {
 
     @Test
     fun create_candidate_with_default_values() {
+        // WHEN
         val candidate = Candidate()
-
+        // THEN
         assertEquals(0L, candidate.id)
         assertNull(candidate.firstName)
         assertNull(candidate.lastName)
@@ -23,6 +24,7 @@ class CandidateTest {
 
     @Test
     fun create_candidate_with_custom_values() {
+        // WHEN
         val candidate = Candidate(
             id = 1L,
             firstName = "John",
@@ -31,7 +33,7 @@ class CandidateTest {
             photoUri = "content://photo.jpg",
             note = "Top candidate"
         )
-
+        // THEN
         assertEquals(1L, candidate.id)
         assertEquals("John", candidate.firstName)
         assertEquals("Doe", candidate.lastName)
@@ -42,6 +44,7 @@ class CandidateTest {
 
     @Test
     fun candidate_toDto_and_fromDto() {
+        // WHEN
         val candidate = Candidate(
             id = 2L,
             firstName = "Alice",
@@ -51,7 +54,7 @@ class CandidateTest {
         )
         val dto = candidate.toDto()
         val fromDto = Candidate.fromDto(dto)
-
+        // THEN
         assertEquals(candidate.id, fromDto.id)
         assertEquals(candidate.firstName, fromDto.firstName)
         assertEquals(candidate.lastName, fromDto.lastName)
@@ -61,8 +64,9 @@ class CandidateTest {
 
     @Test
     fun create_candidateDescription_with_default_values() {
+        // WHEN
         val desc = CandidateDescription()
-
+        // THEN
         assertEquals(0L, desc.candidateId)
         assertEquals(0L, desc.detailId)
         assertEquals("", desc.firstName)
@@ -79,8 +83,9 @@ class CandidateTest {
 
     @Test
     fun create_candidateDetail_with_default_values() {
+        // WHEN
         val detail = CandidateDetail()
-
+        // THEN
         assertEquals(0L, detail.candidateId)
         assertEquals(0L, detail.detailId)
         assertEquals("", detail.firstName)
@@ -96,6 +101,7 @@ class CandidateTest {
 
     @Test
     fun candidateDetail_with_custom_values() {
+        // WHEN
         val date = LocalDateTime.of(1990,1,1,10,0)
         val detail = CandidateDetail(
             candidateId = 1L,
@@ -110,7 +116,7 @@ class CandidateTest {
             phone = "0601020304",
             email = "bob@example.com"
         )
-
+        // THEN
         assertEquals(1L, detail.candidateId)
         assertEquals(2L, detail.detailId)
         assertEquals("Bob", detail.firstName)

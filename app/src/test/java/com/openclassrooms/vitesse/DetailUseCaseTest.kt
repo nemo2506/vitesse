@@ -34,29 +34,24 @@ class DetailUseCaseTest {
 
     @Test
     fun getCandidateToDescription_emits_success_when_candidate_is_found() = runTest {
-        // Arrange
+        // WHEN
         val date = LocalDateTime.of(2010, 1, 1, 12, 1, 1)
         val candidateDto = CandidateDto(1L, "John", "Doe", true, "photoUri", "note")
         val detailDto =
             DetailDto(2L, date, 60000L, "0102030405", "john@example.com", candidateId = 1L)
         val dto = CandidateWithDetailDto(candidateDto, detailDto)
-
         // WHEN
         whenever(detailRepository.getCandidateById(1L)).thenReturn(flow { emit(dto) })
         whenever(currencyRepository.getGbp()).thenReturn(Result.Success(1.0))
-
         // Act
         val resultList = mutableListOf<Result<*>>()
         detailUseCase.getCandidateToDescription(1L).collect { resultList.add(it) }
-
         // THEN
         assertEquals(2, resultList.size)
         assertTrue(resultList[0] is Result.Loading)
         assertTrue(resultList[1] is Result.Success)
-
         val result = resultList[1] as Result.Success
         val candidateDescription = result.value as CandidateDescription
-
         // THEN
         assertEquals("John", candidateDescription.firstName)
         assertEquals("Doe", candidateDescription.lastName)
@@ -66,10 +61,8 @@ class DetailUseCaseTest {
     fun getCandidateToDescription_emits_failure_when_candidate_is_null() = runTest {
         // WHEN
         whenever(detailRepository.getCandidateById(1L)).thenReturn(flow { emit(null) })
-
         val resultList = mutableListOf<Result<*>>()
         detailUseCase.getCandidateToDescription(1L).collect { resultList.add(it) }
-
         // THEN
         assertEquals(2, resultList.size)
         assertTrue(resultList[1] is Result.Failure)
@@ -79,10 +72,8 @@ class DetailUseCaseTest {
     @Test
     fun deleteCandidate_emits_success() = runTest {
         whenever(detailRepository.deleteCandidate(1L)).thenReturn(flow { emit(1) })
-
         val resultList = mutableListOf<Result<*>>()
         detailUseCase.deleteCandidate(1L).collect { resultList.add(it) }
-
         // THEN
         assertEquals(Result.Loading, resultList[0])
         assertEquals(Result.Success(1), resultList[1])
@@ -91,10 +82,8 @@ class DetailUseCaseTest {
     @Test
     fun updateFavoriteCandidate_emits_success() = runTest {
         whenever(detailRepository.updateFavoriteCandidate(1L, false)).thenReturn(flow { emit(1) })
-
         val resultList = mutableListOf<Result<*>>()
         detailUseCase.updateFavoriteCandidate(1L, true).collect { resultList.add(it) }
-
         // THEN
         assertEquals(Result.Loading, resultList[0])
         assertEquals(Result.Success(1), resultList[1])

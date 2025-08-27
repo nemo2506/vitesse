@@ -9,8 +9,9 @@ class DetailTest {
 
     @Test
     fun create_detail_with_default_values() {
+        // WHEN
         val detail = Detail(candidateId = 1L)
-
+        // THEN
         assertEquals(0L, detail.id)
         assertNull(detail.date)
         assertNull(detail.salaryClaim)
@@ -21,6 +22,7 @@ class DetailTest {
 
     @Test
     fun create_detail_with_custom_values() {
+        // WHEN
         val date = LocalDateTime.of(1990, 1, 1, 12, 0)
         val detail = Detail(
             id = 5L,
@@ -30,7 +32,7 @@ class DetailTest {
             email = "test@example.com",
             candidateId = 10L
         )
-
+        // THEN
         assertEquals(5L, detail.id)
         assertEquals(date, detail.date)
         assertEquals(50000L, detail.salaryClaim)
@@ -41,6 +43,7 @@ class DetailTest {
 
     @Test
     fun detail_toDto_and_fromDto() {
+        // WHEN
         val date = LocalDateTime.of(2000, 5, 15, 9, 30)
         val detail = Detail(
             id = 3L,
@@ -50,10 +53,9 @@ class DetailTest {
             email = "detail@example.com",
             candidateId = 7L
         )
-
         val dto = detail.toDto()
         val fromDto = Detail.fromDto(dto)
-
+        // THEN
         assertEquals(detail.id, fromDto.id)
         assertEquals(detail.date, fromDto.date)
         assertEquals(detail.salaryClaim, fromDto.salaryClaim)

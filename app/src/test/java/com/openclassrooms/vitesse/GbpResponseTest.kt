@@ -15,22 +15,22 @@ class GbpResponseTest {
 
     @Test
     fun gbpResponse_parses_valid_json()  = runTest {
+        // WHEN
         val json = """ { "eur": { "gbp": 0.85 } } """
         val adapter = moshi.adapter(GbpResponse::class.java)
-
         val response = adapter.fromJson(json)
-
+        // THEN
         assertNotNull(response)
         response!!.eur?.gbp?.let { assertEquals(0.85, it, 0.0) }
     }
 
     @Test
     fun gbpResponse_handles_missing_gbp()  = runTest {
+        // WHEN
         val json = """ { "eur": {} } """  // gbp missing
         val adapter = moshi.adapter(GbpResponse::class.java)
-
         val response = adapter.fromJson(json)
-
+        // THEN
         assertNotNull(response)
         // Moshi sets default Double = 0.0 if field missing
         response!!.eur?.gbp?.let { assertEquals(0.0, it, 0.0) }
@@ -38,12 +38,11 @@ class GbpResponseTest {
 
     @Test
     fun gbpResponse_handles_malformed_json()  = runTest {
+        // WHEN
         val json = """ { "eurr": { "gbp": 0.85 } } """  // typo key
         val adapter = moshi.adapter(GbpResponse::class.java)
-
         val response = adapter.fromJson(json)
-
-        // parsing succeeds but eur is null → gbp cannot be read
+        // THEN
         assertNull(response?.eur)
     }
 }
