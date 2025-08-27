@@ -194,3 +194,7 @@ class MediaPickerHelper(
         }
     }
 }
+
+object Log {
+    fun d(tag: String, msg: String): Int = 0
+}

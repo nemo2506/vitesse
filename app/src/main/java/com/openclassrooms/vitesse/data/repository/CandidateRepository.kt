@@ -1,7 +1,6 @@
 package com.openclassrooms.vitesse.data.repository
 
 import android.database.sqlite.SQLiteConstraintException
-import android.util.Log
 import com.openclassrooms.vitesse.data.dao.CandidateDao
 import com.openclassrooms.vitesse.data.entity.CandidateWithDetailDto
 import com.openclassrooms.vitesse.domain.model.Candidate
@@ -10,6 +9,7 @@ import com.openclassrooms.vitesse.utils.toDate
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import com.openclassrooms.vitesse.utils.Log
 
 class CandidateRepository(
     private val candidateDao: CandidateDao
