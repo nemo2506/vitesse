@@ -45,7 +45,7 @@ class CandidateActivity : AppCompatActivity() {
             viewModel.uiState.collect { uiState ->
                 uiState.isLoading?.let { binding.loading.setVisible(it) }
                 uiState.candidate.let { candidateAdapter.submitList(it) }
-                uiState.message?.showToastMessage(this@CandidateActivity)
+//                uiState.message?.showToastMessage(this@CandidateActivity)
             }
         }
     }

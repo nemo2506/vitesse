@@ -50,7 +50,7 @@ class DetailActivity : AppCompatActivity() {
             viewModel.uiState.collect { uiState ->
                 uiState.isLoading?.let { binding.loading.setVisible(it) }
                 uiState.candidate?.let { setUpUI(it) }
-                uiState.message?.showToastMessage(this@DetailActivity)
+//                uiState.message?.showToastMessage(this@DetailActivity)
                 if (uiState.isDeleted == true) this@DetailActivity.navigateToCandidateScreen()
             }
         }
@@ -122,9 +122,10 @@ class DetailActivity : AppCompatActivity() {
         }
         if (intent.resolveActivity(packageManager) != null) {
             startActivity(intent)
-        } else {
-            getString(R.string.messaging_missing).showToastMessage(this@DetailActivity)
         }
+//        else {
+//            getString(R.string.messaging_missing).showToastMessage(this@DetailActivity)
+//        }
     }
 
     private fun setToolbar() {

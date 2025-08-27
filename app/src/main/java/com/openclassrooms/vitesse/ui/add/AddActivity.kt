@@ -47,7 +47,7 @@ class AddActivity : AppCompatActivity() {
         lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
                 uiState.isLoading?.let { binding.loading.setVisible(it) }
-                uiState.message?.showToastMessage(this@AddActivity)
+//                uiState.message?.showToastMessage(this@AddActivity)
                 uiState.isFirstNameCheck?.let { setInfoErrorNotify(binding.tvFirstname, it) }
                 uiState.isLastNameCheck?.let { setInfoErrorNotify(binding.tvLastname, it) }
                 uiState.isPhoneCheck?.let { setInfoErrorNotify(binding.tvPhone, it) }

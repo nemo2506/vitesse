@@ -69,7 +69,7 @@ class EditActivity : AppCompatActivity() {
                 setEmailNotify(uiState.isValidEmail)
                 if (uiState.isCandidateFull == true) candidateSave()
                 uiState.isUpdated?.let { this@EditActivity.navigateToCandidateScreen() }
-                uiState.message?.showToastMessage(this@EditActivity)
+//                uiState.message?.showToastMessage(this@EditActivity)
             }
         }
     }
