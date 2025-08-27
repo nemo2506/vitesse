@@ -9,8 +9,8 @@ import com.openclassrooms.vitesse.utils.toDate
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
-import android.util.Log
-//import com.openclassrooms.vitesse.utils.Log
+//import android.util.Log
+import com.openclassrooms.vitesse.utils.Log
 
 class CandidateRepository(
     private val candidateDao: CandidateDao

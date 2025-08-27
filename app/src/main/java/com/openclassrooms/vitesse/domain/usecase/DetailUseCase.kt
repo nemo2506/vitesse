@@ -1,6 +1,5 @@
 package com.openclassrooms.vitesse.domain.usecase
 
-import android.util.Log
 import com.openclassrooms.vitesse.data.entity.CandidateWithDetailDto
 import com.openclassrooms.vitesse.data.repository.CurrencyRepository
 import com.openclassrooms.vitesse.data.repository.DetailRepository
@@ -13,6 +12,8 @@ import com.openclassrooms.vitesse.utils.toGbpDescription
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+//import android.util.Log
+import com.openclassrooms.vitesse.utils.Log
 
 class DetailUseCase @Inject constructor(
     private val detailRepository: DetailRepository,

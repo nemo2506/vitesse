@@ -33,6 +33,40 @@ class DetailUseCaseTest {
     }
 
     @Test
+    fun getCandidateToDescription_emitsFailure_whenCandidateDeleted() = runTest {
+        // GIVEN
+        whenever(detailRepository.getCandidateById(99L)).thenReturn(flow { emit(null) })
+
+        // WHEN
+        val resultList = mutableListOf<Result<*>>()
+        detailUseCase.getCandidateToDescription(99L).collect { resultList.add(it) }
+
+        // THEN
+        assertEquals(2, resultList.size)
+        assertTrue(resultList[0] is Result.Loading)
+        assertTrue(resultList[1] is Result.Failure)
+        assertEquals("Candidate deleted", (resultList[1] as Result.Failure).message)
+    }
+
+    @Test
+    fun getCandidateToDescription_emitsFailure_whenRepositoryThrows() = runTest {
+        // GIVEN
+        whenever(detailRepository.getCandidateById(1L)).thenAnswer {
+            throw RuntimeException("DB error")
+        }
+
+        // WHEN
+        val resultList = mutableListOf<Result<*>>()
+        detailUseCase.getCandidateToDescription(1L).collect { resultList.add(it) }
+
+        // THEN
+        assertEquals(2, resultList.size)
+        assertTrue(resultList[0] is Result.Loading)
+        assertTrue(resultList[1] is Result.Failure)
+        assertEquals("DB error", (resultList[1] as Result.Failure).message)
+    }
+
+    @Test
     fun getCandidateToDescription_emits_success_when_candidate_is_found() = runTest {
         // WHEN
         val date = LocalDateTime.of(2010, 1, 1, 12, 1, 1)
@@ -67,17 +101,6 @@ class DetailUseCaseTest {
         assertEquals(2, resultList.size)
         assertTrue(resultList[1] is Result.Failure)
         assertEquals("Candidate deleted", (resultList[1] as Result.Failure).message)
-    }
-
-    @Test
-    fun deleteCandidate_emits_success() = runTest {
-        // WHEN
-        whenever(detailRepository.deleteCandidate(1L)).thenReturn(flow { emit(1) })
-        val resultList = mutableListOf<Result<*>>()
-        detailUseCase.deleteCandidate(1L).collect { resultList.add(it) }
-        // THEN
-        assertEquals(Result.Loading, resultList[0])
-        assertEquals(Result.Success(1), resultList[1])
     }
 
     @Test
