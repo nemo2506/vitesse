@@ -104,4 +104,6 @@ dependencies {
     implementation(libs.arch.core.common)
     implementation(libs.arch.core.runtime)
     testImplementation(libs.arch.core.testing)
+
+    implementation(libs.mockwebserver)
 }

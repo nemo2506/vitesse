@@ -11,11 +11,11 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class GbpResponse(
     @Json(name = "eur")
-    val eur: EurResponse
+    val eur: EurResponse?
 ) {
     @JsonClass(generateAdapter = true)
     data class EurResponse(
         @Json(name = "gbp")
-        val gbp: Double
+        val gbp: Double?
     )
 }

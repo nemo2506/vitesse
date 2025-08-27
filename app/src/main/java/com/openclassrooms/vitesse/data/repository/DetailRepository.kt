@@ -1,6 +1,6 @@
 package com.openclassrooms.vitesse.data.repository
 
-import android.util.Log
+import com.openclassrooms.vitesse.utils.Log
 import com.openclassrooms.vitesse.data.dao.CandidateDao
 import com.openclassrooms.vitesse.data.entity.CandidateWithDetailDto
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +14,7 @@ class DetailRepository(
     fun getCandidateById(id: Long): Flow<CandidateWithDetailDto?> {
         return candidateDao.getCandidateById(id)
             .catch { e ->
-//                Log.d("MARC", "getCandidateById error: $e")
+                Log.d("MARC", "getCandidateById error: $e")
                 emit(null)
             }
     }

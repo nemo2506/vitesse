@@ -6,7 +6,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -43,7 +43,7 @@ class ManageClientTest {
      * Verifies that fetchGbp returns a valid GbpResponse when API succeeds.
      */
     @Test
-    fun fetchGbp_returns_gbpResponse_on_success() = runBlocking {
+    fun fetchGbp_returns_gbpResponse_on_success() = runTest {
         // WHEN
         val mockJson = """ { "eur": { "gbp": 0.85 } } """
         mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(mockJson))
@@ -52,14 +52,14 @@ class ManageClientTest {
         // THEN
         assertTrue(response.isSuccessful)
         assertNotNull(body)
-        assertEquals(0.85, body!!.eur.gbp, 0.0)
+        body!!.eur?.gbp?.let { assertEquals(0.85, it, 0.0) }
     }
 
     /**
      * Verifies that fetchGbp returns an error response when API fails (500).
      */
     @Test
-    fun fetchGbp_returns_failure_on_500_internal_server_error() = runBlocking {
+    fun fetchGbp_returns_failure_on_500_internal_server_error() = runTest {
         // WHEN
         val errorJson = """ { "error": "Internal Server Error" } """
         mockWebServer.enqueue(MockResponse().setResponseCode(500).setBody(errorJson))
