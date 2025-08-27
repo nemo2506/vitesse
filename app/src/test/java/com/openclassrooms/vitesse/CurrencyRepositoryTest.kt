@@ -66,7 +66,7 @@ class CurrencyRepositoryTest {
         val result = currencyRepository.getGbp()
         // THEN
         assertTrue(result is Result.Success)
-        assertEquals(0.85, (result as Result.Success).value)
+        assertEquals(0.85, result.value)
     }
 
     @Test
@@ -80,7 +80,7 @@ class CurrencyRepositoryTest {
         val result = currencyRepository.getGbp()
         // THEN
         assertTrue(result is Result.Failure)
-        assertNotNull((result as Result.Failure).message)
+        assertNotNull(result.message)
     }
 
     @Test
@@ -96,6 +96,6 @@ class CurrencyRepositoryTest {
         val result = currencyRepository.getGbp()
         // THEN
         assertTrue(result is Result.Failure)
-        assertNotNull((result as Result.Failure).message)
+        assertNotNull(result.message)
     }
 }

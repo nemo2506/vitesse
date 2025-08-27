@@ -1,11 +1,12 @@
 package com.openclassrooms.vitesse.data.repository
 
-import com.openclassrooms.vitesse.utils.Log
 import com.openclassrooms.vitesse.data.dao.CandidateDao
 import com.openclassrooms.vitesse.data.entity.CandidateWithDetailDto
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import android.util.Log
+//import com.openclassrooms.vitesse.utils.Log
 
 class DetailRepository(
     private val candidateDao: CandidateDao

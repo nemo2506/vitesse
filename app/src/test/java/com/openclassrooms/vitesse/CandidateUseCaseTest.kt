@@ -32,14 +32,14 @@ class CandidateUseCaseTest {
         whenever(candidateRepository.getCandidateByAttr(1, "John"))
             .thenReturn(flow { emit(listOf(candidate)) })
         // Act
-        val results = mutableListOf<Result<*>>()
+        val results = mutableListOf<Result<List<Candidate>>>()
         candidateUseCase.getCandidate(1, "John").collect { results.add(it) }
         // THEN
         assertEquals(2, results.size)
         assertTrue(results[0] is Result.Loading)
         assertTrue(results[1] is Result.Success)
         val result = results[1] as Result.Success
-        val candidates = result.value as List<Candidate>
+        val candidates = result.value
         // THEN
         assertEquals(1, candidates.size)
         assertEquals("John", candidates[0].firstName)
