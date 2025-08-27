@@ -27,23 +27,19 @@ class CandidateUseCaseTest {
 
     @Test
     fun get_candidate_emits_success_when_repository_returns_non_empty_list() = runTest {
-        // Arrange
+        // WHEN
         val candidate = Candidate(1L, "John", "DOE", true, "photoUri", "comments")
         whenever(candidateRepository.getCandidateByAttr(1, "John"))
             .thenReturn(flow { emit(listOf(candidate)) })
-
         // Act
         val results = mutableListOf<Result<*>>()
         candidateUseCase.getCandidate(1, "John").collect { results.add(it) }
-
         // THEN
         assertEquals(2, results.size)
         assertTrue(results[0] is Result.Loading)
         assertTrue(results[1] is Result.Success)
-
         val result = results[1] as Result.Success
         val candidates = result.value as List<Candidate>
-
         // THEN
         assertEquals(1, candidates.size)
         assertEquals("John", candidates[0].firstName)
@@ -54,10 +50,8 @@ class CandidateUseCaseTest {
         // WHEN
         whenever(candidateRepository.getCandidateByAttr(0, ""))
             .thenReturn(flow { emit(emptyList<Candidate>()) })
-
         val results = mutableListOf<Result<*>>()
         candidateUseCase.getCandidate(0, "").collect { results.add(it) }
-
         // THEN
         assertEquals(2, results.size)
         assertTrue(results[1] is Result.Failure)
@@ -82,7 +76,6 @@ class CandidateUseCaseTest {
                 salaryClaim = 1000L
             )
         ).thenReturn(flow { emit(1L) })
-
         val results = mutableListOf<Result<*>>()
         candidateUseCase.upsertCandidate(
             firstName = "john",
@@ -92,7 +85,6 @@ class CandidateUseCaseTest {
             isFavorite = true,
             salaryClaim = "1000"
         ).collect { results.add(it) }
-
         // THEN
         assertEquals(Result.Loading, results[0])
         assertEquals(Result.Success(true), results[1])
@@ -116,13 +108,11 @@ class CandidateUseCaseTest {
                 salaryClaim = 0L
             )
         ).thenReturn(flow { emit(0L) })
-
         val results = mutableListOf<Result<*>>()
         candidateUseCase.upsertCandidate(
             firstName = "john",
             lastName = "doe"
         ).collect { results.add(it) }
-
         // THEN
         assertEquals(Result.Loading, results[0])
         assertEquals(Result.Success(false), results[1])

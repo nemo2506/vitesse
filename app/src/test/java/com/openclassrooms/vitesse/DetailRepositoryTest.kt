@@ -33,7 +33,6 @@ class DetailRepositoryTest {
         val candidateId = 42L
         val expected = mock(CandidateWithDetailDto::class.java)
         whenever(candidateDao.getCandidateById(candidateId)).thenReturn(flowOf(expected))
-        // WHEN
         val result = repository.getCandidateById(candidateId).toList()
         // THEN
         assertEquals(expected, result[0])
@@ -47,7 +46,6 @@ class DetailRepositoryTest {
         whenever(candidateDao.getCandidateById(candidateId)).thenReturn(
             flow { throw RuntimeException("Test error") }
         )
-        // WHEN
         val result = repository.getCandidateById(candidateId).toList()
         // THEN
         assertEquals(null, result[0])
@@ -59,7 +57,6 @@ class DetailRepositoryTest {
         // WHEN
         val candidateId = 99L
         whenever(candidateDao.deleteCandidate(candidateId)).thenReturn(1)
-        // WHEN
         val result = repository.deleteCandidate(candidateId).toList()
         // THEN
         assertEquals(1, result[0])
@@ -71,7 +68,6 @@ class DetailRepositoryTest {
         // WHEN
         val candidateId = 99L
         whenever(candidateDao.deleteCandidate(candidateId)).thenThrow(RuntimeException("DB error"))
-        // WHEN
         val result = repository.deleteCandidate(candidateId).toList()
         // THEN
         assertEquals(0, result[0])
@@ -83,7 +79,6 @@ class DetailRepositoryTest {
         // WHEN
         val candidateId = 123L
         whenever(candidateDao.updateCandidateFavorite(candidateId, true)).thenReturn(1)
-        // WHEN
         val result = repository.updateFavoriteCandidate(candidateId, true).toList()
         // THEN
         assertEquals(1, result[0])
@@ -96,7 +91,6 @@ class DetailRepositoryTest {
         val candidateId = 123L
         whenever(candidateDao.updateCandidateFavorite(candidateId, true))
             .thenThrow(RuntimeException("DB error"))
-        // WHEN
         val result = repository.updateFavoriteCandidate(candidateId, true).toList()
         // THEN
         assertEquals(0, result[0])

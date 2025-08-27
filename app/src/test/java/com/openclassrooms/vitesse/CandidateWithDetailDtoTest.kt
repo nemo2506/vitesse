@@ -11,6 +11,7 @@ class CandidateWithDetailDtoTest {
 
     @Test
     fun create_candidate_with_detail_default_values() {
+        // THEN
         val candidate = CandidateDto(isFavorite = false)
         val detail = DetailDto(candidateId = candidate.id)
         val candidateWithDetail = CandidateWithDetailDto(candidateDto = candidate, detailDto = detail)
@@ -34,6 +35,7 @@ class CandidateWithDetailDtoTest {
 
     @Test
     fun create_candidate_with_detail_custom_values() {
+        // WHEN
         val candidate = CandidateDto(
             id = 1,
             firstName = "John",
@@ -51,16 +53,14 @@ class CandidateWithDetailDtoTest {
             candidateId = candidate.id
         )
         val candidateWithDetail = CandidateWithDetailDto(candidateDto = candidate, detailDto = detail)
-
-        // Vérifie candidateDto
+        // THEN
         assertEquals(1, candidateWithDetail.candidateDto.id)
         assertEquals("John", candidateWithDetail.candidateDto.firstName)
         assertEquals("Doe", candidateWithDetail.candidateDto.lastName)
         assertTrue(candidateWithDetail.candidateDto.isFavorite)
         assertEquals("content://photo.jpg", candidateWithDetail.candidateDto.photoUri)
         assertEquals("Top candidate", candidateWithDetail.candidateDto.note)
-
-        // Vérifie detailDto
+        // THEN
         assertEquals(10, candidateWithDetail.detailDto.id)
         assertEquals(LocalDateTime.of(2025, 8, 24, 12, 0), candidateWithDetail.detailDto.date)
         assertEquals(50000L, candidateWithDetail.detailDto.salaryClaim)
@@ -71,14 +71,14 @@ class CandidateWithDetailDtoTest {
 
     @Test
     fun equality_check_candidate_with_detail() {
+        // WHEN
         val candidate1 = CandidateDto(id = 1, firstName = "Alice", lastName = "Smith", isFavorite = true)
         val detail1 = DetailDto(id = 5, candidateId = 1, salaryClaim = 40000)
         val dto1 = CandidateWithDetailDto(candidate1, detail1)
-
         val candidate2 = CandidateDto(id = 1, firstName = "Alice", lastName = "Smith", isFavorite = true)
         val detail2 = DetailDto(id = 5, candidateId = 1, salaryClaim = 40000)
         val dto2 = CandidateWithDetailDto(candidate2, detail2)
-
+        // THEN
         assertEquals(dto1, dto2)
         assertEquals(dto1.hashCode(), dto2.hashCode())
     }

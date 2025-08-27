@@ -11,7 +11,7 @@ class DetailDtoTest {
     fun create_detail_with_default_values() {
         // WHEN
         val detail = DetailDto(candidateId = 0)
-
+        // THEN
         assertEquals(0, detail.id)
         assertNull(detail.date)
         assertNull(detail.salaryClaim)

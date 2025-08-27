@@ -29,11 +29,11 @@ class CandidateRepositoryTest {
 
     @Test
     fun getCandidateByAttr_returns_candidates_from_dao() = runTest {
-        // WHEN
         val fav = 1
         val term = "John"
         val expectedList = listOf(mock(Candidate::class.java))
         val flowFromDao = flowOf(expectedList)
+        // WHEN
         whenever(candidateDao.getCandidate(fav, "%John%")).thenReturn(flowFromDao)
         val results = repository.getCandidateByAttr(fav, term).toList()
         // THEN
@@ -43,12 +43,12 @@ class CandidateRepositoryTest {
 
     @Test
     fun getCandidateByAttr_emits_empty_list_on_exception() = runTest {
-        // WHEN
         val fav = 1
         val term = "John"
         val flowFromDao = flow<List<Candidate?>> {
             throw Exception("Test Exception")
         }
+        // WHEN
         whenever(candidateDao.getCandidate(fav, "%John%")).thenReturn(flowFromDao)
         val results = repository.getCandidateByAttr(fav, term).toList()
         // THEN

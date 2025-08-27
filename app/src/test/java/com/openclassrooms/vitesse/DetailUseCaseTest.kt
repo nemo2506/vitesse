@@ -40,7 +40,6 @@ class DetailUseCaseTest {
         val detailDto =
             DetailDto(2L, date, 60000L, "0102030405", "john@example.com", candidateId = 1L)
         val dto = CandidateWithDetailDto(candidateDto, detailDto)
-        // WHEN
         whenever(detailRepository.getCandidateById(1L)).thenReturn(flow { emit(dto) })
         whenever(currencyRepository.getGbp()).thenReturn(Result.Success(1.0))
         // Act
@@ -50,6 +49,7 @@ class DetailUseCaseTest {
         assertEquals(2, resultList.size)
         assertTrue(resultList[0] is Result.Loading)
         assertTrue(resultList[1] is Result.Success)
+        // WHEN
         val result = resultList[1] as Result.Success
         val candidateDescription = result.value as CandidateDescription
         // THEN
@@ -71,6 +71,7 @@ class DetailUseCaseTest {
 
     @Test
     fun deleteCandidate_emits_success() = runTest {
+        // WHEN
         whenever(detailRepository.deleteCandidate(1L)).thenReturn(flow { emit(1) })
         val resultList = mutableListOf<Result<*>>()
         detailUseCase.deleteCandidate(1L).collect { resultList.add(it) }
@@ -81,6 +82,7 @@ class DetailUseCaseTest {
 
     @Test
     fun updateFavoriteCandidate_emits_success() = runTest {
+        // WHEN
         whenever(detailRepository.updateFavoriteCandidate(1L, false)).thenReturn(flow { emit(1) })
         val resultList = mutableListOf<Result<*>>()
         detailUseCase.updateFavoriteCandidate(1L, true).collect { resultList.add(it) }
