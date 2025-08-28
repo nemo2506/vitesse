@@ -15,6 +15,7 @@ import org.junit.Assert.*
 import org.junit.Test
 import java.time.LocalDateTime
 import java.util.Locale
+import java.util.TimeZone
 
 class UtilsTest {
 
@@ -93,7 +94,8 @@ class UtilsTest {
     fun calculateAge_return_age_minus_one_if_birthday_not_reached_yet() {
         // WHEN
         val testAge = 33
-        val dateMoins33Ans: LocalDateTime = LocalDateTime.now().minusYears(testAge.toLong()).minusDays(1L)
+        val dateMoins33Ans: LocalDateTime =
+            LocalDateTime.now().minusYears(testAge.toLong()).minusDays(1L)
         val age = dateMoins33Ans.calculateAge()
         // THEN
         assertEquals(testAge, age)

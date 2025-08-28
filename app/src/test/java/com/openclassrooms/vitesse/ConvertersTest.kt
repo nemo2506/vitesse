@@ -52,11 +52,11 @@ class ConvertersTest {
     fun date_to_timestamp_handles_daylight_saving_time_change_correctly() {
         // WHEN
         TimeZone.setDefault(TimeZone.getTimeZone("Europe/Paris"))
-        // SUMMER HOURS
+        // WINTER HOURS
         val dateBefore = LocalDateTime.of(2023, 3, 26, 1, 59, 59)
         val timestampBefore = converters.dateToTimestamp(dateBefore)
         val convertedDateBefore = converters.fromTimestamp(timestampBefore)
-        // WINTER HOURS
+        //  SUMMER HOURS
         val dateAfter = LocalDateTime.of(2023, 3, 26, 3, 0, 0)
         val timestampAfter = converters.dateToTimestamp(dateAfter)
         val convertedDateAfter = converters.fromTimestamp(timestampAfter)
@@ -64,9 +64,9 @@ class ConvertersTest {
         assertEquals(dateBefore, convertedDateBefore)
         assertEquals(dateAfter, convertedDateAfter)
         // WHEN
-        val diffMillis = timestampAfter!! - timestampBefore!!
+        val diff = timestampAfter!! - timestampBefore!!
         // THEN
-        assertEquals(1000, diffMillis)
+        assertEquals(1000, diff)
     }
 
 }
