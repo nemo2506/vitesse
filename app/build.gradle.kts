@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
     alias(libs.plugins.hilt)
+    id("jacoco")
 }
 
 android {
@@ -46,6 +47,10 @@ android {
     // Config Room pour générer le schéma dans le dossier schemas
     room {
         schemaDirectory("$projectDir/schemas")
+    }
+
+    testCoverage {
+        jacocoVersion = libs.versions.jacoco.get()
     }
 }
 
@@ -106,4 +111,40 @@ dependencies {
     testImplementation(libs.arch.core.testing)
 
     implementation(libs.mockwebserver)
+}
+
+tasks.register<JacocoReport>("jacocoTestReport") {
+    val fileFilter = listOf(
+        "**/R.class",
+        "**/R$*.class",
+        "**/BuildConfig.*",
+        "**/Manifest*.*",
+        "**/*Test*.*"
+    )
+
+    val javaClasses = fileTree(layout.buildDirectory.dir("intermediates/javac/debug")) {
+        exclude(fileFilter)
+    }
+    val kotlinClasses = fileTree(layout.buildDirectory.dir("tmp/kotlin-classes/debug")) {
+        exclude(fileFilter)
+    }
+
+    val mainSrc = listOf("src/main/java", "src/main/kotlin")
+
+    executionData.setFrom(
+        fileTree(layout.buildDirectory).include(
+            "jacoco/testDebugUnitTest.exec",
+            "outputs/code_coverage/debugAndroidTest/connected/**/*.ec"
+        )
+    )
+
+    sourceDirectories.setFrom(files(mainSrc))
+    classDirectories.setFrom(files(javaClasses, kotlinClasses))
+
+    reports {
+        xml.required.set(true)
+        csv.required.set(false)
+        html.required.set(true)
+        html.outputLocation.set(layout.buildDirectory.dir("reports/jacoco"))
+    }
 }
