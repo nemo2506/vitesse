@@ -15,7 +15,7 @@ class DetailRepository(
     fun getCandidateById(id: Long): Flow<CandidateWithDetailDto?> {
         return candidateDao.getCandidateById(id)
             .catch { e ->
-                Log.d("MARC", "getCandidateById error: $e")
+                Log.d(tag="MARC", msg="getCandidateById error: $e")
                 emit(null)
             }
     }
@@ -26,7 +26,7 @@ class DetailRepository(
             val result = candidateDao.deleteCandidate(candidateId)
             emit(result)
         } catch (e: Exception) {
-            Log.d("MARC", "deleteCandidateError: $e")
+            Log.d(tag="MARC", msg="deleteCandidateError: $e")
             emit(0)
         }
     }
@@ -37,7 +37,7 @@ class DetailRepository(
             val result = candidateDao.updateCandidateFavorite(id, fav)
             emit(result)
         } catch (e: Exception) {
-            Log.d("MARC", "updateFavoriteCandidateError: $e")
+            Log.d(tag="MARC", msg="updateFavoriteCandidateError: $e")
             emit(0)
         }
     }

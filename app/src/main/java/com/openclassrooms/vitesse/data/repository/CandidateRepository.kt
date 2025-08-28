@@ -19,7 +19,7 @@ class CandidateRepository(
         val searchTerm = if (term.isEmpty()) "" else "%$term%"
         return candidateDao.getCandidate(fav, searchTerm)
             .catch { e ->
-                Log.d("MARC", "getCandidateById error: $e")
+                Log.d(tag="MARC", msg="getCandidateById error: $e")
                 emit(emptyList())
             }
     }

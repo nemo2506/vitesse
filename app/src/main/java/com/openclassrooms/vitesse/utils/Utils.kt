@@ -183,7 +183,8 @@ class MediaPickerHelper(
             if (uri != null) {
                 onImagePicked?.invoke(uri)
                 tvFace.loadImage(uri.toString())
-            } else {
+            }
+            else {
                 activity.getString(R.string.no_image_selected).showToastMessage(activity)
             }
         }
