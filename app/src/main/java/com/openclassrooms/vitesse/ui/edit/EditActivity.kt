@@ -48,6 +48,7 @@ class EditActivity : AppCompatActivity() {
     private var currentDate: String? = null
     private var currentSalaryClaim: String? = null
     private var currentNote: String? = null
+    private var currentIsFavorite: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -136,6 +137,7 @@ class EditActivity : AppCompatActivity() {
         currentEmail = candidate.email
         currentSalaryClaim = candidate.salaryClaim
         currentNote = candidate.note
+        currentIsFavorite = candidate.isFavorite
     }
 
     private fun setToolbar() {
@@ -194,6 +196,7 @@ class EditActivity : AppCompatActivity() {
             lastName = etLastName.text.toString(),
             phone = etPhone.text.toString(),
             email = etEmail.text.toString(),
+            isFavorite = currentIsFavorite,
             date = etDate.text.toString(),
 
             photoUri = currentUri,
