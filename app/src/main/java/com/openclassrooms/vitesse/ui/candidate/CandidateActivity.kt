@@ -35,7 +35,7 @@ class CandidateActivity : AppCompatActivity() {
 
     private fun setUi() {
         setupTab()
-        userCall()
+        userCom()
         setAdd()
     }
 
@@ -67,7 +67,7 @@ class CandidateActivity : AppCompatActivity() {
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 choiceTab = tab.position
-                userCall()
+                userCom()
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {}
@@ -77,7 +77,7 @@ class CandidateActivity : AppCompatActivity() {
         tabLayout.getTabAt(viewModel.tabStarted)?.select()
     }
 
-    private fun userCall() {
+    private fun userCom() {
         viewModel.getSearch(choiceTab, binding.tvSearchEdit.text.toString())
         binding.tvSearchEdit.doOnTextChanged { text, _, _, _ ->
             viewModel.getSearch(choiceTab, text.toString())
