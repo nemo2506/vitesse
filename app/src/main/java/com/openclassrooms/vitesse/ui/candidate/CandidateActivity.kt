@@ -52,7 +52,7 @@ class CandidateActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         candidateAdapter = CandidateAdapter { candidate ->
-            candidate.id?.let { this@CandidateActivity.navigateToDetailScreen(it ) }
+            candidate.id?.let { this@CandidateActivity.navigateToDetailScreen(it) }
         }
         binding.candidateRecyclerview.layoutManager = LinearLayoutManager(this)
         binding.candidateRecyclerview.adapter = candidateAdapter
