@@ -59,7 +59,6 @@ class DetailActivity : AppCompatActivity() {
     private fun setUpUI(candidate: CandidateDescription) {
         if (candidate.candidateId != null) candidateId = candidate.candidateId
         if (candidate.detailId != null) detailId = candidate.detailId
-        isFavorite = candidate.isFavorite
         val title = "%s %s".format(candidate.firstName, candidate.lastName)
         toolbar.title = title
         setFavoriteUi(candidate.isFavorite)
@@ -72,6 +71,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setFavoriteUi(fav: Boolean) {
+        isFavorite = fav
         val icon = if (fav) R.drawable.ic_star_active else R.drawable.ic_star
         toolbar.post {
             toolbar.menu.findItem(R.id.fab_favorite)?.icon =

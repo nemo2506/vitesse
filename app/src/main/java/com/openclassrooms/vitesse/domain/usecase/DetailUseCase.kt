@@ -69,7 +69,7 @@ class DetailUseCase @Inject constructor(
         try {
             detailRepository.updateFavoriteCandidate(
                 id,
-                !fav // INVERSE LA VALEUR FAV POUR LA MODIFIER
+                !fav // REVERSE THE FAV VALUE TO CHANGE IT
             ).collect { emit(Result.Success(it)) }
         } catch (e: Throwable) {
             Log.d("MARC", "updateFavoriteCandidateError: $e")
