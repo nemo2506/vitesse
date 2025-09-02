@@ -12,6 +12,7 @@ class DetailRepository(
     private val candidateDao: CandidateDao
 ) {
 
+    // Get candidate by ID
     fun getCandidateById(id: Long): Flow<CandidateWithDetailDto?> {
         return candidateDao.getCandidateById(id)
             .catch { e ->
