@@ -42,7 +42,6 @@ class CandidateActivity : AppCompatActivity() {
     private fun observeCandidate() {
         lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
-                println("TEST: $uiState")
                 uiState.isLoading?.let { binding.loading.setVisible(it) }
                 uiState.candidate.let { candidateAdapter.submitList(it) }
 //                uiState.message?.showToastMessage(this@CandidateActivity)
