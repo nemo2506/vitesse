@@ -64,7 +64,7 @@ abstract class AppDatabase : RoomDatabase() {
                 CandidateWithDetailDto(
                     candidateDto = Candidate(
                         firstName = "Lucie",
-                        lastName = "Dupont",
+                        lastName = "DUPONT",
                         isFavorite = true,
                         note = "Apprend vite, curieuse et autonome. Bonne capacité d’analyse. Travaille bien en équipe. Solide éthique professionnelle. Très bon potentiel évolutif.",
                         photoUri = "https://miseservice.ovh/media/lucie.jpg"
@@ -82,7 +82,7 @@ abstract class AppDatabase : RoomDatabase() {
                 CandidateWithDetailDto(
                     candidateDto = Candidate(
                         firstName = "Ahmed",
-                        lastName = "Khalil",
+                        lastName = "KHALIL",
                         isFavorite = false,
                         note = "Très sociable et observateur. S’intègre bien. Réagit bien sous pression. Bon esprit, indépendant et fiable sur ses responsabilités.",
                         photoUri = "https://miseservice.ovh/media/ahmed.jpg"
@@ -100,7 +100,7 @@ abstract class AppDatabase : RoomDatabase() {
                 CandidateWithDetailDto(
                     candidateDto = Candidate(
                         firstName = "Claire",
-                        lastName = "Martin",
+                        lastName = "MARTIN",
                         isFavorite = true,
                         note = "Toujours dynamique et souriante. Apporte de bonnes idées, contribue à la cohésion d’équipe. Excellente communication et sens des priorités.",
                         photoUri = "https://miseservice.ovh/media/claire.jpg"
@@ -118,7 +118,7 @@ abstract class AppDatabase : RoomDatabase() {
                 CandidateWithDetailDto(
                     candidateDto = Candidate(
                         firstName = "Julien",
-                        lastName = "Roche",
+                        lastName = "ROCHE",
                         isFavorite = false,
                         note = "Analyse précise des problèmes. Organisé, structuré et rigoureux dans son travail. Peu de supervision nécessaire. Fait preuve d’initiative régulièrement.",
                         photoUri = "https://miseservice.ovh/media/julien.jpg"
@@ -136,7 +136,7 @@ abstract class AppDatabase : RoomDatabase() {
                 CandidateWithDetailDto(
                     candidateDto = Candidate(
                         firstName = "Fatima",
-                        lastName = "El Amrani",
+                        lastName = "EL AMRANI",
                         isFavorite = true,
                         note = "Professionnelle exemplaire. Répond toujours présente. Favorise une ambiance de travail sereine et efficace. Sait gérer plusieurs priorités sans stress.",
                         photoUri = "https://miseservice.ovh/media/fatima.jpg"
@@ -154,7 +154,7 @@ abstract class AppDatabase : RoomDatabase() {
                 CandidateWithDetailDto(
                     candidateDto = Candidate(
                         firstName = "Thomas",
-                        lastName = "Bertrand",
+                        lastName = "BERTRAND",
                         isFavorite = false,
                         note = "Bon leadership technique. Hésite parfois à déléguer. Très impliqué mais doit encore améliorer sa gestion du temps et feedback.",
                         photoUri = "https://miseservice.ovh/media/thomas.jpg"
@@ -172,7 +172,7 @@ abstract class AppDatabase : RoomDatabase() {
                 CandidateWithDetailDto(
                     candidateDto = Candidate(
                         firstName = "Sophie",
-                        lastName = "Leclerc",
+                        lastName = "LECLERC",
                         isFavorite = true,
                         note = "Force de proposition créative. Manque parfois de méthode. S’améliore rapidement. Besoin d’un cadre clair pour être pleinement performant.",
                         photoUri = "https://miseservice.ovh/media/sophie.jpg"
@@ -190,7 +190,7 @@ abstract class AppDatabase : RoomDatabase() {
                 CandidateWithDetailDto(
                     candidateDto = Candidate(
                         firstName = "Nathan",
-                        lastName = "Durand",
+                        lastName = "DURAND",
                         isFavorite = false,
                         note = "Bonne maîtrise technique. Peu communicatif en réunion. Fiable sur les livrables. Devrait s’impliquer davantage dans les projets transversaux d’équipe.",
                         photoUri = "https://miseservice.ovh/media/nathan.jpg"
@@ -214,7 +214,7 @@ abstract class AppDatabase : RoomDatabase() {
                 CandidateWithDetailDto(
                     candidateDto = Candidate(
                         firstName = "Léa",
-                        lastName = "Moreau",
+                        lastName = "MOREAU",
                         isFavorite = true,
                         note = "Charismatique, prend naturellement les devants. Sait motiver l’équipe. Gère le stress efficacement. Peut encore progresser en écoute active.",
                         photoUri = "https://miseservice.ovh/media/lea.jpg"
