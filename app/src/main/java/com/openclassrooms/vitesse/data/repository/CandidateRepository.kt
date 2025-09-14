@@ -15,9 +15,9 @@ import com.openclassrooms.vitesse.utils.Log
 class CandidateRepository(
     private val candidateDao: CandidateDao
 ) {
-    fun getCandidateByAttr(fav: Int, term: String): Flow<List<Candidate?>> {
+    fun getCandidateByTerm(term: String): Flow<List<Candidate?>> {
         val searchTerm = if (term.isEmpty()) "" else "%$term%"
-        return candidateDao.getCandidate(fav, searchTerm)
+        return candidateDao.getCandidate(searchTerm)
             .catch { e ->
                 Log.d(tag="MARC", msg="getCandidateById error: $e")
                 emit(emptyList())

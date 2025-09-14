@@ -40,13 +40,12 @@ interface CandidateDao {
     @Query(
         """
     SELECT * FROM candidate 
-    WHERE (:fav = 0 OR isFavorite = :fav)
-    AND (:term = '' OR
+    WHERE (:term = '' OR
     firstName LIKE :term COLLATE NOCASE OR
     lastName LIKE :term COLLATE NOCASE
     )"""
     )
-    fun getCandidate(fav: Int, term: String): Flow<List<Candidate?>>
+    fun getCandidate(term: String): Flow<List<Candidate?>>
 
     @Transaction
     @Query("Select * FROM candidate WHERE id = :id")

@@ -40,7 +40,7 @@ class CandidateActivity : AppCompatActivity() {
     }
 
     private fun observeCandidate() {
-        viewModel.getSearch(choiceTab, "")
+//        viewModel.getSearch(choiceTab, "")
         lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
                 uiState.isLoading?.let { binding.loading.setVisible(it) }
@@ -59,7 +59,7 @@ class CandidateActivity : AppCompatActivity() {
     }
 
     private fun setupTab() {
-        choiceTab = viewModel.tabStarted
+//        choiceTab = viewModel.tabStarted
         val tabLayout = findViewById<TabLayout>(R.id.tab_layout)
         tabLayout.addTab(tabLayout.newTab().setText(R.string.candidate_all))
         tabLayout.addTab(tabLayout.newTab().setText(R.string.candidate_favorites))
@@ -74,7 +74,7 @@ class CandidateActivity : AppCompatActivity() {
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
 
-        tabLayout.getTabAt(viewModel.tabStarted)?.select()
+//        tabLayout.getTabAt(viewModel.tabStarted)?.select()
     }
 
     private fun userCom() {

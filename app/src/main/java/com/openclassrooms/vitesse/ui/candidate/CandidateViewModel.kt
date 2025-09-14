@@ -20,27 +20,28 @@ class CandidateViewModel @Inject constructor(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
-    val tabStarted: Int = 0
+//    val tabStarted: Int = 0
 
     init {
-        observeCandidate(tabStarted, searchTerm = "")
+        observeCandidate(searchTerm = "")
     }
 
-    private fun observeCandidate(fav: Int, searchTerm: String) {
+    private fun observeCandidate(searchTerm: String) {
         viewModelScope.launch {
-            candidateUseCase.getCandidate(fav, searchTerm)
+            candidateUseCase.getCandidate(searchTerm)
                 .collect { result ->
                     when (result) {
                         is Result.Loading -> {
-                            _uiState.update { it.copy(isLoading = true,  candidate = emptyList(), message = null) }
+                            _uiState.update { it.copy(isLoading = true,  candidate = emptyList(),  candidateFav = emptyList(), message = null) }
 
                             delay(500) // TO TEST
                         }
                         is Result.Success -> {
-                            _uiState.update { it.copy(isLoading = false, candidate = result.value, message = null) }
+                            val candidateFav = result.value.filter { it.isFavorite }
+                            _uiState.update { it.copy(isLoading = false, candidate = result.value, candidateFav = candidateFav, message = null) }
                         }
                         is Result.Failure -> {
-                            _uiState.update { it.copy(isLoading = false,  candidate = emptyList(), message = result.message) }
+                            _uiState.update { it.copy(isLoading = false, candidate = emptyList(), candidateFav = emptyList(), message = result.message) }
                         }
                     }
                 }
@@ -48,7 +49,7 @@ class CandidateViewModel @Inject constructor(
     }
 
     fun getSearch(tab: Int, searchTerm: String) {
-        observeCandidate(tab, searchTerm )
+        observeCandidate(searchTerm )
     }
 }
 
@@ -59,6 +60,7 @@ class CandidateViewModel @Inject constructor(
  */
 data class UiState(
     var candidate: List<Candidate> = emptyList(),
+    var candidateFav: List<Candidate> = emptyList(),
     var isLoading: Boolean? = null,
     var message: String? = null
 )

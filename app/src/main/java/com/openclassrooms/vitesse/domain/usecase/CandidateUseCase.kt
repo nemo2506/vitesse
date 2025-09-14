@@ -14,10 +14,10 @@ class CandidateUseCase @Inject constructor(
     private val candidateRepository: CandidateRepository
 ) {
 
-    fun getCandidate(fav: Int, term: String): Flow<Result<List<Candidate>>> = flow {
+    fun getCandidate(term: String): Flow<Result<List<Candidate>>> = flow {
         emit(Result.Loading)
         try {
-            candidateRepository.getCandidateByAttr(fav, term).collect { dtoList ->
+            candidateRepository.getCandidateByTerm(term).collect { dtoList ->
                 if (dtoList.isEmpty()) {
                     emit(Result.Failure("Aucun candidat"))
                 } else {
