@@ -22,7 +22,7 @@ class CandidateActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCandidateBinding
     private val viewModel: CandidateViewModel by viewModels()
     private lateinit var candidateAdapter: CandidateAdapter
-    private var choiceTab: Int = 0
+    var currentTab: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,9 +40,9 @@ class CandidateActivity : AppCompatActivity() {
     }
 
     private fun observeCandidate() {
-//        viewModel.getSearch(choiceTab, "")
         lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
+                println("TEST: $uiState")
                 uiState.isLoading?.let { binding.loading.setVisible(it) }
                 uiState.candidate.let { candidateAdapter.submitList(it) }
 //                uiState.message?.showToastMessage(this@CandidateActivity)
@@ -59,14 +59,13 @@ class CandidateActivity : AppCompatActivity() {
     }
 
     private fun setupTab() {
-//        choiceTab = viewModel.tabStarted
         val tabLayout = findViewById<TabLayout>(R.id.tab_layout)
         tabLayout.addTab(tabLayout.newTab().setText(R.string.candidate_all))
         tabLayout.addTab(tabLayout.newTab().setText(R.string.candidate_favorites))
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                choiceTab = tab.position
+                currentTab = tab.position
                 userCom()
             }
 
@@ -74,13 +73,13 @@ class CandidateActivity : AppCompatActivity() {
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
 
-//        tabLayout.getTabAt(viewModel.tabStarted)?.select()
+        tabLayout.getTabAt(currentTab)?.select()
     }
 
     private fun userCom() {
-        viewModel.getSearch(choiceTab, binding.tvSearchEdit.text.toString())
+        viewModel.upSearch(currentTab, binding.tvSearchEdit.text.toString())
         binding.tvSearchEdit.doOnTextChanged { text, _, _, _ ->
-            viewModel.getSearch(choiceTab, text.toString())
+            viewModel.upSearch(currentTab, text.toString())
         }
     }
 
