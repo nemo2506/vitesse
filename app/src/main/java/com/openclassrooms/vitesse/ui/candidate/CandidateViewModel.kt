@@ -23,8 +23,7 @@ class CandidateViewModel @Inject constructor(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
-    private val searchTermFlow = MutableStateFlow("")
-    private val searchFavFlow = MutableStateFlow(0)
+    private val filterState = MutableStateFlow(Pair(0, "")) // Pair(fav, term)
 
     init {
         observeCandidate()
@@ -33,52 +32,35 @@ class CandidateViewModel @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun observeCandidate() {
         viewModelScope.launch {
-            combine(searchTermFlow, searchFavFlow) { term, fav -> term to fav }
-                .flatMapLatest { (term, fav) ->
-                    candidateUseCase.getCandidate(term).map { result ->
-                        when (result) {
-                            is Result.Success -> Result.Success(
-                                if (fav == 1) result.value.filter { it.isFavorite }
-                                else result.value
-                            )
-
-                            else -> result
-                        }
-                    }
-                }
-                .collect { result ->
+            filterState.flatMapLatest { (fav, term) ->
+                candidateUseCase.getCandidate(term).map { result ->
                     when (result) {
-                        is Result.Loading -> _uiState.update {
-                            it.copy(
-                                isLoading = true,
-                                candidate = emptyList(),
-                                message = null
-                            )
-                        }
-
-                        is Result.Success -> _uiState.update {
-                            it.copy(
-                                isLoading = false,
-                                candidate = result.value,
-                                message = null
-                            )
-                        }
-
-                        is Result.Failure -> _uiState.update {
-                            it.copy(
-                                isLoading = false,
-                                candidate = emptyList(),
-                                message = result.message
-                            )
-                        }
+                        is Result.Success -> Result.Success(
+                            if (fav == 1) result.value.filter { it.isFavorite }
+                            else result.value
+                        )
+                        else -> result
                     }
                 }
+            }.collect { result ->
+                when (result) {
+                    is Result.Loading -> _uiState.update {
+                        it.copy(isLoading = true, candidate = emptyList(), message = null)
+                    }
+                    is Result.Success -> _uiState.update {
+                        it.copy(isLoading = false, candidate = result.value, message = null)
+                    }
+                    is Result.Failure -> _uiState.update {
+                        it.copy(isLoading = false, candidate = emptyList(), message = result.message)
+                    }
+                }
+            }
         }
     }
 
-    fun upSearch(fav: Int, term: String) {
-        searchFavFlow.value = fav
-        searchTermFlow.value = term
+    fun upSearch(fav: Int? = null, term: String? = null) {
+        val (currentFav, currentTerm) = filterState.value
+        filterState.value = Pair(fav ?: currentFav, term ?: currentTerm)
     }
 }
 
