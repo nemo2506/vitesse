@@ -83,8 +83,7 @@ class CandidateActivity : AppCompatActivity() {
     }
 
     private fun setAdd() {
-        val fabAdd = binding.fabAdd
-        fabAdd.setOnClickListener {
+        binding.fabAdd.setOnClickListener {
             this@CandidateActivity.navigateToAddScreen()
         }
     }
