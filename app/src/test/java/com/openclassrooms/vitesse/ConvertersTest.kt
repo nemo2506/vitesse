@@ -53,11 +53,11 @@ class ConvertersTest {
         // WHEN
         TimeZone.setDefault(TimeZone.getTimeZone("Europe/Paris"))
         // WINTER HOURS
-        val dateBefore = LocalDateTime.of(2023, 3, 26, 1, 59, 59)
+        val dateBefore = LocalDateTime.of(2025, 3, 30, 1, 59, 59)
         val timestampBefore = converters.dateToTimestamp(dateBefore)
         val convertedDateBefore = converters.fromTimestamp(timestampBefore)
         //  SUMMER HOURS
-        val dateAfter = LocalDateTime.of(2023, 3, 26, 3, 0, 0)
+        val dateAfter = LocalDateTime.of(2025, 3, 30, 3, 0, 0)
         val timestampAfter = converters.dateToTimestamp(dateAfter)
         val convertedDateAfter = converters.fromTimestamp(timestampAfter)
         // THEN
