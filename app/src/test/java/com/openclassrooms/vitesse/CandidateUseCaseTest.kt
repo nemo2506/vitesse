@@ -29,11 +29,11 @@ class CandidateUseCaseTest {
     fun get_candidate_emits_success_when_repository_returns_non_empty_list() = runTest {
         // WHEN
         val candidate = Candidate(1L, "John", "DOE", true, "photoUri", "comments")
-        whenever(candidateRepository.getCandidateByAttr(1, "John"))
+        whenever(candidateRepository.getCandidateByTerm( "John"))
             .thenReturn(flow { emit(listOf(candidate)) })
         // Act
         val results = mutableListOf<Result<List<Candidate>>>()
-        candidateUseCase.getCandidate(1, "John").collect { results.add(it) }
+        candidateUseCase.getCandidate("John").collect { results.add(it) }
         // THEN
         assertEquals(2, results.size)
         assertTrue(results[0] is Result.Loading)
@@ -48,10 +48,10 @@ class CandidateUseCaseTest {
     @Test
     fun get_candidate_emits_failure_when_repository_returns_empty_list() = runTest {
         // WHEN
-        whenever(candidateRepository.getCandidateByAttr(0, ""))
+        whenever(candidateRepository.getCandidateByTerm(""))
             .thenReturn(flow { emit(emptyList<Candidate>()) })
         val results = mutableListOf<Result<*>>()
-        candidateUseCase.getCandidate(0, "").collect { results.add(it) }
+        candidateUseCase.getCandidate("").collect { results.add(it) }
         // THEN
         assertEquals(2, results.size)
         assertTrue(results[1] is Result.Failure)

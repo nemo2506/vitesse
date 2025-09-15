@@ -49,9 +49,9 @@ class CandidateDaoUnitTest {
             note = "note"
         )
         // WHEN
-        whenever(candidateDao.getCandidate(1, "Alice"))
+        whenever(candidateDao.getCandidate("Alice"))
             .thenReturn(flow { emit(listOf(candidate)) })
-        val result = candidateDao.getCandidate(1, "Alice").first()
+        val result = candidateDao.getCandidate("Alice").first()
         // THEN
         assertEquals(1, result.size)
         assertEquals("Alice", result[0]?.firstName)
@@ -60,9 +60,9 @@ class CandidateDaoUnitTest {
     @Test
     fun getCandidate_when_empty_returns_empty() = runTest {
         // WHEN
-        whenever(candidateDao.getCandidate(1, ""))
+        whenever(candidateDao.getCandidate( ""))
             .thenReturn(flow { emit(listOf()) })
-        val result = candidateDao.getCandidate(1, "").first()
+        val result = candidateDao.getCandidate("").first()
         // THEN
         assertEquals(0, result.size)
     }

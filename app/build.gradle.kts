@@ -119,7 +119,13 @@ tasks.register<JacocoReport>("jacocoTestReport") {
         "**/R$*.class",
         "**/BuildConfig.*",
         "**/Manifest*.*",
-        "**/*Test*.*"
+        "**/*Test*.*",
+        "**/databinding/*",
+        "**/ui/*",
+        "**/dao/*",
+        "**/database/*",
+        "**/hilt_aggregated_deps/*",
+        "**/aggregatedroot/*",
     )
 
     val javaClasses = fileTree(layout.buildDirectory.dir("intermediates/javac/debug")) {
