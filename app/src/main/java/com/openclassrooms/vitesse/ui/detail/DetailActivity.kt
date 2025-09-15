@@ -49,14 +49,14 @@ class DetailActivity : AppCompatActivity() {
         lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
                 uiState.isLoading?.let { binding.loading.setVisible(it) }
-                uiState.candidate?.let { setUpUI(it) }
+                uiState.candidate?.let { setInfoUI(it) }
 //                uiState.message?.showToastMessage(this@DetailActivity)
                 if (uiState.isDeleted == true) this@DetailActivity.navigateToCandidateScreen()
             }
         }
     }
 
-    private fun setUpUI(candidate: CandidateDescription) {
+    private fun setInfoUI(candidate: CandidateDescription) {
         if (candidate.candidateId != null) candidateId = candidate.candidateId
         if (candidate.detailId != null) detailId = candidate.detailId
         val title = "%s %s".format(candidate.firstName, candidate.lastName)
