@@ -81,13 +81,13 @@ class DetailActivity : AppCompatActivity() {
 
     private fun setCom(candidate: CandidateDescription, title: String) {
         binding.btnCall.setOnClickListener {
-            candidate.phone?.let { it1 -> setCall(it1) }
+            candidate.phone?.let { setCall(it) }
         }
         binding.btnSms.setOnClickListener {
-            candidate.phone?.let { it1 -> setSms(it1, title) }
+            candidate.phone?.let { setSms(it, title) }
         }
         binding.btnEmail.setOnClickListener {
-            candidate.email?.let { it1 -> setEmail(it1, title) }
+            candidate.email?.let { setEmail(it, title) }
         }
     }
 
@@ -123,9 +123,6 @@ class DetailActivity : AppCompatActivity() {
         if (intent.resolveActivity(packageManager) != null) {
             startActivity(intent)
         }
-//        else {
-//            getString(R.string.messaging_missing).showToastMessage(this@DetailActivity)
-//        }
     }
 
     private fun setToolbar() {
