@@ -50,7 +50,6 @@ class DetailActivity : AppCompatActivity() {
             viewModel.uiState.collect { uiState ->
                 uiState.isLoading?.let { binding.loading.setVisible(it) }
                 uiState.candidate?.let { setInfoUI(it) }
-//                uiState.message?.showToastMessage(this@DetailActivity)
                 if (uiState.isDeleted == true) this@DetailActivity.navigateToCandidateScreen()
             }
         }

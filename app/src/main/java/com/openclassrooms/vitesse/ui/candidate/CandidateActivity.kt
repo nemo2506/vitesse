@@ -12,7 +12,6 @@ import com.openclassrooms.vitesse.databinding.ActivityCandidateBinding
 import com.openclassrooms.vitesse.utils.navigateToAddScreen
 import com.openclassrooms.vitesse.utils.navigateToDetailScreen
 import com.openclassrooms.vitesse.utils.setVisible
-import com.openclassrooms.vitesse.utils.showToastMessage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -44,7 +43,6 @@ class CandidateActivity : AppCompatActivity() {
             viewModel.uiState.collect { uiState ->
                 uiState.isLoading?.let { binding.loading.setVisible(it) }
                 uiState.candidate.let { candidateAdapter.submitList(it) }
-//                uiState.message?.showToastMessage(this@CandidateActivity)
             }
         }
     }

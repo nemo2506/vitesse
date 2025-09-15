@@ -14,7 +14,6 @@ import com.openclassrooms.vitesse.databinding.ActivityAddBinding
 import com.openclassrooms.vitesse.domain.model.CandidateDetail
 import com.openclassrooms.vitesse.utils.MediaPickerHelper
 import com.openclassrooms.vitesse.utils.setVisible
-import com.openclassrooms.vitesse.utils.showToastMessage
 import com.openclassrooms.vitesse.utils.loadImage
 import com.openclassrooms.vitesse.utils.navigateToCandidateScreen
 import com.openclassrooms.vitesse.utils.setDateUi
@@ -70,7 +69,6 @@ class EditActivity : AppCompatActivity() {
                 setEmailNotify(uiState.isValidEmail)
                 if (uiState.isCandidateFull == true) candidateSave()
                 uiState.isUpdated?.let { this@EditActivity.navigateToCandidateScreen() }
-//                uiState.message?.showToastMessage(this@EditActivity)
             }
         }
     }
